@@ -1,8 +1,33 @@
 #pragma once
-class MainGameState
+
+#include <SFML/Graphics.hpp>
+#include "GameState.h"
+
+class MainGameState : public GameState
 {
 public:
-	MainGameState();
-	~MainGameState();
+	void init();
+	void cleanup();
+
+	void pause();
+	void resume();
+
+	void handleInput(Game* game);
+	void update(Game* game);
+	void draw(Game* game);
+	
+	
+
+	static MainGameState* instance()
+	{
+		return &mainGameState;
+	}
+
+protected:
+	MainGameState() {}
+
+private:
+	static MainGameState mainGameState;
+
 };
 
