@@ -27,5 +27,8 @@ protected:
 private:
 	static IntroState introState;
 
+	sf::Font font;
+	sf::Text textTitle;
+
 	//int alpha;
 };

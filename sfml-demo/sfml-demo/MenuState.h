@@ -26,4 +26,8 @@ protected:
 
 private:
 	static MenuState menuState;
+
+	sf::Font font;
+	sf::Text text;
+	sf::Text text2;
 };

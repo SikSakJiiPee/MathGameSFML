@@ -79,10 +79,12 @@
 
 void Game::init(const char* title, int width, int height, bool fscreen)
 {
-	//jatka tästä, ei toimi
 	this->window.create(sf::VideoMode(width, height), title);
 	this->window.setFramerateLimit(60);
 
+	titleName = title;
+	windowWidth = width;
+	windowHeight = height;
 	fullscreen = fscreen;
 	running = true;
 

@@ -50,10 +50,14 @@ public:
 	void quit() { running = false; }
 
 	sf::RenderWindow window;
+	sf::Event evnt;
 
 private:
 	std::vector<GameState*> states;
 
+	const char* titleName;
+	int windowWidth;
+	int windowHeight;
 	bool running;
 	bool fullscreen;
 
