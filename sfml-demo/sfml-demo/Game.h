@@ -28,7 +28,23 @@
 #pragma once
 
 #include <vector>
+#include <iostream>
+#include <string>
+#include <sstream>
+#include <iomanip>
+
 #include <SFML/Graphics.hpp>
+
+
+template <typename T>
+std::string convertToString(T unconverted)
+{
+	std::stringstream ss;
+	ss << std::fixed << std::setfill('0') << std::setprecision(2) << unconverted;
+	std::string srtConverted = ss.str();
+
+	return srtConverted;
+}
 
 class GameState;
 

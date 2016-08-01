@@ -6,6 +6,7 @@
 class MenuState : public GameState
 {
 public:
+	//state stuff
 	void init();
 	void cleanup();
 
@@ -25,8 +26,10 @@ protected:
 	MenuState() {}
 
 private:
+	//state stuff
 	static MenuState menuState;
 
+	//other
 	sf::Font font;
 	sf::Text text;
 	sf::Text text2;

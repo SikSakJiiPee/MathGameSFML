@@ -28,7 +28,7 @@ private:
 	static IntroState introState;
 
 	sf::Font font;
-	sf::Text textTitle;
+	sf::Text textTitleIntro;
 
 	//int alpha;
 };

@@ -6,7 +6,7 @@
 
 //#include <SFML/Graphics.hpp>
 
-#include <iostream>
+#include <iostream> //ei ehkä tarvita, game.h
 
 MenuState MenuState::menuState;
 
@@ -20,6 +20,7 @@ void MenuState::init()
 	text.setFont(font);
 	text.setCharacterSize(30);
 	text.setColor(sf::Color::White);
+
 	text2.setFont(font);
 	text2.setCharacterSize(30);
 	text2.setColor(sf::Color::White);
@@ -60,12 +61,12 @@ void MenuState::handleInput(Game* game)
 		{
 			if (game->evnt.key.code == sf::Keyboard::Return)
 			{
-				game->changeState(MainGameState::instance());
+				game->pushState(MainGameState::instance());
 			}
 			if (game->evnt.key.code == sf::Keyboard::Escape)
 			{
 				game->window.close();
-				game->cleanup();
+				//game->cleanup(); //kaataa pelin
 			}
 		}
 	}

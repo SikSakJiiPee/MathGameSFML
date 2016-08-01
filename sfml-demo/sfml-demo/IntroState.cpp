@@ -17,9 +17,9 @@ void IntroState::init()
 	{
 		std::cout << "Loading a font failed!" << std::endl;
 	}
-	textTitle.setFont(font);
-	textTitle.setCharacterSize(30);
-	textTitle.setColor(sf::Color::White);
+	textTitleIntro.setFont(font);
+	textTitleIntro.setCharacterSize(30);
+	textTitleIntro.setColor(sf::Color::White);
 
 	std::cout << "IntroState init" << std::endl;
 }
@@ -72,11 +72,11 @@ void IntroState::draw(Game* game)
 {
 	game->window.clear(sf::Color::Black);
 
-	textTitle.setString("MathGame");
-	textTitle.setOrigin(textTitle.getGlobalBounds().width / 2, textTitle.getGlobalBounds().height);
-	textTitle.setPosition(game->window.getSize().x / 2, game->window.getSize().y / 2);
+	textTitleIntro.setString("MathGame");
+	textTitleIntro.setOrigin(textTitleIntro.getGlobalBounds().width / 2, textTitleIntro.getGlobalBounds().height);
+	textTitleIntro.setPosition(game->window.getSize().x / 2, game->window.getSize().y / 2);
 
-	game->window.draw(textTitle);
+	game->window.draw(textTitleIntro);
 	
 	game->window.display();
 }
