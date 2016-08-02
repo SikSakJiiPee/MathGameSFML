@@ -16,7 +16,7 @@ void MainGameState::init()
 	//Calculation calculation(CalculationType::PLUS, NumberType::POSITIVE, 1, 30);
 
 	//Tekstin alustus
-	if (!font.loadFromFile("Fonts/arial.ttf"))
+	if (!font.loadFromFile("Font/arial.ttf"))
 	{
 		std::cout << "Loading a font failed!" << std::endl;
 	}

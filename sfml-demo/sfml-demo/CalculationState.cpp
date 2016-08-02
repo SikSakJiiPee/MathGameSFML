@@ -12,7 +12,7 @@ CalculationState CalculationState::calculationState;
 void CalculationState::init()
 {
 	//Tekstin alustus
-	if (!font.loadFromFile("Fonts/arial.ttf"))
+	if (!font.loadFromFile("Font/arial.ttf"))
 	{
 		std::cout << "Loading a font failed!" << std::endl;
 	}

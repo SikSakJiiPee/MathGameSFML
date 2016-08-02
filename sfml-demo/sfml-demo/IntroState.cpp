@@ -12,14 +12,22 @@ IntroState IntroState::introState;
 
 void IntroState::init()
 {
-	//Tekstin alustus
-	if (!font.loadFromFile("Fonts/arial.ttf"))
+	//font and text
+	if (!font.loadFromFile("Font/arial.ttf"))
 	{
 		std::cout << "Loading a font failed!" << std::endl;
 	}
 	textTitleIntro.setFont(font);
 	textTitleIntro.setCharacterSize(30);
 	textTitleIntro.setColor(sf::Color::White);
+
+	////texture
+	//if (!texturebgTitle->loadFromFile("Texture/test.png"))
+	//{
+	//	std::cout << "Loading a texture failed" << std::endl;
+ //	}
+	//spritebgTitle.setTexture(*texturebgTitle);
+
 
 	std::cout << "IntroState init" << std::endl;
 }
@@ -76,6 +84,7 @@ void IntroState::draw(Game* game)
 	textTitleIntro.setOrigin(textTitleIntro.getGlobalBounds().width / 2, textTitleIntro.getGlobalBounds().height);
 	textTitleIntro.setPosition(game->window.getSize().x / 2, game->window.getSize().y / 2);
 
+	//game->window.draw(spritebgTitle);
 	game->window.draw(textTitleIntro);
 	
 	game->window.display();

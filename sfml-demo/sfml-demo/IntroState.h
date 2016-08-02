@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Graphics/Texture.hpp>
 #include "GameState.h"
 
 class IntroState : public GameState
@@ -30,5 +31,7 @@ private:
 	sf::Font font;
 	sf::Text textTitleIntro;
 
-	//int alpha;
+	//sf::Texture* texturebgTitle; //kaatuu tähän, katso linkkerit läpi tai vaihda sfml:n uuteen versioon.
+
+	//sf::Sprite spritebgTitle;
 };
