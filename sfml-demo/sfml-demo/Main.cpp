@@ -1,8 +1,27 @@
 #include "Game.h"
 #include "IntroState.h"
+//#include "MenuState.h"
 
-#include "Calculation.h"
+int main()
+{
+	Game game;
 
+	game.pushState(new IntroState(&game));
+	game.gameLoop();
+
+	return 0;
+}
+
+
+
+
+
+//#include "Game.h"
+//#include "IntroState.h"
+//
+//
+//#include "Calculation.h"
+//
 //int main()
 //{
 //	Calculation calculationPlus(CalculationType::PLUS, NumberType::POSITIVE, 1, 0);
@@ -62,25 +81,28 @@
 //}
 
 
-int main()
-{
-	Game game;
 
-	game.init("MathGame", 640, 480, false);
 
-	game.changeState(IntroState::instance());
 
-	while (game.isRunning())
-	{
-		game.handleEvents();
-		game.update();
-		game.draw();
-	}
-
-	game.cleanup();
-
-	return 0;
-}
+//int main()
+//{
+//	Game game;
+//
+//	game.init("MathGame", 640, 480, false);
+//
+//	game.changeState(IntroState::instance());
+//
+//	while (game.isRunning())
+//	{
+//		game.handleEvents();
+//		game.update();
+//		game.draw();
+//	}
+//
+//	game.cleanup();
+//
+//	return 0;
+//}
 
 
 //#include <SFML/System.hpp>
