@@ -21,8 +21,9 @@ public:
 
 
 private:
-	//MenuState* menuState;
+	void goToMenu();
 	
+
 	sf::View view; //ei varma
 
 	sf::Font font;
@@ -32,7 +33,7 @@ private:
 
 	sf::Sprite spritebgTitle;
 
-	void startGame();
+
 };
 
 

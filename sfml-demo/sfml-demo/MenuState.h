@@ -22,9 +22,14 @@ public:
 
 
 private:
+	void startGame();
+	void backToIntro();
+
+
 	sf::Font font;
 	sf::Text text;
 	sf::Text text2;
+
 };
 
 

@@ -28,7 +28,7 @@ void Game::pushState(GameState* state)
 
 void Game::popState()
 {
-	delete this->states.top();
+	//delete this->states.top(); //hajottaa ohjelman, mutta voi olla muistinhallinan kannalta tärkeä
 	this->states.pop();
 
 	return;

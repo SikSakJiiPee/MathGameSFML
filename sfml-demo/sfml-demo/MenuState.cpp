@@ -6,7 +6,7 @@
 
 //#include <SFML/Graphics.hpp>
 
-#include <iostream> //ei ehkä tarvita, game.h
+//#include <iostream> //ei ehkä tarvita, game.h
 
 MenuState::MenuState(Game* game)
 {
@@ -38,11 +38,11 @@ MenuState::MenuState(Game* game)
 	//text.setFont(font);
 	//text.setCharacterSize(30);
 	//text.setColor(sf::Color::White);
-
+	//
 	//text2.setFont(font);
 	//text2.setCharacterSize(30);
 	//text2.setColor(sf::Color::White);
-
+	//
 	//std::cout << "MenuState init" << std::endl;
 //}
 //
@@ -90,6 +90,7 @@ void MenuState::handleInput()
 		//	}
 		//}
 
+
 		switch (evnt.type)
 		{
 		case sf::Event::Closed:
@@ -103,12 +104,13 @@ void MenuState::handleInput()
 			case sf::Keyboard::Escape:
 			{
 				this->game->window.close();
+				//this->backToIntro();
 				break;
 			}
 			case sf::Keyboard::Return:
 			{
 				std::cout << "joo";
-				//this->game->changeState(new MenuState(this->game));
+				this->startGame();
 				break;
 			}
 			default:
@@ -118,6 +120,8 @@ void MenuState::handleInput()
 			break;
 		}
 	}
+
+	return;
 }
 
 void MenuState::update(const float dt)
@@ -143,6 +147,20 @@ void MenuState::draw(const float dt)
 	//game->window.display();
 }
 
+
+void MenuState::startGame()
+{
+	this->game->pushState(new MainGameState(this->game));
+
+	return;
+}
+
+void MenuState::backToIntro()
+{
+	this->game->popState();
+
+	return;
+}
 
 
 

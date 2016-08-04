@@ -6,9 +6,8 @@
 
 //#include <SFML/Graphics.hpp>
 
-#include <iostream>
+//#include <iostream>
 
-//IntroState IntroState::introState;
 
 IntroState::IntroState(Game* game)
 {
@@ -113,7 +112,7 @@ void IntroState::handleInput()
 			}
 			case sf::Keyboard::Return:
 			{
-				this->startGame();
+				this->goToMenu();
 				break;
 			}
 			default:
@@ -151,7 +150,7 @@ void IntroState::draw(const float dt)
 }
 
 
-void IntroState::startGame()
+void IntroState::goToMenu()
 {
 	this->game->pushState(new MenuState(this->game));
 
