@@ -1,8 +1,3 @@
-#include <stack>
-
-#include <SFML/Graphics.hpp>
-#include <SFML/System.hpp>
-
 #include "Game.h"
 #include "GameState.h"
 

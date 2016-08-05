@@ -455,8 +455,6 @@ void CalculationState::update(const float dt)
 
 void CalculationState::draw(const float dt)
 {
-	//game->window.clear(sf::Color::Black);
-
 	//textTitleCalc.setString("Calculation");
 	textTitleCalc.setOrigin(textTitleCalc.getGlobalBounds().width / 2, textTitleCalc.getGlobalBounds().height / 2);
 	textTitleCalc.setPosition(game->window.getSize().x / 2, 10);
@@ -472,10 +470,16 @@ void CalculationState::draw(const float dt)
 	game->window.draw(textPlayerAnswer);
 
 	game->window.draw(textTime);
-
-
-	//game->window.display();
 }
+
+
+void CalculationState::backToMainGame()
+{
+	this->game->popState();
+
+	return;
+}
+
 
 
 //state stuff end
@@ -607,12 +611,6 @@ std::string CalculationState::getCalculationString(CalculationType type, int num
 }
 
 
-void CalculationState::backToMainGame()
-{
-	this->game->popState();
-
-	return;
-}
 
 //int CalculationState::calculationGame(Calculation calculation)
 //{

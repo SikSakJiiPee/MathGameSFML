@@ -109,7 +109,6 @@ void MenuState::handleInput()
 			}
 			case sf::Keyboard::Return:
 			{
-				std::cout << "joo";
 				this->startGame();
 				break;
 			}

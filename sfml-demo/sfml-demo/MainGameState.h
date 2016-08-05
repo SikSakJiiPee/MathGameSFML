@@ -4,6 +4,7 @@
 
 #include "GameState.h"
 
+#include "Character.h"
 #include "Calculation.h"
 
 class MainGameState : public GameState
@@ -39,12 +40,42 @@ private:
 	sf::Text textGame;
 	sf::Text textGame2;
 	sf::Text textGame3;
-	sf::Text textPlayerAnswer;
-	sf::Text textCorrectAnswer;
-	sf::Text textPoints;
-	sf::Text textMistakes;
+	sf::Text textInfoPlayer;
+	sf::Text textInfoPlayer2;
+	sf::Text textInfoPlayer3;
+	sf::Text textInfoEnemy;
+	sf::Text textInfoEnemy2;
+	sf::Text textInfoEnemy3;
 	sf::Text textTime;
 	sf::Text text;
+
+	std::vector<Character> characters;
+
+	Character* characterPlayer;
+	Character* characterPlayer2;
+	Character* characterPlayer3;
+	Character* characterEnemy;
+	Character* characterEnemy2;
+	Character* characterEnemy3;
+
+	//background
+	sf::Texture texturebgMainGame;
+	sf::Sprite spritebgMainGame;
+
+	//character
+	sf::Texture texturesprPlayerCharacter;
+	sf::Texture texturesprPlayerCharacter2;
+	sf::Texture texturesprPlayerCharacter3;
+	sf::Texture texturesprEnemyCharacter;
+	sf::Texture texturesprEnemyCharacter2;
+	sf::Texture texturesprEnemyCharacter3;
+
+	sf::Sprite spritesprPlayerCharacter;
+	sf::Sprite spritesprPlayerCharacter2;
+	sf::Sprite spritesprPlayerCharacter3;
+	sf::Sprite spritesprEnemyCharacter;
+	sf::Sprite spritesprEnemyCharacter2;
+	sf::Sprite spritesprEnemyCharacter3;
 
 	sf::Clock clock;
 	sf::Time timeElapsed;

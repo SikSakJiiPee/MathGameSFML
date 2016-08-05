@@ -23,7 +23,7 @@ IntroState::IntroState(Game* game)
 	textTitleIntro.setColor(sf::Color::White);
 
 	//texture
-	if (!texturebgTitle.loadFromFile("Texture/test.png"))
+	if (!texturebgTitle.loadFromFile("Texture/Background/bgTestTitle.png"))
 	{
 		std::cout << "Loading a texture failed" << std::endl;
 	}
@@ -141,8 +141,12 @@ void IntroState::draw(const float dt)
 	textTitleIntro.setOrigin(textTitleIntro.getGlobalBounds().width / 2, textTitleIntro.getGlobalBounds().height);
 	textTitleIntro.setPosition(game->window.getSize().x / 2, game->window.getSize().y / 2);
 
+
 	game->window.draw(spritebgTitle);
-	game->window.draw(textTitleIntro);
+
+
+	//game->window.draw(textTitleIntro);
+
 
 	//game->window.display();
 

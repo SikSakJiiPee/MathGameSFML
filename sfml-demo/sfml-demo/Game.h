@@ -8,6 +8,7 @@
 #include <iomanip>
 
 #include <SFML/Graphics.hpp>
+#include <SFML/System.hpp>
 
 
 template <typename T>

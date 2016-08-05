@@ -1,39 +1,58 @@
 #pragma once
 
+#include "SpecialMove.h"
+#include "Item.h"
+#include "Equipment.h"
+
 #include <iostream>
 #include <vector>
+
+#include <SFML/Graphics.hpp>
 
 class Character
 {
 public:
 	Character();
+	Character(bool isplayer, std::string name, std::string path, int lvl, int exp, 
+		int hp, int maxhp, int sp, int maxsp, 
+		int atk, int def, int spd/*, int atkl, int defl*/);
 	~Character();
 
 
 	//attributes, mieti onko public vai private
+	bool isPlayerCharacter;
 	std::string characterName;
+	std::string pathTexture;
 	int level;
-	int exp;
+	int experiencePoints;
 	int nextLevelExp;
-	int hp;
+	int healthPoints;
 	int maxHp;
-	int sp;
+	int specialPoints;
 	int maxSp;
 	int attack;
 	int defence;
 	int speed;
-	int attackLuck;
-	int defenceLuck;
+	//int attackLuck;
+	//int defenceLuck;
+
+	bool isAlive = true;
+
+	sf::Texture textureCharacter;
+	sf::Sprite spriteCharacter;
+
 
 	//ei varmuutta
 	int upgradePoints;
 	int specialUpgradePoints;
-	//std::vector<SpecialMove> specialMoves;
-	//std::vector<Item> items;
-	//std::vector<Equipment> equipments;
+	std::vector<SpecialMove> specialMoves;
+	std::vector<Item> items;
+	std::vector<Equipment> equipments;
 	//Status status;
-	bool isPlayerCharacter;
+	
 
+	static std::string getStringCharacterInfo(Character character);
+	static bool checkIfAlive(Character character);
 
 private:
 
