@@ -7,6 +7,9 @@
 #include "Character.h"
 #include "Calculation.h"
 
+enum class Selection {ATTACK, SPECIAL, ITEM, ESCAPE};
+
+
 class MainGameState : public GameState
 {
 public:
@@ -37,9 +40,10 @@ private:
 	//other
 	sf::Font font;
 	sf::Text textTitleMainGame;
-	sf::Text textGame;
-	sf::Text textGame2;
-	sf::Text textGame3;
+	sf::Text textGameAttack;
+	sf::Text textGameSpecial;
+	sf::Text textGameItem;
+	sf::Text textGameEscape;
 	sf::Text textInfoPlayer;
 	sf::Text textInfoPlayer2;
 	sf::Text textInfoPlayer3;
@@ -81,6 +85,7 @@ private:
 	sf::Time timeElapsed;
 	float timeLeft;
 
+	Selection selection;
 
 	//int correctAnswer;
 	//int playerAnswer = -255; //tsekkaa null, koska vastaus voi olla myös nolla, joten se ei voi olla alustus.

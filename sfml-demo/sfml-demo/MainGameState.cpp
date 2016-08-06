@@ -14,6 +14,8 @@ MainGameState::MainGameState(Game* game)
 {
 	this->game = game;
 
+	selection = Selection::ATTACK;
+
 	//character
 	characterPlayer = new Character(true, "player1", "Texture/Sprite/player1.png", 1, 0, 20, 20, 10, 10, 5, 5, 5);
 	characterPlayer2 = new Character(true, "player2", "Texture/Sprite/player2.png", 1, 0, 20, 20, 10, 10, 5, 5, 5);
@@ -39,46 +41,50 @@ MainGameState::MainGameState(Game* game)
 	textTitleMainGame.setCharacterSize(30);
 	textTitleMainGame.setColor(sf::Color::Black);
 
-	textGame.setFont(font);
-	textGame.setCharacterSize(20);
-	textGame.setColor(sf::Color::White);
-	//textGame.setString(characterPlayer->getStringCharacterInfo(*characterPlayer));
-	//std::cout << characterPlayer->getStringCharacterInfo(*characterPlayer) << std::endl;
+	//valintaa varten värin (ja koon?) alustuksen voi siirtää myöhemmin updateen.
+	textGameAttack.setFont(font);
+	textGameAttack.setCharacterSize(24);
+	textGameAttack.setColor(sf::Color::Black);
+	textGameAttack.setString("Attack");
 
-	textGame2.setFont(font);
-	textGame2.setCharacterSize(30);
-	textGame2.setColor(sf::Color::White);
+	textGameSpecial.setFont(font);
+	textGameSpecial.setCharacterSize(24);
+	textGameSpecial.setColor(sf::Color::Black);
+	textGameSpecial.setString("Special");
 
-	textGame3.setFont(font);
-	textGame3.setCharacterSize(30);
-	textGame3.setColor(sf::Color::White);
+	textGameItem.setFont(font);
+	textGameItem.setCharacterSize(24);
+	textGameItem.setColor(sf::Color::Black);
+	textGameItem.setString("Item");
+
+	textGameEscape.setFont(font);
+	textGameEscape.setCharacterSize(24);
+	textGameEscape.setColor(sf::Color::Black);
+	textGameEscape.setString("Escape");
 
 	textInfoPlayer.setFont(font);
-	textInfoPlayer.setCharacterSize(30);
-	textInfoPlayer.setColor(sf::Color::White);
+	textInfoPlayer.setCharacterSize(20);
+	textInfoPlayer.setColor(sf::Color::Black);
 	
 	textInfoPlayer2.setFont(font);
-	textInfoPlayer2.setCharacterSize(30);
-	textInfoPlayer2.setColor(sf::Color::White);
+	textInfoPlayer2.setCharacterSize(20);
+	textInfoPlayer2.setColor(sf::Color::Black);
 
 	textInfoPlayer3.setFont(font);
-	textInfoPlayer3.setCharacterSize(30);
-	textInfoPlayer3.setColor(sf::Color::White);
+	textInfoPlayer3.setCharacterSize(20);
+	textInfoPlayer3.setColor(sf::Color::Black);
 
 	textInfoEnemy.setFont(font);
-	textInfoEnemy.setCharacterSize(30);
-	textInfoEnemy.setColor(sf::Color::White);
-	
+	textInfoEnemy.setCharacterSize(20);
+	textInfoEnemy.setColor(sf::Color::Black);
 
 	textInfoEnemy2.setFont(font);
-	textInfoEnemy2.setCharacterSize(30);
-	textInfoEnemy2.setColor(sf::Color::White);
-	textInfoEnemy2.setString(characterEnemy2->getStringCharacterInfo(*characterEnemy2));
+	textInfoEnemy2.setCharacterSize(20);
+	textInfoEnemy2.setColor(sf::Color::Black);
 
 	textInfoEnemy3.setFont(font);
-	textInfoEnemy3.setCharacterSize(30);
-	textInfoEnemy3.setColor(sf::Color::White);
-	textInfoEnemy3.setString(characterEnemy3->getStringCharacterInfo(*characterEnemy3));
+	textInfoEnemy3.setCharacterSize(20);
+	textInfoEnemy3.setColor(sf::Color::Black);
 
 	textTime.setFont(font);
 	textTime.setCharacterSize(30);
@@ -100,7 +106,7 @@ MainGameState::MainGameState(Game* game)
 	//spritesprPlayerCharacter = characterPlayer.spriteCharacter; //palauttaa spriten valkoisena
 	texturesprPlayerCharacter = characterPlayer->textureCharacter;
 	spritesprPlayerCharacter.setTexture(texturesprPlayerCharacter);
-	spritesprPlayerCharacter.setPosition(sf::Vector2f((game->window.getSize().x / 8) * 1, (game->window.getSize().y / 3)));
+	spritesprPlayerCharacter.setPosition(sf::Vector2f((game->window.getSize().x / 8) * 3, (game->window.getSize().y / 3)));
 
 	texturesprPlayerCharacter2 = characterPlayer2->textureCharacter;
 	spritesprPlayerCharacter2.setTexture(texturesprPlayerCharacter2);
@@ -108,11 +114,11 @@ MainGameState::MainGameState(Game* game)
 
 	texturesprPlayerCharacter3 = characterPlayer3->textureCharacter;
 	spritesprPlayerCharacter3.setTexture(texturesprPlayerCharacter3);
-	spritesprPlayerCharacter3.setPosition(sf::Vector2f((game->window.getSize().x / 8) * 3, ((game->window.getSize().y / 3) + (game->window.getSize().y / 9) * 2)));
+	spritesprPlayerCharacter3.setPosition(sf::Vector2f((game->window.getSize().x / 8) * 1, ((game->window.getSize().y / 3) + (game->window.getSize().y / 9) * 2)));
 
 	texturesprEnemyCharacter = characterEnemy->textureCharacter;
 	spritesprEnemyCharacter.setTexture(texturesprEnemyCharacter);
-	spritesprEnemyCharacter.setPosition(sf::Vector2f((game->window.getSize().x / 8) * 7, (game->window.getSize().y / 3)));
+	spritesprEnemyCharacter.setPosition(sf::Vector2f((game->window.getSize().x / 8) * 5, (game->window.getSize().y / 3)));
 	
 	texturesprEnemyCharacter2 = characterEnemy2->textureCharacter;
 	spritesprEnemyCharacter2.setTexture(texturesprEnemyCharacter2);
@@ -120,7 +126,7 @@ MainGameState::MainGameState(Game* game)
 
 	texturesprEnemyCharacter3 = characterEnemy3->textureCharacter;
 	spritesprEnemyCharacter3.setTexture(texturesprEnemyCharacter3);
-	spritesprEnemyCharacter3.setPosition(sf::Vector2f((game->window.getSize().x / 8) * 5, ((game->window.getSize().y / 3) + (game->window.getSize().y / 9) * 2)));
+	spritesprEnemyCharacter3.setPosition(sf::Vector2f((game->window.getSize().x / 8) * 7, ((game->window.getSize().y / 3) + (game->window.getSize().y / 9) * 2)));
 
 
 
@@ -223,19 +229,76 @@ void MainGameState::handleInput()
 			//Go to CalculationState
 			if (evnt.key.code == sf::Keyboard::Return)
 			{
-				////calculationin alustus ja pelin käynnistys
-				//Calculation calculation(CalculationType::PLUS, NumberType::POSITIVE, 1, 30);
-				//calculationGame(calculation);
-				this->startCalculation();
+				if (selection == Selection::ATTACK)
+				{
+					////calculationin alustus ja pelin käynnistys
+					//Calculation calculation(CalculationType::PLUS, NumberType::POSITIVE, 1, 30);
+					//calculationGame(calculation);
+					this->startCalculation();
+				}
+				if (selection == Selection::SPECIAL)
+				{
+					std::cout << "Special selected" << std::endl;
+				}
+				if (selection == Selection::ITEM)
+				{
+					std::cout << "Item selected" << std::endl;
+				}
+				if (selection == Selection::ESCAPE)
+				{
+					std::cout << "Escape selected" << std::endl;
+				}
 			}
 			//return to menu
 			if (evnt.key.code == sf::Keyboard::Escape)
 			{
 				this->backToMenu();
 			}
-			if (evnt.key.code == sf::Keyboard::F)
+
+			//selection
+			if (evnt.key.code == sf::Keyboard::Right)
 			{
-				characterPlayer->healthPoints = 0;
+				if (selection == Selection::ATTACK)
+				{
+					selection = Selection::SPECIAL;
+				}
+				if (selection == Selection::ITEM)
+				{
+					selection = Selection::ESCAPE;
+				}
+			}
+			if (evnt.key.code == sf::Keyboard::Left)
+			{
+				if (selection == Selection::SPECIAL)
+				{
+					selection = Selection::ATTACK;
+				}
+				if (selection == Selection::ESCAPE)
+				{
+					selection = Selection::ITEM;
+				}
+			}
+			if (evnt.key.code == sf::Keyboard::Down)
+			{
+				if (selection == Selection::ATTACK)
+				{
+					selection = Selection::ITEM;
+				}
+				if (selection == Selection::SPECIAL)
+				{
+					selection = Selection::ESCAPE;
+				}
+			}
+			if (evnt.key.code == sf::Keyboard::Up)
+			{
+				if (selection == Selection::ITEM)
+				{
+					selection = Selection::ATTACK;
+				}
+				if (selection == Selection::ESCAPE)
+				{
+					selection = Selection::SPECIAL;
+				}
 			}
 		}
 	}
@@ -256,10 +319,13 @@ void MainGameState::update(const float dt)
 
 void MainGameState::draw(const float dt)
 {
-	textTitleMainGame.setString("MainGame");
-	textTitleMainGame.setOrigin(textTitleMainGame.getGlobalBounds().width / 2, textTitleMainGame.getGlobalBounds().height / 2);
-	textTitleMainGame.setPosition(game->window.getSize().x / 2, 10);
+	//textTitleMainGame.setString("MainGame");
+	//textTitleMainGame.setOrigin(textTitleMainGame.getGlobalBounds().width / 2, textTitleMainGame.getGlobalBounds().height / 2);
+	//textTitleMainGame.setPosition(game->window.getSize().x / 2, 10);
 
+	////UPDATE
+	//Text
+	//info
 	textInfoPlayer.setString(characterPlayer->getStringCharacterInfo(*characterPlayer));
 	textInfoPlayer2.setString(characterPlayer2->getStringCharacterInfo(*characterPlayer2));
 	textInfoPlayer3.setString(characterPlayer3->getStringCharacterInfo(*characterPlayer3));
@@ -267,10 +333,47 @@ void MainGameState::draw(const float dt)
 	textInfoEnemy2.setString(characterEnemy2->getStringCharacterInfo(*characterEnemy2));
 	textInfoEnemy3.setString(characterEnemy3->getStringCharacterInfo(*characterEnemy3));
 
-	textInfoPlayer.setPosition(game->window.getSize().x / 4, 400);
+	textInfoPlayer.setPosition(0, 0);
+	textInfoPlayer2.setPosition(0, (game->window.getSize().y / 18));
+	textInfoPlayer3.setPosition(0, (game->window.getSize().y / 18) * 2);
+	textInfoEnemy.setPosition(game->window.getSize().x / 2, 0);
+	textInfoEnemy2.setPosition(game->window.getSize().x / 2, (game->window.getSize().y / 18));
+	textInfoEnemy3.setPosition(game->window.getSize().x / 2, (game->window.getSize().y / 18) * 2);
 
+	//selection
+	if (selection == Selection::ATTACK)
+		textGameAttack.setColor(sf::Color::White);
+	else
+		textGameAttack.setColor(sf::Color::Black);
+	//
+	if (selection == Selection::ITEM)
+		textGameItem.setColor(sf::Color::White);
+	else
+		textGameItem.setColor(sf::Color::Black);
+	//
+	if (selection == Selection::SPECIAL)
+		textGameSpecial.setColor(sf::Color::White);
+	else
+		textGameSpecial.setColor(sf::Color::Black);
+	//
+	if (selection == Selection::ESCAPE)
+		textGameEscape.setColor(sf::Color::White);
+	else
+		textGameEscape.setColor(sf::Color::Black);
+
+	textGameAttack.setPosition(0, (game->window.getSize().y / 18) * 16);
+	textGameItem.setPosition(0, (game->window.getSize().y / 18) * 17);
+	textGameSpecial.setPosition(game->window.getSize().x / 4, (game->window.getSize().y / 18) * 16);
+	textGameEscape.setPosition(game->window.getSize().x / 4, (game->window.getSize().y / 18) * 17);
+
+
+
+	////DRAW
+	//Sprite
+	//background
 	game->window.draw(spritebgMainGame);
 
+	//character
 	if (characterPlayer->checkIfAlive(*characterPlayer))
 		game->window.draw(spritesprPlayerCharacter);
 	if (characterPlayer2->checkIfAlive(*characterPlayer2))
@@ -284,10 +387,23 @@ void MainGameState::draw(const float dt)
 	if (characterEnemy3->checkIfAlive(*characterEnemy3))
 		game->window.draw(spritesprEnemyCharacter3);
 
+	//Text
+	//game->window.draw(textTitleMainGame);
+	//game->window.draw(textTime);
 
-	game->window.draw(textTitleMainGame);
+	//info
 	game->window.draw(textInfoPlayer);
-	game->window.draw(textTime);
+	game->window.draw(textInfoPlayer2);
+	game->window.draw(textInfoPlayer3);
+	game->window.draw(textInfoEnemy);
+	game->window.draw(textInfoEnemy2);
+	game->window.draw(textInfoEnemy3);
+	//selection
+	game->window.draw(textGameAttack);
+	game->window.draw(textGameItem);
+	game->window.draw(textGameSpecial);
+	game->window.draw(textGameEscape);
+	
 }
 
 
