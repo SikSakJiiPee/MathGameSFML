@@ -15,14 +15,15 @@ MainGameState::MainGameState(Game* game)
 	this->game = game;
 
 	selection = Selection::ATTACK;
+	//selectionCharacter = SelectionCharacter::NONE;
 
-	//character
-	characterPlayer = new Character(true, "player1", "Texture/Sprite/player1.png", 1, 0, 20, 20, 10, 10, 5, 5, 5);
-	characterPlayer2 = new Character(true, "player2", "Texture/Sprite/player2.png", 1, 0, 20, 20, 10, 10, 5, 5, 5);
-	characterPlayer3 = new Character(true, "player3", "Texture/Sprite/player3.png", 1, 0, 20, 20, 10, 10, 5, 5, 5);
-	characterEnemy = new Character(false, "enemy1", "Texture/Sprite/enemy1.png", 1, 0, 20, 20, 10, 10, 5, 5, 5);
-	characterEnemy2 = new Character(false, "enemy2", "Texture/Sprite/enemy2.png", 1, 0, 20, 20, 10, 10, 5, 5, 5);
-	characterEnemy3 = new Character(false, "enemy3", "Texture/Sprite/enemy3.png", 1, 0, 20, 20, 10, 10, 5, 5, 5);
+	//Character
+	characterPlayer = new Character(true, "Player1", "Texture/Sprite/player1.png", 1, 0, 20, 20, 10, 10, 5, 5, 5);
+	characterPlayer2 = new Character(true, "Player2", "Texture/Sprite/player2.png", 1, 0, 20, 20, 10, 10, 5, 5, 5);
+	characterPlayer3 = new Character(true, "Player3", "Texture/Sprite/player3.png", 1, 0, 20, 20, 10, 10, 5, 5, 5);
+	characterEnemy = new Character(false, "Enemy1", "Texture/Sprite/enemy1.png", 1, 0, 20, 20, 10, 10, 5, 5, 5);
+	characterEnemy2 = new Character(false, "Enemy2", "Texture/Sprite/enemy2.png", 1, 0, 20, 20, 10, 10, 5, 5, 5);
+	characterEnemy3 = new Character(false, "Enemy3", "Texture/Sprite/enemy3.png", 1, 0, 20, 20, 10, 10, 5, 5, 5);
 	
 	//characters.push_back(characterPlayer);
 	//characters.push_back(characterPlayer2);
@@ -31,8 +32,12 @@ MainGameState::MainGameState(Game* game)
 	//characters.push_back(characterEnemy2);
 	//characters.push_back(characterEnemy3);
 
+	//Item
+	item = new Item("Potion");
+	//item = new Item("Potion2");
 
-	//font and text
+
+	//Font and Text
 	if (!font.loadFromFile("Font/arial.ttf"))
 	{
 		std::cout << "Loading a font failed!" << std::endl;
@@ -85,6 +90,17 @@ MainGameState::MainGameState(Game* game)
 	textInfoEnemy3.setFont(font);
 	textInfoEnemy3.setCharacterSize(20);
 	textInfoEnemy3.setColor(sf::Color::Black);
+
+	//item
+	textInfoItem.setFont(font);
+	textInfoItem.setCharacterSize(20);
+	textInfoItem.setColor(sf::Color::Black);
+	textInfoItem.setString(item->getStringItemInfo(*item));
+
+	textInfoItem2.setFont(font);
+	textInfoItem2.setCharacterSize(20);
+	textInfoItem2.setColor(sf::Color::Black);
+	//textInfoItem2.setString(item2->getStringItemInfo(*item2));
 
 	textTime.setFont(font);
 	textTime.setCharacterSize(30);
@@ -226,80 +242,160 @@ void MainGameState::handleInput()
 		//keyboard
 		if (evnt.type == sf::Event::KeyPressed)
 		{
-			//Go to CalculationState
-			if (evnt.key.code == sf::Keyboard::Return)
+			if (selectPlayer)
 			{
-				if (selection == Selection::ATTACK)
+				if (evnt.key.code == sf::Keyboard::Down)
 				{
-					////calculationin alustus ja pelin käynnistys
-					//Calculation calculation(CalculationType::PLUS, NumberType::POSITIVE, 1, 30);
-					//calculationGame(calculation);
+					if (selection == Selection::PLAYER2)
+					{
+						selection = Selection::PLAYER3;
+					}
+					if (selection == Selection::PLAYER1)
+					{
+						selection = Selection::PLAYER2;
+					}
+				}
+				if (evnt.key.code == sf::Keyboard::Up)
+				{
+					if (selection == Selection::PLAYER2)
+					{
+						selection = Selection::PLAYER1;
+					}
+					if (selection == Selection::PLAYER3)
+					{
+						selection = Selection::PLAYER2;
+					}
+				}
+				if (evnt.key.code == sf::Keyboard::Escape)
+				{
+					selectPlayer = false;
+					selection = Selection::ATTACK;
+				}
+				if (evnt.key.code == sf::Keyboard::Return)
+				{
+
+				}
+			}
+			if (selectEnemy)
+			{
+				if (evnt.key.code == sf::Keyboard::Down)
+				{
+					if (selection == Selection::ENEMY2)
+					{
+						selection = Selection::ENEMY3;
+					}
+					if (selection == Selection::ENEMY1)
+					{
+						selection = Selection::ENEMY2;
+					}
+				}
+				if (evnt.key.code == sf::Keyboard::Up)
+				{
+					if (selection == Selection::ENEMY2)
+					{
+						selection = Selection::ENEMY1;
+					}
+					if (selection == Selection::ENEMY3)
+					{
+						selection = Selection::ENEMY2;
+					}
+				}
+				if (evnt.key.code == sf::Keyboard::Escape)
+				{
+					selectEnemy = false;
+					selection = Selection::ATTACK;
+				}
+				if (evnt.key.code == sf::Keyboard::Return)
+				{
 					this->startCalculation();
 				}
-				if (selection == Selection::SPECIAL)
-				{
-					std::cout << "Special selected" << std::endl;
-				}
-				if (selection == Selection::ITEM)
-				{
-					std::cout << "Item selected" << std::endl;
-				}
-				if (selection == Selection::ESCAPE)
-				{
-					std::cout << "Escape selected" << std::endl;
-				}
 			}
-			//return to menu
-			if (evnt.key.code == sf::Keyboard::Escape)
+			
+			if (!selectCharacter && !selectPlayer && !selectEnemy)
 			{
-				this->backToMenu();
+				//Go to CalculationState
+				if (evnt.key.code == sf::Keyboard::Return)
+				{
+					if (selection == Selection::ATTACK)
+					{
+						selectEnemy = true;
+						selection = Selection::ENEMY1;
+						//selectionCharacter = SelectionCharacter::PLAYER1;
+						if (evnt.key.code == sf::Keyboard::Escape)
+						{
+							////calculationin alustus ja pelin käynnistys
+							//Calculation calculation(CalculationType::PLUS, NumberType::POSITIVE, 1, 30);
+							//calculationGame(calculation);
+							//this->startCalculation();
+						}
+					}
+					if (selection == Selection::SPECIAL)
+					{
+						std::cout << "Special selected" << std::endl;
+					}
+					if (selection == Selection::ITEM)
+					{
+						selectItem = true;
+						std::cout << "Item selected" << std::endl;
+					}
+					if (selection == Selection::ESCAPE)
+					{
+						std::cout << "Escape selected" << std::endl;
+					}
+				}
+				//return to menu
+				if (evnt.key.code == sf::Keyboard::Escape)
+				{
+					this->backToMenu();
+				}
+
+				//selection
+				if (evnt.key.code == sf::Keyboard::Right)
+				{
+					if (selection == Selection::ATTACK)
+					{
+						selection = Selection::SPECIAL;
+					}
+					if (selection == Selection::ITEM)
+					{
+						selection = Selection::ESCAPE;
+					}
+				}
+				if (evnt.key.code == sf::Keyboard::Left)
+				{
+					if (selection == Selection::SPECIAL)
+					{
+						selection = Selection::ATTACK;
+					}
+					if (selection == Selection::ESCAPE)
+					{
+						selection = Selection::ITEM;
+					}
+				}
+				if (evnt.key.code == sf::Keyboard::Down)
+				{
+					if (selection == Selection::ATTACK)
+					{
+						selection = Selection::ITEM;
+					}
+					if (selection == Selection::SPECIAL)
+					{
+						selection = Selection::ESCAPE;
+					}
+				}
+				if (evnt.key.code == sf::Keyboard::Up)
+				{
+					if (selection == Selection::ITEM)
+					{
+						selection = Selection::ATTACK;
+					}
+					if (selection == Selection::ESCAPE)
+					{
+						selection = Selection::SPECIAL;
+					}
+				}
 			}
 
-			//selection
-			if (evnt.key.code == sf::Keyboard::Right)
-			{
-				if (selection == Selection::ATTACK)
-				{
-					selection = Selection::SPECIAL;
-				}
-				if (selection == Selection::ITEM)
-				{
-					selection = Selection::ESCAPE;
-				}
-			}
-			if (evnt.key.code == sf::Keyboard::Left)
-			{
-				if (selection == Selection::SPECIAL)
-				{
-					selection = Selection::ATTACK;
-				}
-				if (selection == Selection::ESCAPE)
-				{
-					selection = Selection::ITEM;
-				}
-			}
-			if (evnt.key.code == sf::Keyboard::Down)
-			{
-				if (selection == Selection::ATTACK)
-				{
-					selection = Selection::ITEM;
-				}
-				if (selection == Selection::SPECIAL)
-				{
-					selection = Selection::ESCAPE;
-				}
-			}
-			if (evnt.key.code == sf::Keyboard::Up)
-			{
-				if (selection == Selection::ITEM)
-				{
-					selection = Selection::ATTACK;
-				}
-				if (selection == Selection::ESCAPE)
-				{
-					selection = Selection::SPECIAL;
-				}
-			}
 		}
 	}
 
@@ -326,6 +422,66 @@ void MainGameState::draw(const float dt)
 	////UPDATE
 	//Text
 	//info
+	if (selection == Selection::PLAYER1)
+		textInfoPlayer.setColor(sf::Color::Blue);
+	else
+		textInfoPlayer.setColor(sf::Color::Black);
+	//
+	if (selection == Selection::PLAYER2)
+		textInfoPlayer2.setColor(sf::Color::Blue);
+	else
+		textInfoPlayer2.setColor(sf::Color::Black);
+	//
+	if (selection == Selection::PLAYER3)
+		textInfoPlayer3.setColor(sf::Color::Blue);
+	else
+		textInfoPlayer3.setColor(sf::Color::Black);
+	//
+	if (selection == Selection::ENEMY1)
+		textInfoEnemy.setColor(sf::Color::Red);
+	else
+		textInfoEnemy.setColor(sf::Color::Black);
+	//
+	if (selection == Selection::ENEMY2)
+		textInfoEnemy2.setColor(sf::Color::Red);
+	else
+		textInfoEnemy2.setColor(sf::Color::Black);
+	//
+	if (selection == Selection::ENEMY3)
+		textInfoEnemy3.setColor(sf::Color::Red);
+	else
+		textInfoEnemy3.setColor(sf::Color::Black);
+
+	//if (selectionCharacter == SelectionCharacter::PLAYER1)
+	//	textInfoPlayer.setColor(sf::Color::White);
+	//else
+	//	textInfoPlayer.setColor(sf::Color::Black);
+	////
+	//if (selectionCharacter == SelectionCharacter::PLAYER2)
+	//	textInfoPlayer2.setColor(sf::Color::White);
+	//else
+	//	textInfoPlayer2.setColor(sf::Color::Black);
+	////
+	//if (selectionCharacter == SelectionCharacter::PLAYER3)
+	//	textInfoPlayer3.setColor(sf::Color::White);
+	//else
+	//	textInfoPlayer3.setColor(sf::Color::Black);
+	////
+	//if (selectionCharacter == SelectionCharacter::ENEMY1)
+	//	textInfoEnemy.setColor(sf::Color::White);
+	//else
+	//	textInfoEnemy.setColor(sf::Color::Black);
+	////
+	//if (selectionCharacter == SelectionCharacter::ENEMY2)
+	//	textInfoEnemy2.setColor(sf::Color::White);
+	//else
+	//	textInfoEnemy2.setColor(sf::Color::Black);
+	////
+	//if (selectionCharacter == SelectionCharacter::ENEMY3)
+	//	textInfoEnemy3.setColor(sf::Color::White);
+	//else
+	//	textInfoEnemy3.setColor(sf::Color::Black);
+
 	textInfoPlayer.setString(characterPlayer->getStringCharacterInfo(*characterPlayer));
 	textInfoPlayer2.setString(characterPlayer2->getStringCharacterInfo(*characterPlayer2));
 	textInfoPlayer3.setString(characterPlayer3->getStringCharacterInfo(*characterPlayer3));
@@ -340,6 +496,10 @@ void MainGameState::draw(const float dt)
 	textInfoEnemy2.setPosition(game->window.getSize().x / 2, (game->window.getSize().y / 18));
 	textInfoEnemy3.setPosition(game->window.getSize().x / 2, (game->window.getSize().y / 18) * 2);
 
+	textInfoItem.setPosition((game->window.getSize().x / 4) * 2, (game->window.getSize().y / 18) * 16);
+	textInfoItem.setPosition((game->window.getSize().x / 4) * 2, (game->window.getSize().y / 18) * 17);
+
+	
 	//selection
 	if (selection == Selection::ATTACK)
 		textGameAttack.setColor(sf::Color::White);
@@ -398,6 +558,12 @@ void MainGameState::draw(const float dt)
 	game->window.draw(textInfoEnemy);
 	game->window.draw(textInfoEnemy2);
 	game->window.draw(textInfoEnemy3);
+	if (selectItem)
+	{
+		game->window.draw(textInfoItem);
+		//game->window.draw(textInfoItem2);
+	}
+
 	//selection
 	game->window.draw(textGameAttack);
 	game->window.draw(textGameItem);

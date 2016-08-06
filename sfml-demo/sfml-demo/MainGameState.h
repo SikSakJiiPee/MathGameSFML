@@ -7,7 +7,9 @@
 #include "Character.h"
 #include "Calculation.h"
 
-enum class Selection {ATTACK, SPECIAL, ITEM, ESCAPE};
+enum class Selection { NONE, ATTACK, SPECIAL, ITEM, ESCAPE, 
+	PLAYER1, PLAYER2, PLAYER3, ENEMY1, ENEMY2, ENEMY3 };
+//enum class SelectionCharacter { NONE, PLAYER1, PLAYER2, PLAYER3, ENEMY1, ENEMY2, ENEMY3 };
 
 
 class MainGameState : public GameState
@@ -38,6 +40,7 @@ private:
 
 
 	//other
+	//Font and Text
 	sf::Font font;
 	sf::Text textTitleMainGame;
 	sf::Text textGameAttack;
@@ -50,9 +53,12 @@ private:
 	sf::Text textInfoEnemy;
 	sf::Text textInfoEnemy2;
 	sf::Text textInfoEnemy3;
+	sf::Text textInfoItem;
+	sf::Text textInfoItem2;
 	sf::Text textTime;
 	sf::Text text;
 
+	//Character
 	std::vector<Character> characters;
 
 	Character* characterPlayer;
@@ -62,6 +68,11 @@ private:
 	Character* characterEnemy2;
 	Character* characterEnemy3;
 
+	//Item
+	Item* item;
+	Item* item2;
+
+	//Texture and Sprite
 	//background
 	sf::Texture texturebgMainGame;
 	sf::Sprite spritebgMainGame;
@@ -86,6 +97,11 @@ private:
 	float timeLeft;
 
 	Selection selection;
+	//SelectionCharacter selectionCharacter;
+	bool selectCharacter = false;
+	bool selectPlayer = false;
+	bool selectEnemy = false;
+	bool selectItem = false;
 
 	//int correctAnswer;
 	//int playerAnswer = -255; //tsekkaa null, koska vastaus voi olla myös nolla, joten se ei voi olla alustus.

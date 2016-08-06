@@ -2,12 +2,16 @@
 
 #include <iostream>
 
+enum class Target{ ALL, ANYONE, PLAYER, ENEMY};
+
 class Item
 {
 public:
-	Item();
+	Item(std::string name);
 	~Item();
 
-	std::string name;
+	std::string getStringItemInfo(Item item);
+
+	std::string itemName;
 
 };
