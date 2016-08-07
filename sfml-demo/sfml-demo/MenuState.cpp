@@ -12,18 +12,30 @@ MenuState::MenuState(Game* game)
 {
 	this->game = game;
 	
+	menuSelection = MenuSelection::START;
+
 	//Tekstin alustus
 	if (!font.loadFromFile("Font/arial.ttf"))
 	{
 		std::cout << "Loading a font failed!" << std::endl;
 	}
-	text.setFont(font);
-	text.setCharacterSize(30);
-	text.setColor(sf::Color::White);
+	textMenuStart.setFont(font);
+	textMenuStart.setCharacterSize(30);
+	textMenuStart.setOrigin(textMenuStart.getGlobalBounds().width / 2, textMenuStart.getGlobalBounds().height);
+	textMenuStart.setPosition(game->window.getSize().x / 2, game->window.getSize().y / 4);
+	textMenuStart.setString("Start");
 
-	text2.setFont(font);
-	text2.setCharacterSize(30);
-	text2.setColor(sf::Color::White);
+	textMenuOptions.setFont(font);
+	textMenuOptions.setCharacterSize(30);
+	textMenuOptions.setOrigin(textMenuOptions.getGlobalBounds().width / 2, textMenuOptions.getGlobalBounds().height);
+	textMenuOptions.setPosition(game->window.getSize().x / 2, (game->window.getSize().y / 4) * 2);
+	textMenuOptions.setString("Options");
+
+	textMenuQuit.setFont(font);
+	textMenuQuit.setCharacterSize(30);
+	textMenuQuit.setOrigin(textMenuQuit.getGlobalBounds().width / 2, textMenuQuit.getGlobalBounds().height);
+	textMenuQuit.setPosition(game->window.getSize().x / 2, (game->window.getSize().y / 4) * 3);
+	textMenuQuit.setString("Quit");
 
 	std::cout << "MenuState init" << std::endl;
 }
@@ -104,12 +116,38 @@ void MenuState::handleInput()
 			case sf::Keyboard::Escape:
 			{
 				this->game->window.close();
-				//this->backToIntro();
 				break;
 			}
 			case sf::Keyboard::Return:
 			{
-				this->startGame();
+				if (menuSelection == MenuSelection::START)
+				{
+					this->startGame();
+				}
+				if (menuSelection == MenuSelection::OPTIONS)
+				{
+					std::cout << "Options selected" << std::endl;
+				}
+				if (menuSelection == MenuSelection::QUIT)
+				{
+					this->game->window.close();
+				}
+				break;
+			}
+			case sf::Keyboard::Down:
+			{
+				if (menuSelection == MenuSelection::OPTIONS)
+					menuSelection = MenuSelection::QUIT;
+				if (menuSelection == MenuSelection::START)
+					menuSelection = MenuSelection::OPTIONS;
+				break;
+			}
+			case sf::Keyboard::Up:
+			{
+				if (menuSelection == MenuSelection::OPTIONS)
+					menuSelection = MenuSelection::START;
+				if (menuSelection == MenuSelection::QUIT)
+					menuSelection = MenuSelection::OPTIONS;
 				break;
 			}
 			default:
@@ -132,16 +170,25 @@ void MenuState::draw(const float dt)
 {
 	//game->window.clear(sf::Color::Black);
 
-	text.setString("Press ENTER to start the game");
-	text.setOrigin(text.getGlobalBounds().width / 2, text.getGlobalBounds().height);
-	text.setPosition(game->window.getSize().x / 2, game->window.getSize().y / 3);
+	if (menuSelection == MenuSelection::START)
+		textMenuStart.setColor(sf::Color::Red);
+	else
+		textMenuStart.setColor(sf::Color::White);
 
-	text2.setString("Press ESC to quit");
-	text2.setOrigin(text2.getGlobalBounds().width / 2, text2.getGlobalBounds().height);
-	text2.setPosition(game->window.getSize().x / 2, (game->window.getSize().y / 3) * 2);
+	if (menuSelection == MenuSelection::OPTIONS)
+		textMenuOptions.setColor(sf::Color::Red);
+	else
+		textMenuOptions.setColor(sf::Color::White);
 
-	game->window.draw(text);
-	game->window.draw(text2);
+	if (menuSelection == MenuSelection::QUIT)
+		textMenuQuit.setColor(sf::Color::Red);
+	else
+		textMenuQuit.setColor(sf::Color::White);
+
+
+	game->window.draw(textMenuStart);
+	game->window.draw(textMenuOptions);
+	game->window.draw(textMenuQuit);
 
 	//game->window.display();
 }

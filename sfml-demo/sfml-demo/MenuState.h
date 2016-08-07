@@ -4,6 +4,8 @@
 
 #include "GameState.h"
 
+enum class MenuSelection {START, OPTIONS, QUIT};
+
 class MenuState : public GameState
 {
 public:
@@ -25,10 +27,12 @@ private:
 	void startGame();
 	void backToIntro();
 
+	MenuSelection menuSelection;
 
 	sf::Font font;
-	sf::Text text;
-	sf::Text text2;
+	sf::Text textMenuStart;
+	sf::Text textMenuOptions;
+	sf::Text textMenuQuit;
 
 };
 

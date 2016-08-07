@@ -313,6 +313,8 @@ void MainGameState::handleInput()
 			
 			if (!selectCharacter && !selectPlayer && !selectEnemy)
 			{
+				if (evnt.key.code == sf::Keyboard::F)
+					characterPlayer->healthPoints = 0;
 				//Go to CalculationState
 				if (evnt.key.code == sf::Keyboard::Return)
 				{
