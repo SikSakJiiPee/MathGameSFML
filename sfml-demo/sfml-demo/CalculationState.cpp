@@ -7,7 +7,7 @@
 #include <iostream> //ei ehkä tarvita, game.h
 
 
-CalculationState::CalculationState(Game* game)
+CalculationState::CalculationState(Game* game/*, Character* attacker, Character* defender*/) //selvitä voiko tälle antaa myös tiedot hyökkääjstä ja puolustajasta
 {
 	this->game = game;
 
@@ -184,6 +184,7 @@ void CalculationState::handleInput()
 			//comparing the answer
 			if (evnt.key.code == sf::Keyboard::Return)
 			{
+				answerIsChecked = true;
 				//ei valmis
 				if (playerAnswerNegative == true)
 				{
@@ -411,8 +412,10 @@ void CalculationState::update(const float dt)
 
 	//std::cout << playerAnswer << std::endl;
 
-	while (mistakes < 3)
+	if (!isCalculationVisible)
 	{
+		isCalculationVisible = true;
+
 		int luku = randomNumber(numberType, calculationLevel);
 		int luku2 = randomNumber(numberType, calculationLevel);
 
@@ -423,16 +426,21 @@ void CalculationState::update(const float dt)
 		//std::string strPlayerAnswer = convertToString(playerAnswer);
 		//textPlayerAnswer.setString(strPlayerAnswer);
 
-		std::cout << "Anna vastaus" << std::endl;
+	}
+	//std::cout << "Anna vastaus" << std::endl;
+	if (answerIsChecked)
+	{
 		if (answerIsCorrect)
 		{
-			std::cout << "Oikea vastaus on: " << correctAnswer << "	oikein!" << points << std::endl;
+			std::cout << "Oikea vastaus on: " << correctAnswer << "	oikein!" << std::endl;
 			points++;
 			if (points == 5 || points == 10 || points == 15 || points == 20 || points == 25)
 			{
 				calculationLevel++;
 				std::cout << "taso nousi" << std::endl;
 			}
+			playerAnswer = -255;
+			isCalculationVisible = false;
 		}
 		else if (!answerIsCorrect)
 		{
@@ -440,17 +448,13 @@ void CalculationState::update(const float dt)
 			mistakes++;
 		}
 		std::cout << "Pisteet: " << points << ". Virheet: " << mistakes << "." << std::endl;
-		if (mistakes == 3)
-		{
-			std::cout << std::endl;
-			std::cout << "Peli loppui!" << std::endl;;
-		}
-		else
-		{
-			std::cout << std::endl;
-			std::cout << "Seuraava lasku:" << std::endl;;
-		}
+
+		//MainGameState::characterEnemy->healthPoints -= points;
+
+		answerIsChecked = false;
 	}
+
+	
 }
 
 

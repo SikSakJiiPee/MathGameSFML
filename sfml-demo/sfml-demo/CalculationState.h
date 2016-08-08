@@ -24,7 +24,7 @@ enum class NumberType { BOTH, POSITIVE, NEGATIVE };
 class CalculationState : public GameState
 {
 public:
-	CalculationState(Game* game);
+	CalculationState(Game* game/*, Character* attacker, Character* defender*/);
 
 	//state stuff
 	//void init();
@@ -93,7 +93,8 @@ private:
 	sf::Time timeElapsed;
 	float timeLeft;
 
-	bool isCalculationVisible1 = false;
+	bool isCalculationVisible = false;
+	bool answerIsChecked = false;
 };
 
 

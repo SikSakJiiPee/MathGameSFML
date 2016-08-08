@@ -307,7 +307,7 @@ void MainGameState::handleInput()
 				}
 				if (evnt.key.code == sf::Keyboard::Return)
 				{
-					this->startCalculation();
+					this->startCalculation(/*characterPlayer, characterEnemy*/);
 				}
 			}
 			
@@ -575,9 +575,9 @@ void MainGameState::draw(const float dt)
 }
 
 
-void MainGameState::startCalculation()
+void MainGameState::startCalculation(/*Character* attacker, Character* defender*/)
 {
-	this->game->pushState(new CalculationState(this->game));
+	this->game->pushState(new CalculationState(this->game/*, attacker, defender*/));
 
 	return;
 }

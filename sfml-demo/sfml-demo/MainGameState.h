@@ -33,9 +33,18 @@ public:
 	//other stuff
 	//static const int calculationLevel = 1;
 	
+	//Character
+	std::vector<Character> characters;
+
+	Character* characterPlayer;
+	Character* characterPlayer2;
+	Character* characterPlayer3;
+	Character* characterEnemy;
+	Character* characterEnemy2;
+	Character* characterEnemy3;
 
 private:
-	void startCalculation();
+	void startCalculation(/* Character* attacker, Character* defender*/);
 	void backToMenu();
 
 
@@ -58,15 +67,7 @@ private:
 	sf::Text textTime;
 	sf::Text text;
 
-	//Character
-	std::vector<Character> characters;
 
-	Character* characterPlayer;
-	Character* characterPlayer2;
-	Character* characterPlayer3;
-	Character* characterEnemy;
-	Character* characterEnemy2;
-	Character* characterEnemy3;
 
 	//Item
 	Item* item;
