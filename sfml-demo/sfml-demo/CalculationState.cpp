@@ -57,9 +57,8 @@ CalculationState::CalculationState(Game* game)
 	textMaxCombo.setCharacterSize(30);
 	textMaxCombo.setColor(sf::Color::White);
 
-	textTime.setFont(font);
-	textTime.setCharacterSize(30);
-	textTime.setColor(sf::Color::White);
+	textTimeLeft.setFont(font);
+	textTimeLeft.setCharacterSize(30);
 
 	text.setFont(font);
 	text.setCharacterSize(30);
@@ -376,8 +375,10 @@ void CalculationState::update(const float dt)
 	timeLeft = 30 - timeElapsed.asSeconds();
 	//std::cout << timeElapsed.asSeconds() << " " << timeLeft << std::endl;
 	std::string strTimeLeft = convertToString(timeLeft);
-	textTime.setString(strTimeLeft);
+	textTimeLeft.setString(strTimeLeft);
 
+	if (timeLeft <= 0)
+		this->backToMainGame();
 
 	//MUISTA ALUSTAA KAIKKI!
 	CalculationType calculationType = CalculationType::PLUS;
@@ -465,11 +466,16 @@ void CalculationState::draw(const float dt)
 	textPlayerAnswer.setOrigin(textPlayerAnswer.getGlobalBounds().width / 2, textPlayerAnswer.getGlobalBounds().height);
 	textPlayerAnswer.setPosition(game->window.getSize().x / 2, (game->window.getSize().y / 3) * 2);
 
+	if (timeLeft <= 5.00f)
+		textTimeLeft.setColor(sf::Color::Red);
+	else
+		textTimeLeft.setColor(sf::Color::White);
+
 	game->window.draw(textTitleCalc);
 	game->window.draw(textCalculation);
 	game->window.draw(textPlayerAnswer);
 
-	game->window.draw(textTime);
+	game->window.draw(textTimeLeft);
 }
 
 

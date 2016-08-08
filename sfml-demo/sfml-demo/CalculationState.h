@@ -86,12 +86,14 @@ private:
 	sf::Text textMistakes;
 	sf::Text textCurrentCombo;
 	sf::Text textMaxCombo;
-	sf::Text textTime;
+	sf::Text textTimeLeft;
 	sf::Text text;
 
 	sf::Clock clock;
 	sf::Time timeElapsed;
 	float timeLeft;
+
+	bool isCalculationVisible1 = false;
 };
 
 
