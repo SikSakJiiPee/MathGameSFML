@@ -68,6 +68,8 @@ CalculationState::CalculationState(Game* game/*, Character* attacker, Character*
 
 	//playerAnswer = -255;
 
+	calculationLevel = 1;
+
 	std::cout << "CalculationState init" << std::endl;
 }
 
@@ -190,17 +192,40 @@ void CalculationState::handleInput()
 				{
 					playerAnswer *= -1;
 				}
+				std::cout << "sinun vastaus: " << playerAnswer << std::endl;
+				//std::cout << "oikea vastaus1: " << correctAnswer << std::endl;
+				//std::cout << "oikea vastaus2: " << correctAnswer2 << std::endl;
+				//std::cout << "oikea vastaus3: " << correctAnswer3 << std::endl;
 
 				//vastauksien vertaaminen
 				if (playerAnswer == correctAnswer)
 				{
 					answerIsCorrect = true;
 				}
-				else
+				if (playerAnswer == correctAnswer2)
+				{
+					answerIsCorrect2 = true;
+				}
+				if (playerAnswer == correctAnswer3)
+				{
+					answerIsCorrect3 = true;
+				}
+				else if (playerAnswer != correctAnswer)
 				{
 					answerIsCorrect = false;
-					playerAnswer = -255;
+					//playerAnswer = -255;
 				}
+				else if (playerAnswer != correctAnswer2)
+				{
+					answerIsCorrect2 = false;
+					//playerAnswer = -255;
+				}
+				else if (playerAnswer != correctAnswer3)
+				{
+					answerIsCorrect3 = false;
+					//playerAnswer = -255;
+				}
+				playerAnswer = -255;
 				playerAnswerNegative = false;
 			}
 
@@ -373,7 +398,7 @@ void CalculationState::update(const float dt)
 {
 	//timer
 	timeElapsed = clock.getElapsedTime();
-	timeLeft = 30 - timeElapsed.asSeconds();
+	timeLeft = 60 - timeElapsed.asSeconds();
 	//std::cout << timeElapsed.asSeconds() << " " << timeLeft << std::endl;
 	std::string strTimeLeft = convertToString(timeLeft);
 	textTimeLeft.setString(strTimeLeft);
@@ -384,7 +409,6 @@ void CalculationState::update(const float dt)
 	//MUISTA ALUSTAA KAIKKI!
 	CalculationType calculationType = CalculationType::PLUS;
 	NumberType numberType = NumberType::BOTH;
-	int calculationLevel = 1;
 	//int calculationLevel = MainGameState::calculationLevel;
 
 	std::string strPlayerAnswer = convertToString(playerAnswer);
@@ -411,25 +435,56 @@ void CalculationState::update(const float dt)
 	}
 
 	//std::cout << playerAnswer << std::endl;
+	//std::cout << "calculationLevel: " << calculationLevel << std::endl;
 
+	//generating the calculations
 	if (!isCalculationVisible)
 	{
 		isCalculationVisible = true;
 
-		int luku = randomNumber(numberType, calculationLevel);
-		int luku2 = randomNumber(numberType, calculationLevel);
-
-		correctAnswer = getCorrectAnswer(calculationType, luku, luku2);
-		std::string lasku = getCalculationString(calculationType, luku, luku2);
-		textCalculation.setString(lasku);
+		int number = randomNumber(numberType, calculationLevel);
+		int number2 = randomNumber(numberType, calculationLevel);
+		
+		correctAnswer = getCorrectAnswer(calculationType, number, number2);
+		std::string strCalculation = getCalculationString(calculationType, number, number2);
+		textCalculation.setString(strCalculation);
 
 		//std::string strPlayerAnswer = convertToString(playerAnswer);
 		//textPlayerAnswer.setString(strPlayerAnswer);
-
 	}
-	//std::cout << "Anna vastaus" << std::endl;
+	if (!isCalculationVisible2)
+	{
+		isCalculationVisible2 = true;
+
+		int number = randomNumber(numberType, calculationLevel);
+		int number2 = randomNumber(numberType, calculationLevel);
+
+		correctAnswer2 = getCorrectAnswer(calculationType, number, number2);
+		std::string strCalculation = getCalculationString(calculationType, number, number2);
+		textCalculation2.setString(strCalculation);
+
+		//std::string strPlayerAnswer = convertToString(playerAnswer);
+		//textPlayerAnswer.setString(strPlayerAnswer);
+	}
+	if (!isCalculationVisible3)
+	{
+		isCalculationVisible3 = true;
+
+		int number = randomNumber(numberType, calculationLevel);
+		int number2 = randomNumber(numberType, calculationLevel);
+
+		correctAnswer3 = getCorrectAnswer(calculationType, number, number2);
+		std::string strCalculation = getCalculationString(calculationType, number, number2);
+		textCalculation3.setString(strCalculation);
+
+		//std::string strPlayerAnswer = convertToString(playerAnswer);
+		//textPlayerAnswer.setString(strPlayerAnswer);
+	}
+
+	//checking the answers
 	if (answerIsChecked)
 	{
+		
 		if (answerIsCorrect)
 		{
 			std::cout << "Oikea vastaus on: " << correctAnswer << "	oikein!" << std::endl;
@@ -441,16 +496,56 @@ void CalculationState::update(const float dt)
 			}
 			playerAnswer = -255;
 			isCalculationVisible = false;
+			answerIsChecked = false;
 		}
 		else if (!answerIsCorrect)
 		{
 			std::cout << "Oikea vastaus on: " << correctAnswer << "	kurahti..." << std::endl;
+			mistakes++;
+
+		}
+		if (answerIsCorrect2)
+		{
+			std::cout << "Oikea vastaus on: " << correctAnswer2 << "	oikein!" << std::endl;
+			points++;
+			if (points == 5 || points == 10 || points == 15 || points == 20 || points == 25)
+			{
+				calculationLevel++;
+				std::cout << "taso nousi" << std::endl;
+			}
+			playerAnswer = -255;
+			isCalculationVisible2 = false;
+			answerIsChecked = false;
+		}
+		else if (!answerIsCorrect2)
+		{
+			std::cout << "Oikea vastaus on: " << correctAnswer2 << "	kurahti..." << std::endl;
+			mistakes++;
+		}
+		if (answerIsCorrect3)
+		{
+			std::cout << "Oikea vastaus on: " << correctAnswer3 << "	oikein!" << std::endl;
+			points++;
+			if (points == 5 || points == 10 || points == 15 || points == 20 || points == 25)
+			{
+				calculationLevel++;
+				std::cout << "taso nousi" << std::endl;
+			}
+			playerAnswer = -255;
+			isCalculationVisible3 = false;
+			answerIsChecked = false;
+		}
+		else if (!answerIsCorrect3)
+		{
+			std::cout << "Oikea vastaus on: " << correctAnswer3 << "	kurahti..." << std::endl;
 			mistakes++;
 		}
 		std::cout << "Pisteet: " << points << ". Virheet: " << mistakes << "." << std::endl;
 
 		//MainGameState::characterEnemy->healthPoints -= points;
 
+		//estä monen laskuun vastaaminen kerralla
+		//esim. siirtämällä seuraavaa linea iffeihin
 		answerIsChecked = false;
 	}
 
@@ -465,7 +560,11 @@ void CalculationState::draw(const float dt)
 	textTitleCalc.setPosition(game->window.getSize().x / 2, 10);
 
 	textCalculation.setOrigin(textCalculation.getGlobalBounds().width / 2, textCalculation.getGlobalBounds().height);
-	textCalculation.setPosition(game->window.getSize().x / 2, game->window.getSize().y / 3);
+	textCalculation.setPosition((game->window.getSize().x / 4) * 1, game->window.getSize().y / 3);
+	textCalculation2.setOrigin(textCalculation.getGlobalBounds().width / 2, textCalculation.getGlobalBounds().height);
+	textCalculation2.setPosition((game->window.getSize().x / 4) * 2, game->window.getSize().y / 3);
+	textCalculation3.setOrigin(textCalculation.getGlobalBounds().width / 2, textCalculation.getGlobalBounds().height);
+	textCalculation3.setPosition((game->window.getSize().x / 4) * 3, game->window.getSize().y / 3);
 
 	textPlayerAnswer.setOrigin(textPlayerAnswer.getGlobalBounds().width / 2, textPlayerAnswer.getGlobalBounds().height);
 	textPlayerAnswer.setPosition(game->window.getSize().x / 2, (game->window.getSize().y / 3) * 2);
@@ -477,6 +576,8 @@ void CalculationState::draw(const float dt)
 
 	game->window.draw(textTitleCalc);
 	game->window.draw(textCalculation);
+	game->window.draw(textCalculation2);
+	game->window.draw(textCalculation3);
 	game->window.draw(textPlayerAnswer);
 
 	game->window.draw(textTimeLeft);

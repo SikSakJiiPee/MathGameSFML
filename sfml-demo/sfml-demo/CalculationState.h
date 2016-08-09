@@ -46,10 +46,15 @@ public:
 	int calculationLevel;
 	float calculationTime;
 
-	int correctAnswer;
 	int playerAnswer = -255; //Pit‰‰ olla pienempi
-	bool answerIsCorrect = false;
 	bool playerAnswerNegative = false;
+	int correctAnswer;
+	int correctAnswer2;
+	int correctAnswer3;
+	bool answerIsCorrect = false;
+	bool answerIsCorrect2 = false;
+	bool answerIsCorrect3 = false;
+	
 
 	int points = 0;
 	int mistakes = 0;
@@ -94,6 +99,8 @@ private:
 	float timeLeft;
 
 	bool isCalculationVisible = false;
+	bool isCalculationVisible2 = false;
+	bool isCalculationVisible3 = false;
 	bool answerIsChecked = false;
 };
 
