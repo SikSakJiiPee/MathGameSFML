@@ -4,6 +4,7 @@
 #include <SFML/System.hpp>
 
 #include "GameState.h"
+#include "MainGameState.h"
 
 //#include <iostream>
 //#include <string>
@@ -71,7 +72,7 @@ public:
 
 
 	//static int calculationGame(Calculation calculation);
-
+	//Character* charaEnemy = MainGameState::characterEnemy;
 
 	
 
@@ -102,6 +103,8 @@ private:
 	bool isCalculationVisible2 = false;
 	bool isCalculationVisible3 = false;
 	bool answerIsChecked = false;
+	bool answerIsChecked2 = false;
+	bool answerIsChecked3 = false;
 };
 
 

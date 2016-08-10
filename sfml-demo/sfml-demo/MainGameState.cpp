@@ -307,7 +307,11 @@ void MainGameState::handleInput()
 				}
 				if (evnt.key.code == sf::Keyboard::Return)
 				{
+					calculationIsOn = true;
 					this->startCalculation(/*characterPlayer, characterEnemy*/);
+					//if (selection == Selection::ENEMY1) 
+						//characterEnemy->healthPoints -= CalculationState::points;
+					calculationIsOn = false;
 				}
 			}
 			

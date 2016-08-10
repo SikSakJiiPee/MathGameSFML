@@ -6,6 +6,7 @@
 
 #include "Character.h"
 #include "Calculation.h"
+#include "CalculationState.h"
 
 enum class Selection { NONE, ATTACK, SPECIAL, ITEM, ESCAPE, 
 	PLAYER1, PLAYER2, PLAYER3, ENEMY1, ENEMY2, ENEMY3 };
@@ -103,6 +104,7 @@ private:
 	bool selectPlayer = false;
 	bool selectEnemy = false;
 	bool selectItem = false;
+	bool calculationIsOn = false;
 
 	//int correctAnswer;
 	//int playerAnswer = -255; //tsekkaa null, koska vastaus voi olla myös nolla, joten se ei voi olla alustus.
