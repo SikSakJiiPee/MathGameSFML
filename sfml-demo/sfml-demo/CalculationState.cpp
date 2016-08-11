@@ -412,8 +412,8 @@ void CalculationState::update(const float dt)
 		this->backToMainGame();
 
 	//MUISTA ALUSTAA KAIKKI!
-	CalculationType calculationType = CalculationType::PLUS;
-	NumberType numberType = NumberType::BOTH;
+	CalculationType calculationType = CalculationType::MINUS;
+	NumberType numberType = NumberType::POSITIVE;
 	//int calculationLevel = MainGameState::calculationLevel;
 
 	std::string strPlayerAnswer = convertToString(playerAnswer);

@@ -31,11 +31,12 @@ MainGameState::MainGameState(Game* game)
 	//characters.push_back(characterEnemy);
 	//characters.push_back(characterEnemy2);
 	//characters.push_back(characterEnemy3);
+	//järjestä characterit myöhemmin nopeusjärjestykseen
 
 	//Item
 	item = new Item("Potion");
 	//item = new Item("Potion2");
-
+	characterPlayer->items.push_back(*item);
 
 	//Font and Text
 	if (!font.loadFromFile("Font/arial.ttf"))

@@ -10,6 +10,7 @@
 
 enum class Selection { NONE, ATTACK, SPECIAL, ITEM, ESCAPE, 
 	PLAYER1, PLAYER2, PLAYER3, ENEMY1, ENEMY2, ENEMY3 };
+enum class Turn {PLAYER, ENEMY};
 //enum class SelectionCharacter { NONE, PLAYER1, PLAYER2, PLAYER3, ENEMY1, ENEMY2, ENEMY3 };
 
 
@@ -47,6 +48,9 @@ public:
 private:
 	void startCalculation(/* Character* attacker, Character* defender*/);
 	void backToMenu();
+
+	void combatAttack();
+	void combatDefend();
 
 
 	//other

@@ -1,7 +1,35 @@
-﻿Build started 10.8.2016 22.47.53.
+﻿Build started 11.8.2016 23.56.28.
      1>Project "C:\Users\Jussi\Desktop\MathGameSFML\sfml-demo\sfml-demo\sfml-demo.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"C:\Users\Jussi\Desktop\MathGameSFML\sfml-demo\sfml-demo\include\\" /I"C:\Users\Jussi\Desktop\MathGameSFML\sfml-demo\..\SFML-2.3.2\include" /ZI /nologo /W4 /WX- /Od /Oy- /D SFML_STATIC /D WIN32 /D _DEBUG /D _WINDOWS /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"C:\Users\Jussi\Desktop\MathGameSFML\sfml-demo\sfml-demo\obj\Debug\\" /Fd"C:\Users\Jussi\Desktop\MathGameSFML\sfml-demo\sfml-demo\obj\Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt CalculationState.cpp MainGameState.cpp MenuState.cpp
+         MainGameState.cpp
+     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(126): warning C4244: 'argument' : conversion from 'unsigned int' to 'float', possible loss of data
+     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(130): warning C4244: 'argument' : conversion from 'unsigned int' to 'float', possible loss of data
+     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(134): warning C4244: 'argument' : conversion from 'unsigned int' to 'float', possible loss of data
+     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(138): warning C4244: 'argument' : conversion from 'unsigned int' to 'float', possible loss of data
+     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(142): warning C4244: 'argument' : conversion from 'unsigned int' to 'float', possible loss of data
+     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(146): warning C4244: 'argument' : conversion from 'unsigned int' to 'float', possible loss of data
+     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(413): warning C4100: 'dt' : unreferenced formal parameter
+     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(500): warning C4244: 'argument' : conversion from 'unsigned int' to 'float', possible loss of data
+     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(501): warning C4244: 'argument' : conversion from 'unsigned int' to 'float', possible loss of data
+     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(502): warning C4244: 'argument' : conversion from 'unsigned int' to 'float', possible loss of data
+     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(503): warning C4244: 'argument' : conversion from 'unsigned int' to 'float', possible loss of data
+     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(504): warning C4244: 'argument' : conversion from 'unsigned int' to 'float', possible loss of data
+     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(506): warning C4244: 'argument' : conversion from 'unsigned int' to 'float', possible loss of data
+     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(507): warning C4244: 'argument' : conversion from 'unsigned int' to 'float', possible loss of data
+     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(531): warning C4244: 'argument' : conversion from 'unsigned int' to 'float', possible loss of data
+     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(532): warning C4244: 'argument' : conversion from 'unsigned int' to 'float', possible loss of data
+     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(533): warning C4244: 'argument' : conversion from 'unsigned int' to 'float', possible loss of data
+     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(534): warning C4244: 'argument' : conversion from 'unsigned int' to 'float', possible loss of data
+     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(423): warning C4100: 'dt' : unreferenced formal parameter
+         Generating Code...
+         Compiling...
+         MenuState.cpp
+     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\menustate.cpp(25): warning C4244: 'argument' : conversion from 'unsigned int' to 'float', possible loss of data
+     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\menustate.cpp(31): warning C4244: 'argument' : conversion from 'unsigned int' to 'float', possible loss of data
+     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\menustate.cpp(37): warning C4244: 'argument' : conversion from 'unsigned int' to 'float', possible loss of data
+     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\menustate.cpp(164): warning C4100: 'dt' : unreferenced formal parameter
+     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\menustate.cpp(169): warning C4100: 'dt' : unreferenced formal parameter
          CalculationState.cpp
      1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\calculationstate.cpp(402): warning C4100: 'dt' : unreferenced formal parameter
      1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\calculationstate.cpp(580): warning C4244: 'argument' : conversion from 'unsigned int' to 'float', possible loss of data
@@ -9,13 +37,10 @@
      1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\calculationstate.cpp(590): warning C4244: 'argument' : conversion from 'unsigned int' to 'float', possible loss of data
      1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\calculationstate.cpp(576): warning C4100: 'dt' : unreferenced formal parameter
          Generating Code...
-     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\calculationstate.cpp(680): warning C4715: 'CalculationState::getCorrectAnswer' : not all control paths return a value
      1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\calculationstate.cpp(648): warning C4701: potentially uninitialized local variable 'rMin' used
      1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\calculationstate.cpp(648): warning C4701: potentially uninitialized local variable 'rMax' used
+     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\calculationstate.cpp(680): warning C4715: 'CalculationState::getCorrectAnswer' : not all control paths return a value
      1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\calculationstate.cpp(742): warning C4715: 'CalculationState::getCalculationString' : not all control paths return a value
-         Skipping... (no relevant changes detected)
-         MenuState.cpp
-         MainGameState.cpp
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Jussi\Desktop\MathGameSFML\sfml-demo\Debug\sfml-demo.exe" /INCREMENTAL /NOLOGO /LIBPATH:"C:\Users\Jussi\Desktop\MathGameSFML\sfml-demo\..\SFML-2.3.2\lib\\" "sfml-graphics-s-d.lib" "sfml-window-s-d.lib" "sfml-system-s-d.lib" opengl32.lib freetype.lib jpeg.lib winmm.lib gdi32.lib "sfml-audio-s-d.lib" openal32.lib flac.lib vorbisenc.lib vorbisfile.lib ogg.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Jussi\Desktop\MathGameSFML\sfml-demo\Debug\sfml-demo.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /ENTRY:"mainCRTStartup" /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Jussi\Desktop\MathGameSFML\sfml-demo\Debug\sfml-demo.lib" /MACHINE:X86 "C:\Users\Jussi\Desktop\MathGameSFML\sfml-demo\sfml-demo\obj\Debug\Calculation.obj"
          "C:\Users\Jussi\Desktop\MathGameSFML\sfml-demo\sfml-demo\obj\Debug\CalculationState.obj"
@@ -29,9 +54,57 @@
          "C:\Users\Jussi\Desktop\MathGameSFML\sfml-demo\sfml-demo\obj\Debug\MainGameState.obj"
          "C:\Users\Jussi\Desktop\MathGameSFML\sfml-demo\sfml-demo\obj\Debug\MenuState.obj"
          "C:\Users\Jussi\Desktop\MathGameSFML\sfml-demo\sfml-demo\obj\Debug\SpecialMove.obj"
+     1>sfml-graphics-s-d.lib(BlendMode.cpp.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'sfml-graphics-s-d.lib(BlendMode.cpp.obj)' or at 'C:\Users\Jussi\Desktop\MathGameSFML\sfml-demo\Debug\vc120.pdb'; linking object as if no debug info
+     1>sfml-graphics-s-d.lib(Color.cpp.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'sfml-graphics-s-d.lib(Color.cpp.obj)' or at 'C:\Users\Jussi\Desktop\MathGameSFML\sfml-demo\Debug\vc120.pdb'; linking object as if no debug info
+     1>sfml-graphics-s-d.lib(Font.cpp.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'sfml-graphics-s-d.lib(Font.cpp.obj)' or at 'C:\Users\Jussi\Desktop\MathGameSFML\sfml-demo\Debug\vc120.pdb'; linking object as if no debug info
+     1>sfml-graphics-s-d.lib(GLCheck.cpp.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'sfml-graphics-s-d.lib(GLCheck.cpp.obj)' or at 'C:\Users\Jussi\Desktop\MathGameSFML\sfml-demo\Debug\vc120.pdb'; linking object as if no debug info
+     1>sfml-graphics-s-d.lib(GLExtensions.cpp.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'sfml-graphics-s-d.lib(GLExtensions.cpp.obj)' or at 'C:\Users\Jussi\Desktop\MathGameSFML\sfml-demo\Debug\vc120.pdb'; linking object as if no debug info
+     1>sfml-graphics-s-d.lib(Image.cpp.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'sfml-graphics-s-d.lib(Image.cpp.obj)' or at 'C:\Users\Jussi\Desktop\MathGameSFML\sfml-demo\Debug\vc120.pdb'; linking object as if no debug info
+     1>sfml-graphics-s-d.lib(ImageLoader.cpp.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'sfml-graphics-s-d.lib(ImageLoader.cpp.obj)' or at 'C:\Users\Jussi\Desktop\MathGameSFML\sfml-demo\Debug\vc120.pdb'; linking object as if no debug info
+     1>sfml-graphics-s-d.lib(RenderStates.cpp.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'sfml-graphics-s-d.lib(RenderStates.cpp.obj)' or at 'C:\Users\Jussi\Desktop\MathGameSFML\sfml-demo\Debug\vc120.pdb'; linking object as if no debug info
+     1>sfml-graphics-s-d.lib(RenderTarget.cpp.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'sfml-graphics-s-d.lib(RenderTarget.cpp.obj)' or at 'C:\Users\Jussi\Desktop\MathGameSFML\sfml-demo\Debug\vc120.pdb'; linking object as if no debug info
+     1>sfml-graphics-s-d.lib(RenderWindow.cpp.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'sfml-graphics-s-d.lib(RenderWindow.cpp.obj)' or at 'C:\Users\Jussi\Desktop\MathGameSFML\sfml-demo\Debug\vc120.pdb'; linking object as if no debug info
+     1>sfml-graphics-s-d.lib(Shader.cpp.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'sfml-graphics-s-d.lib(Shader.cpp.obj)' or at 'C:\Users\Jussi\Desktop\MathGameSFML\sfml-demo\Debug\vc120.pdb'; linking object as if no debug info
+     1>sfml-graphics-s-d.lib(Texture.cpp.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'sfml-graphics-s-d.lib(Texture.cpp.obj)' or at 'C:\Users\Jussi\Desktop\MathGameSFML\sfml-demo\Debug\vc120.pdb'; linking object as if no debug info
+     1>sfml-graphics-s-d.lib(TextureSaver.cpp.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'sfml-graphics-s-d.lib(TextureSaver.cpp.obj)' or at 'C:\Users\Jussi\Desktop\MathGameSFML\sfml-demo\Debug\vc120.pdb'; linking object as if no debug info
+     1>sfml-graphics-s-d.lib(Transform.cpp.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'sfml-graphics-s-d.lib(Transform.cpp.obj)' or at 'C:\Users\Jussi\Desktop\MathGameSFML\sfml-demo\Debug\vc120.pdb'; linking object as if no debug info
+     1>sfml-graphics-s-d.lib(Transformable.cpp.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'sfml-graphics-s-d.lib(Transformable.cpp.obj)' or at 'C:\Users\Jussi\Desktop\MathGameSFML\sfml-demo\Debug\vc120.pdb'; linking object as if no debug info
+     1>sfml-graphics-s-d.lib(View.cpp.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'sfml-graphics-s-d.lib(View.cpp.obj)' or at 'C:\Users\Jussi\Desktop\MathGameSFML\sfml-demo\Debug\vc120.pdb'; linking object as if no debug info
+     1>sfml-graphics-s-d.lib(Vertex.cpp.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'sfml-graphics-s-d.lib(Vertex.cpp.obj)' or at 'C:\Users\Jussi\Desktop\MathGameSFML\sfml-demo\Debug\vc120.pdb'; linking object as if no debug info
+     1>sfml-graphics-s-d.lib(GLLoader.cpp.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'sfml-graphics-s-d.lib(GLLoader.cpp.obj)' or at 'C:\Users\Jussi\Desktop\MathGameSFML\sfml-demo\Debug\vc120.pdb'; linking object as if no debug info
+     1>sfml-graphics-s-d.lib(Sprite.cpp.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'sfml-graphics-s-d.lib(Sprite.cpp.obj)' or at 'C:\Users\Jussi\Desktop\MathGameSFML\sfml-demo\Debug\vc120.pdb'; linking object as if no debug info
+     1>sfml-graphics-s-d.lib(Text.cpp.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'sfml-graphics-s-d.lib(Text.cpp.obj)' or at 'C:\Users\Jussi\Desktop\MathGameSFML\sfml-demo\Debug\vc120.pdb'; linking object as if no debug info
+     1>sfml-graphics-s-d.lib(VertexArray.cpp.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'sfml-graphics-s-d.lib(VertexArray.cpp.obj)' or at 'C:\Users\Jussi\Desktop\MathGameSFML\sfml-demo\Debug\vc120.pdb'; linking object as if no debug info
+     1>sfml-window-s-d.lib(Context.cpp.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'sfml-window-s-d.lib(Context.cpp.obj)' or at 'C:\Users\Jussi\Desktop\MathGameSFML\sfml-demo\Debug\vc120.pdb'; linking object as if no debug info
+     1>sfml-window-s-d.lib(GlContext.cpp.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'sfml-window-s-d.lib(GlContext.cpp.obj)' or at 'C:\Users\Jussi\Desktop\MathGameSFML\sfml-demo\Debug\vc120.pdb'; linking object as if no debug info
+     1>sfml-window-s-d.lib(GlResource.cpp.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'sfml-window-s-d.lib(GlResource.cpp.obj)' or at 'C:\Users\Jussi\Desktop\MathGameSFML\sfml-demo\Debug\vc120.pdb'; linking object as if no debug info
+     1>sfml-window-s-d.lib(Joystick.cpp.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'sfml-window-s-d.lib(Joystick.cpp.obj)' or at 'C:\Users\Jussi\Desktop\MathGameSFML\sfml-demo\Debug\vc120.pdb'; linking object as if no debug info
+     1>sfml-window-s-d.lib(JoystickManager.cpp.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'sfml-window-s-d.lib(JoystickManager.cpp.obj)' or at 'C:\Users\Jussi\Desktop\MathGameSFML\sfml-demo\Debug\vc120.pdb'; linking object as if no debug info
+     1>sfml-window-s-d.lib(SensorManager.cpp.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'sfml-window-s-d.lib(SensorManager.cpp.obj)' or at 'C:\Users\Jussi\Desktop\MathGameSFML\sfml-demo\Debug\vc120.pdb'; linking object as if no debug info
+     1>sfml-window-s-d.lib(VideoMode.cpp.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'sfml-window-s-d.lib(VideoMode.cpp.obj)' or at 'C:\Users\Jussi\Desktop\MathGameSFML\sfml-demo\Debug\vc120.pdb'; linking object as if no debug info
+     1>sfml-window-s-d.lib(Window.cpp.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'sfml-window-s-d.lib(Window.cpp.obj)' or at 'C:\Users\Jussi\Desktop\MathGameSFML\sfml-demo\Debug\vc120.pdb'; linking object as if no debug info
+     1>sfml-window-s-d.lib(WindowImpl.cpp.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'sfml-window-s-d.lib(WindowImpl.cpp.obj)' or at 'C:\Users\Jussi\Desktop\MathGameSFML\sfml-demo\Debug\vc120.pdb'; linking object as if no debug info
+     1>sfml-window-s-d.lib(WglContext.cpp.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'sfml-window-s-d.lib(WglContext.cpp.obj)' or at 'C:\Users\Jussi\Desktop\MathGameSFML\sfml-demo\Debug\vc120.pdb'; linking object as if no debug info
+     1>sfml-window-s-d.lib(WglExtensions.cpp.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'sfml-window-s-d.lib(WglExtensions.cpp.obj)' or at 'C:\Users\Jussi\Desktop\MathGameSFML\sfml-demo\Debug\vc120.pdb'; linking object as if no debug info
+     1>sfml-window-s-d.lib(JoystickImpl.cpp.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'sfml-window-s-d.lib(JoystickImpl.cpp.obj)' or at 'C:\Users\Jussi\Desktop\MathGameSFML\sfml-demo\Debug\vc120.pdb'; linking object as if no debug info
+     1>sfml-window-s-d.lib(SensorImpl.cpp.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'sfml-window-s-d.lib(SensorImpl.cpp.obj)' or at 'C:\Users\Jussi\Desktop\MathGameSFML\sfml-demo\Debug\vc120.pdb'; linking object as if no debug info
+     1>sfml-window-s-d.lib(VideoModeImpl.cpp.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'sfml-window-s-d.lib(VideoModeImpl.cpp.obj)' or at 'C:\Users\Jussi\Desktop\MathGameSFML\sfml-demo\Debug\vc120.pdb'; linking object as if no debug info
+     1>sfml-window-s-d.lib(WindowImplWin32.cpp.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'sfml-window-s-d.lib(WindowImplWin32.cpp.obj)' or at 'C:\Users\Jussi\Desktop\MathGameSFML\sfml-demo\Debug\vc120.pdb'; linking object as if no debug info
+     1>sfml-system-s-d.lib(Clock.cpp.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'sfml-system-s-d.lib(Clock.cpp.obj)' or at 'C:\Users\Jussi\Desktop\MathGameSFML\sfml-demo\Debug\vc120.pdb'; linking object as if no debug info
+     1>sfml-system-s-d.lib(Err.cpp.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'sfml-system-s-d.lib(Err.cpp.obj)' or at 'C:\Users\Jussi\Desktop\MathGameSFML\sfml-demo\Debug\vc120.pdb'; linking object as if no debug info
+     1>sfml-system-s-d.lib(Lock.cpp.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'sfml-system-s-d.lib(Lock.cpp.obj)' or at 'C:\Users\Jussi\Desktop\MathGameSFML\sfml-demo\Debug\vc120.pdb'; linking object as if no debug info
+     1>sfml-system-s-d.lib(Mutex.cpp.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'sfml-system-s-d.lib(Mutex.cpp.obj)' or at 'C:\Users\Jussi\Desktop\MathGameSFML\sfml-demo\Debug\vc120.pdb'; linking object as if no debug info
+     1>sfml-system-s-d.lib(Sleep.cpp.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'sfml-system-s-d.lib(Sleep.cpp.obj)' or at 'C:\Users\Jussi\Desktop\MathGameSFML\sfml-demo\Debug\vc120.pdb'; linking object as if no debug info
+     1>sfml-system-s-d.lib(String.cpp.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'sfml-system-s-d.lib(String.cpp.obj)' or at 'C:\Users\Jussi\Desktop\MathGameSFML\sfml-demo\Debug\vc120.pdb'; linking object as if no debug info
+     1>sfml-system-s-d.lib(ThreadLocal.cpp.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'sfml-system-s-d.lib(ThreadLocal.cpp.obj)' or at 'C:\Users\Jussi\Desktop\MathGameSFML\sfml-demo\Debug\vc120.pdb'; linking object as if no debug info
+     1>sfml-system-s-d.lib(Time.cpp.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'sfml-system-s-d.lib(Time.cpp.obj)' or at 'C:\Users\Jussi\Desktop\MathGameSFML\sfml-demo\Debug\vc120.pdb'; linking object as if no debug info
+     1>sfml-system-s-d.lib(ClockImpl.cpp.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'sfml-system-s-d.lib(ClockImpl.cpp.obj)' or at 'C:\Users\Jussi\Desktop\MathGameSFML\sfml-demo\Debug\vc120.pdb'; linking object as if no debug info
+     1>sfml-system-s-d.lib(MutexImpl.cpp.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'sfml-system-s-d.lib(MutexImpl.cpp.obj)' or at 'C:\Users\Jussi\Desktop\MathGameSFML\sfml-demo\Debug\vc120.pdb'; linking object as if no debug info
+     1>sfml-system-s-d.lib(SleepImpl.cpp.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'sfml-system-s-d.lib(SleepImpl.cpp.obj)' or at 'C:\Users\Jussi\Desktop\MathGameSFML\sfml-demo\Debug\vc120.pdb'; linking object as if no debug info
+     1>sfml-system-s-d.lib(ThreadLocalImpl.cpp.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'sfml-system-s-d.lib(ThreadLocalImpl.cpp.obj)' or at 'C:\Users\Jussi\Desktop\MathGameSFML\sfml-demo\Debug\vc120.pdb'; linking object as if no debug info
          sfml-demo.vcxproj -> C:\Users\Jussi\Desktop\MathGameSFML\sfml-demo\Debug\sfml-demo.exe
      1>Done Building Project "C:\Users\Jussi\Desktop\MathGameSFML\sfml-demo\sfml-demo\sfml-demo.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:00.70
+Time Elapsed 00:00:02.42
