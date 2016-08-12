@@ -4,7 +4,7 @@
 
 Character::Character(bool isplayer, std::string name, std::string path, int lvl, int exp, 
 	int hp, int maxhp, int sp, int maxsp,
-	int atk, int def, int spd/*, int atkl, int defl*/)
+	int atk, int def, int spd/*, int atkl, int defl*/, sf::Vector2f pos)
 {
 	isPlayerCharacter = isplayer;
 	characterName = name;
@@ -20,11 +20,13 @@ Character::Character(bool isplayer, std::string name, std::string path, int lvl,
 	speed = spd;
 	//attackLuck = atkl;
 	//defenceLuck = defl;
+	position = pos;
 
 	//texture and sprite
 	if (!textureCharacter.loadFromFile(pathTexture))
 		std::cout << "Loading textureCharacter failed!" << std::endl;
 	spriteCharacter.setTexture(textureCharacter); // ei toimi oikein, lataa tekstuurin täysin valkoisena
+	spriteCharacter.setPosition(position);
 }
 
 Character::~Character()
@@ -45,9 +47,9 @@ std::string Character::getStringCharacterInfo(Character character)
 	return characterInfo;
 }
 
-bool Character::checkIfAlive(Character character)
+bool Character::checkIfAlive()
 {
-	if (character.healthPoints <= 0)
+	if (healthPoints <= 0)
 		return false;
 
 	return true;

@@ -15,7 +15,7 @@ public:
 	Character();
 	Character(bool isplayer, std::string name, std::string path, int lvl, int exp, 
 		int hp, int maxhp, int sp, int maxsp, 
-		int atk, int def, int spd/*, int atkl, int defl*/);
+		int atk, int def, int spd/*, int atkl, int defl*/, sf::Vector2f pos);
 	~Character();
 
 
@@ -41,6 +41,7 @@ public:
 	sf::Texture textureCharacter;
 	sf::Sprite spriteCharacter;
 
+	sf::Vector2f position;
 
 	//ei varmuutta
 	int upgradePoints;
@@ -52,7 +53,7 @@ public:
 	
 
 	static std::string getStringCharacterInfo(Character character);
-	static bool checkIfAlive(Character character);
+	bool checkIfAlive();
 
 private:
 

@@ -18,13 +18,14 @@ MainGameState::MainGameState(Game* game)
 	//selectionCharacter = SelectionCharacter::NONE;
 
 	//Character
-	characterPlayer = new Character(true, "Player1", "Texture/Sprite/player1.png", 1, 0, 20, 20, 10, 10, 5, 5, 5);
-	characterPlayer2 = new Character(true, "Player2", "Texture/Sprite/player2.png", 1, 0, 20, 20, 10, 10, 5, 5, 5);
-	characterPlayer3 = new Character(true, "Player3", "Texture/Sprite/player3.png", 1, 0, 20, 20, 10, 10, 5, 5, 5);
-	characterEnemy = new Character(false, "Enemy1", "Texture/Sprite/enemy1.png", 1, 0, 20, 20, 10, 10, 5, 5, 5);
-	characterEnemy2 = new Character(false, "Enemy2", "Texture/Sprite/enemy2.png", 1, 0, 20, 20, 10, 10, 5, 5, 5);
-	characterEnemy3 = new Character(false, "Enemy3", "Texture/Sprite/enemy3.png", 1, 0, 20, 20, 10, 10, 5, 5, 5);
+	characters.push_back(new Character(true, "Player1", "Texture/Sprite/player1.png", 1, 0, 20, 20, 10, 10, 5, 5, 5, sf::Vector2f((game->window.getSize().x / 8) * 3, (game->window.getSize().y / 3))));
+	characters.push_back(new Character(true, "Player2", "Texture/Sprite/player2.png", 1, 0, 20, 20, 10, 10, 5, 5, 5, sf::Vector2f((game->window.getSize().x / 8) * 2, ((game->window.getSize().y / 3) + (game->window.getSize().y / 9)))));
+	characters.push_back(new Character(true, "Player3", "Texture/Sprite/player3.png", 1, 0, 20, 20, 10, 10, 5, 5, 5, sf::Vector2f((game->window.getSize().x / 8) * 1, ((game->window.getSize().y / 3) + (game->window.getSize().y / 9) * 2))));
+	characters.push_back(new Character(false, "Enemy1", "Texture/Sprite/enemy1.png", 1, 0, 20, 20, 10, 10, 5, 5, 5, sf::Vector2f((game->window.getSize().x / 8) * 5, (game->window.getSize().y / 3))));
+	characters.push_back(new Character(false, "Enemy2", "Texture/Sprite/enemy2.png", 1, 0, 20, 20, 10, 10, 5, 5, 5, sf::Vector2f((game->window.getSize().x / 8) * 6, ((game->window.getSize().y / 3) + (game->window.getSize().y / 9)))));
+	characters.push_back(new Character(false, "Enemy3", "Texture/Sprite/enemy3.png", 1, 0, 20, 20, 10, 10, 5, 5, 5, sf::Vector2f((game->window.getSize().x / 8) * 7, ((game->window.getSize().y / 3) + (game->window.getSize().y / 9) * 2))));
 	
+
 	//characters.push_back(characterPlayer);
 	//characters.push_back(characterPlayer2);
 	//characters.push_back(characterPlayer3);
@@ -36,7 +37,9 @@ MainGameState::MainGameState(Game* game)
 	//Item
 	item = new Item("Potion");
 	//item = new Item("Potion2");
-	characterPlayer->items.push_back(*item);
+	if (getPlayerCharacter(0) != nullptr)
+		getPlayerCharacter(0)->items.push_back(*item);
+
 
 	//Font and Text
 	if (!font.loadFromFile("Font/arial.ttf"))
@@ -121,35 +124,21 @@ MainGameState::MainGameState(Game* game)
 
 	//character
 	//spritesprPlayerCharacter = characterPlayer.spriteCharacter; //palauttaa spriten valkoisena
-	texturesprPlayerCharacter = characterPlayer->textureCharacter;
-	spritesprPlayerCharacter.setTexture(texturesprPlayerCharacter);
-	spritesprPlayerCharacter.setPosition(sf::Vector2f((game->window.getSize().x / 8) * 3, (game->window.getSize().y / 3)));
-
-	texturesprPlayerCharacter2 = characterPlayer2->textureCharacter;
-	spritesprPlayerCharacter2.setTexture(texturesprPlayerCharacter2);
-	spritesprPlayerCharacter2.setPosition(sf::Vector2f((game->window.getSize().x / 8) * 2, ((game->window.getSize().y / 3) + (game->window.getSize().y / 9))));
-
-	texturesprPlayerCharacter3 = characterPlayer3->textureCharacter;
-	spritesprPlayerCharacter3.setTexture(texturesprPlayerCharacter3);
-	spritesprPlayerCharacter3.setPosition(sf::Vector2f((game->window.getSize().x / 8) * 1, ((game->window.getSize().y / 3) + (game->window.getSize().y / 9) * 2)));
-
-	texturesprEnemyCharacter = characterEnemy->textureCharacter;
-	spritesprEnemyCharacter.setTexture(texturesprEnemyCharacter);
-	spritesprEnemyCharacter.setPosition(sf::Vector2f((game->window.getSize().x / 8) * 5, (game->window.getSize().y / 3)));
 	
-	texturesprEnemyCharacter2 = characterEnemy2->textureCharacter;
-	spritesprEnemyCharacter2.setTexture(texturesprEnemyCharacter2);
-	spritesprEnemyCharacter2.setPosition(sf::Vector2f((game->window.getSize().x / 8) * 6, ((game->window.getSize().y / 3) + (game->window.getSize().y / 9))));
-
-	texturesprEnemyCharacter3 = characterEnemy3->textureCharacter;
-	spritesprEnemyCharacter3.setTexture(texturesprEnemyCharacter3);
-	spritesprEnemyCharacter3.setPosition(sf::Vector2f((game->window.getSize().x / 8) * 7, ((game->window.getSize().y / 3) + (game->window.getSize().y / 9) * 2)));
 
 
 
 	//clock.restart();
 
 	std::cout << "MainGameState init" << std::endl;
+}
+
+MainGameState::~MainGameState()
+{
+	for (size_t i = 0; i < characters.size(); i++)
+	{
+		delete characters[i];
+	}
 }
 
 //void MainGameState::init()
@@ -319,7 +308,11 @@ void MainGameState::handleInput()
 			if (!selectCharacter && !selectPlayer && !selectEnemy)
 			{
 				if (evnt.key.code == sf::Keyboard::F)
-					characterPlayer->healthPoints = 0;
+				{
+					if (getPlayerCharacter(0) != nullptr)
+						getPlayerCharacter(0)->healthPoints = 0;
+				}
+					
 				//Go to CalculationState
 				if (evnt.key.code == sf::Keyboard::Return)
 				{
@@ -489,12 +482,19 @@ void MainGameState::draw(const float dt)
 	//else
 	//	textInfoEnemy3.setColor(sf::Color::Black);
 
-	textInfoPlayer.setString(characterPlayer->getStringCharacterInfo(*characterPlayer));
-	textInfoPlayer2.setString(characterPlayer2->getStringCharacterInfo(*characterPlayer2));
-	textInfoPlayer3.setString(characterPlayer3->getStringCharacterInfo(*characterPlayer3));
-	textInfoEnemy.setString(characterEnemy->getStringCharacterInfo(*characterEnemy));
-	textInfoEnemy2.setString(characterEnemy2->getStringCharacterInfo(*characterEnemy2));
-	textInfoEnemy3.setString(characterEnemy3->getStringCharacterInfo(*characterEnemy3));
+	//selvitä tapa toteuttaa infot tekstivektoreilla tai character attribuutilla
+	if (getPlayerCharacter(0) != nullptr)
+		textInfoPlayer.setString(getPlayerCharacter(0)->getStringCharacterInfo(*getPlayerCharacter(0)));
+	if (getPlayerCharacter(1) != nullptr)
+		textInfoPlayer2.setString(getPlayerCharacter(1)->getStringCharacterInfo(*getPlayerCharacter(1)));
+	if (getPlayerCharacter(2) != nullptr)
+		textInfoPlayer3.setString(getPlayerCharacter(2)->getStringCharacterInfo(*getPlayerCharacter(2)));
+	if (getEnemyCharacter(0) != nullptr)
+		textInfoEnemy.setString(getEnemyCharacter(0)->getStringCharacterInfo(*getEnemyCharacter(0)));
+	if (getEnemyCharacter(1) != nullptr)
+		textInfoEnemy2.setString(getEnemyCharacter(1)->getStringCharacterInfo(*getEnemyCharacter(1)));
+	if (getEnemyCharacter(2) != nullptr)
+		textInfoEnemy3.setString(getEnemyCharacter(2)->getStringCharacterInfo(*getEnemyCharacter(2)));
 
 	textInfoPlayer.setPosition(0, 0);
 	textInfoPlayer2.setPosition(0, (game->window.getSize().y / 18));
@@ -541,18 +541,11 @@ void MainGameState::draw(const float dt)
 	game->window.draw(spritebgMainGame);
 
 	//character
-	if (characterPlayer->checkIfAlive(*characterPlayer))
-		game->window.draw(spritesprPlayerCharacter);
-	if (characterPlayer2->checkIfAlive(*characterPlayer2))
-		game->window.draw(spritesprPlayerCharacter2);
-	if (characterPlayer3->checkIfAlive(*characterPlayer3))
-		game->window.draw(spritesprPlayerCharacter3);
-	if (characterEnemy->checkIfAlive(*characterEnemy))
-		game->window.draw(spritesprEnemyCharacter);
-	if (characterEnemy2->checkIfAlive(*characterEnemy2))
-		game->window.draw(spritesprEnemyCharacter2);
-	if (characterEnemy3->checkIfAlive(*characterEnemy3))
-		game->window.draw(spritesprEnemyCharacter3);
+	for (size_t i = 0; i < characters.size(); i++)
+	{
+		if (characters[i]->checkIfAlive())
+			game->window.draw(characters[i]->spriteCharacter);
+	}
 
 	//Text
 	//game->window.draw(textTitleMainGame);
@@ -595,8 +588,66 @@ void MainGameState::backToMenu()
 }
 
 
+//character vector management
+size_t MainGameState::getPlayerCharacterCount()
+{
+	size_t count(0);
 
+	for (size_t i = 0; i < characters.size(); i++)
+	{
+		if (characters[i]->isPlayerCharacter)
+			count++;
+	}
 
+	return count;
+}
+size_t MainGameState::getEnemyCharacterCount()
+{
+	size_t count(0);
+
+	for (size_t i = 0; i < characters.size(); i++)
+	{
+		if (!characters[i]->isPlayerCharacter)
+			count++;
+	}
+
+	return count;
+}
+
+Character* MainGameState::getPlayerCharacter(int index)
+{
+	size_t count(0);
+
+	for (size_t i = 0; i < characters.size(); i++)
+	{
+		if (characters[i]->isPlayerCharacter)
+		{
+			if (count == index)
+				return characters[i];
+
+			count++;
+		}
+	}
+
+	return nullptr;
+}
+Character* MainGameState::getEnemyCharacter(int index)
+{
+	size_t count(0);
+
+	for (size_t i = 0; i < characters.size(); i++)
+	{
+		if (!characters[i]->isPlayerCharacter)
+		{
+			if (count == index)
+				return characters[i];
+
+			count++;
+		}
+	}
+
+	return nullptr;
+}
 
 
 
