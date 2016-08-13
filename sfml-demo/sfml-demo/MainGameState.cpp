@@ -25,20 +25,19 @@ MainGameState::MainGameState(Game* game)
 	characters.push_back(new Character(false, "Enemy2", "Texture/Sprite/enemy2.png", 1, 0, 20, 20, 10, 10, 5, 5, 5, sf::Vector2f((game->window.getSize().x / 8) * 6, ((game->window.getSize().y / 3) + (game->window.getSize().y / 9)))));
 	characters.push_back(new Character(false, "Enemy3", "Texture/Sprite/enemy3.png", 1, 0, 20, 20, 10, 10, 5, 5, 5, sf::Vector2f((game->window.getSize().x / 8) * 7, ((game->window.getSize().y / 3) + (game->window.getSize().y / 9) * 2))));
 	
-
-	//characters.push_back(characterPlayer);
-	//characters.push_back(characterPlayer2);
-	//characters.push_back(characterPlayer3);
-	//characters.push_back(characterEnemy);
-	//characters.push_back(characterEnemy2);
-	//characters.push_back(characterEnemy3);
 	//järjestä characterit myöhemmin nopeusjärjestykseen
 
+
+	//SpecialMoves
+
+	
 	//Item
 	item = new Item("Potion");
 	//item = new Item("Potion2");
 	if (getPlayerCharacter(0) != nullptr)
 		getPlayerCharacter(0)->items.push_back(*item);
+
+	//Equipment
 
 
 	//Font and Text
@@ -122,12 +121,6 @@ MainGameState::MainGameState(Game* game)
 	}
 	spritebgMainGame.setTexture(texturebgMainGame);
 
-	//character
-	//spritesprPlayerCharacter = characterPlayer.spriteCharacter; //palauttaa spriten valkoisena
-	
-
-
-
 	//clock.restart();
 
 	std::cout << "MainGameState init" << std::endl;
@@ -139,6 +132,9 @@ MainGameState::~MainGameState()
 	{
 		delete characters[i];
 	}
+
+	//selvitä tarvitseeko jonkun paremman systeemin itemien poistoon
+	delete item;
 }
 
 //void MainGameState::init()
@@ -309,8 +305,9 @@ void MainGameState::handleInput()
 			{
 				if (evnt.key.code == sf::Keyboard::F)
 				{
-					if (getPlayerCharacter(0) != nullptr)
-						getPlayerCharacter(0)->healthPoints = 0;
+					//if (getPlayerCharacter(0) != nullptr)
+					//	getPlayerCharacter(0)->healthPoints = 0;
+					characters.back()->healthPoints = 0;
 				}
 					
 				//Go to CalculationState
@@ -415,10 +412,6 @@ void MainGameState::update(const float dt)
 
 void MainGameState::draw(const float dt)
 {
-	//textTitleMainGame.setString("MainGame");
-	//textTitleMainGame.setOrigin(textTitleMainGame.getGlobalBounds().width / 2, textTitleMainGame.getGlobalBounds().height / 2);
-	//textTitleMainGame.setPosition(game->window.getSize().x / 2, 10);
-
 	////UPDATE
 	//Text
 	//info
