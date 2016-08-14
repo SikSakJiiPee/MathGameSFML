@@ -74,23 +74,22 @@ private:
 	sf::Text textTime;
 	sf::Text text;
 
-
-
-	//Item
-	Item* item;
-	Item* item2;
-
 	//Texture and Sprite
 	//background
 	sf::Texture texturebgMainGame;
 	sf::Sprite spritebgMainGame;
 
 
+	//Item
+	Item* item;
+	Item* item2;
 
+	//Time
 	sf::Clock clock;
 	sf::Time timeElapsed;
 	float timeLeft;
 
+	//Selection
 	Selection selection;
 	//SelectionCharacter selectionCharacter;
 	bool selectCharacter = false;
@@ -99,6 +98,8 @@ private:
 	bool selectItem = false;
 	bool calculationIsOn = false;
 
+
+	//CalculationGame
 	//int correctAnswer;
 	//int playerAnswer = -255; //tsekkaa null, koska vastaus voi olla myös nolla, joten se ei voi olla alustus.
 	//bool answerIsCorrect = false;
@@ -110,6 +111,7 @@ private:
 	
 	//Calculation calculation(CalculationType ctype, NumberType ntype, int level, float time);
 	//int calculationGame(Calculation calculation);
+	//int calculationGame(Character* player, Character* enemy); 
 	//bool calculationGameIsOn = false;
 
 

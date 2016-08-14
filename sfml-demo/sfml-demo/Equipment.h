@@ -2,22 +2,28 @@
 
 #include <iostream>
 
+enum class EquipmentType {WEAPON, ARMOR};
+
 class Equipment
 {
 public:
-	Equipment();
+	Equipment(std::string name, EquipmentType etype, int ctime, int mass, 
+		int atk, int def, int spd, int hp, int sp);
 	~Equipment();
 
-	std::string name;
+	std::string equipmentName;
+	EquipmentType equipmentType;
 	//CalculationType calculationtype
 	//NumberType numberType
 	int calculationTime;
-	int mass;
+	int equipmentMass;
 
 	//ei varmuutta
 	int attack;
 	int defence;
 	int speed;
-	int hp;
-	int sp;
+	int healthPoints;
+	int specialPoints;
+
+	int numberOfCalculations;
 };
