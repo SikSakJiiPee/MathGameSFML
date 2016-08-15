@@ -8,11 +8,20 @@
 #include "Calculation.h"
 #include "CalculationState.h"
 
+#include <cstdio> //ei välttämättä tarvita enää (rand)
+#include <cstdlib> //ei välttämättä tarvita enää (srand)
+#include <time.h>
+#include <random>
+
+
 enum class Selection { NONE, ATTACK, SPECIAL, ITEM, ESCAPE, 
 	PLAYER1, PLAYER2, PLAYER3, ENEMY1, ENEMY2, ENEMY3 };
 enum class Turn {PLAYER, ENEMY};
+enum class Phase {MAIN, COMBAT, COMBATEND};
 //enum class SelectionCharacter { NONE, PLAYER1, PLAYER2, PLAYER3, ENEMY1, ENEMY2, ENEMY3 };
 
+enum class CalculationType { PLUS, MINUS, MULTIPLY, DIVIDE }; //Pitäisikö nimet olla Addition, Subtraction, Multiplication ja Division
+enum class NumberType { BOTH, POSITIVE, NEGATIVE };
 
 class MainGameState : public GameState
 {
@@ -40,12 +49,15 @@ public:
 	std::vector<Character*> characters;
 
 private:
+	//state management
 	void startCalculation(/* Character* attacker, Character* defender*/);
 	void backToMenu();
 
 	void combatAttack();
 	void combatDefend();
 
+
+	//character vector management
 	size_t getPlayerCharacterCount();
 	size_t getEnemyCharacterCount();
 
@@ -55,7 +67,13 @@ private:
 	///Returns Enemy Character by its index. Returns nullptr if index is invalid.
 	Character* getEnemyCharacter(int index);
 
-	//other
+
+	//MAINPHASE
+	//Time
+	sf::Clock clock;
+	sf::Time timeElapsed;
+	float timeLeft;
+
 	//Font and Text
 	sf::Font font;
 	sf::Text textTitleMainGame;
@@ -84,10 +102,6 @@ private:
 	Item* item;
 	Item* item2;
 
-	//Time
-	sf::Clock clock;
-	sf::Time timeElapsed;
-	float timeLeft;
 
 	//Selection
 	Selection selection;
@@ -99,7 +113,66 @@ private:
 	bool calculationIsOn = false;
 
 
-	//CalculationGame
+
+
+
+
+	//COMBATPHASE
+	//Methods
+	static int randomNumber(NumberType ntype, int level);
+	static int getCorrectAnswer(CalculationType type, int number, int number2);
+	static int getCorrectAnswerPlus(int number, int number2);
+	static int getCorrectAnswerMinus(int number, int number2);
+	static bool checkTheAnswer(int playerAnswer, int correctAnswer);
+	static std::string getCalculationString(CalculationType type, int number, int number2);
+	
+	//Text
+	//sf::Font font;
+	sf::Text textTitleCalc;
+	sf::Text textCalculation;
+	sf::Text textCalculation2;
+	sf::Text textCalculation3;
+	sf::Text textPlayerAnswer;
+	sf::Text textCorrectAnswer;
+	sf::Text textPoints;
+	sf::Text textMistakes;
+	sf::Text textCurrentCombo;
+	sf::Text textMaxCombo;
+	sf::Text textTimeLeft;
+	
+	//other
+	bool calculationGameIsOn = false;
+	bool isCalculationVisible = false;
+	bool isCalculationVisible2 = false;
+	bool isCalculationVisible3 = false;
+	bool answerIsChecked = false;
+	bool answerIsChecked2 = false;
+	bool answerIsChecked3 = false;
+
+	CalculationType calculationType;
+	NumberType numberType;
+	int calculationLevel;
+	float calculationTime;
+
+	int playerAnswer = -255; //Pitää olla pienempi
+	bool playerAnswerNegative = false;
+	int correctAnswer;
+	int correctAnswer2;
+	int correctAnswer3;
+	bool answerIsCorrect = false;
+	bool answerIsCorrect2 = false;
+	bool answerIsCorrect3 = false;
+
+	int points = 0;
+	int mistakes = 0;
+	int currentCombo;
+	int maxCombo;
+	float averageCombo;
+
+
+
+
+
 	//int correctAnswer;
 	//int playerAnswer = -255; //tsekkaa null, koska vastaus voi olla myös nolla, joten se ei voi olla alustus.
 	//bool answerIsCorrect = false;
@@ -112,7 +185,7 @@ private:
 	//Calculation calculation(CalculationType ctype, NumberType ntype, int level, float time);
 	//int calculationGame(Calculation calculation);
 	//int calculationGame(Character* player, Character* enemy); 
-	//bool calculationGameIsOn = false;
+	
 
 
 };

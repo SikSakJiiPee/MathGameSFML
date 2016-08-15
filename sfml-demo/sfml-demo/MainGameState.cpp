@@ -219,180 +219,202 @@ void MainGameState::handleInput()
 
 	while (this->game->window.pollEvent(evnt))
 	{
-		//closing the window
-		if (evnt.type == sf::Event::Closed)
+		if (!calculationGameIsOn)
 		{
-			game->window.close();
-		}
-		
-		//keyboard
-		if (evnt.type == sf::Event::KeyPressed)
-		{
-			if (selectPlayer)
+			//closing the window
+			if (evnt.type == sf::Event::Closed)
 			{
-				if (evnt.key.code == sf::Keyboard::Down)
-				{
-					if (selection == Selection::PLAYER2)
-					{
-						selection = Selection::PLAYER3;
-					}
-					if (selection == Selection::PLAYER1)
-					{
-						selection = Selection::PLAYER2;
-					}
-				}
-				if (evnt.key.code == sf::Keyboard::Up)
-				{
-					if (selection == Selection::PLAYER2)
-					{
-						selection = Selection::PLAYER1;
-					}
-					if (selection == Selection::PLAYER3)
-					{
-						selection = Selection::PLAYER2;
-					}
-				}
-				if (evnt.key.code == sf::Keyboard::Escape)
-				{
-					selectPlayer = false;
-					selection = Selection::ATTACK;
-				}
-				if (evnt.key.code == sf::Keyboard::Return)
-				{
+				game->window.close();
+			}
 
-				}
-			}
-			if (selectEnemy)
+			//keyboard
+			if (evnt.type == sf::Event::KeyPressed)
 			{
-				if (evnt.key.code == sf::Keyboard::Down)
+				//selecting the player target
+				if (selectPlayer)
 				{
-					if (selection == Selection::ENEMY2)
+					if (evnt.key.code == sf::Keyboard::Down)
 					{
-						selection = Selection::ENEMY3;
-					}
-					if (selection == Selection::ENEMY1)
-					{
-						selection = Selection::ENEMY2;
-					}
-				}
-				if (evnt.key.code == sf::Keyboard::Up)
-				{
-					if (selection == Selection::ENEMY2)
-					{
-						selection = Selection::ENEMY1;
-					}
-					if (selection == Selection::ENEMY3)
-					{
-						selection = Selection::ENEMY2;
-					}
-				}
-				if (evnt.key.code == sf::Keyboard::Escape)
-				{
-					selectEnemy = false;
-					selection = Selection::ATTACK;
-				}
-				if (evnt.key.code == sf::Keyboard::Return)
-				{
-					calculationIsOn = true;
-					this->startCalculation(/*characterPlayer, characterEnemy*/);
-					//if (selection == Selection::ENEMY1) 
-						//characterEnemy->healthPoints -= CalculationState::points;
-					calculationIsOn = false;
-				}
-			}
-			
-			if (!selectCharacter && !selectPlayer && !selectEnemy)
-			{
-				if (evnt.key.code == sf::Keyboard::F)
-				{
-					//if (getPlayerCharacter(0) != nullptr)
-					//	getPlayerCharacter(0)->healthPoints = 0;
-					characters.back()->healthPoints = 0;
-				}
-					
-				//Go to CalculationState
-				if (evnt.key.code == sf::Keyboard::Return)
-				{
-					if (selection == Selection::ATTACK)
-					{
-						selectEnemy = true;
-						selection = Selection::ENEMY1;
-						//selectionCharacter = SelectionCharacter::PLAYER1;
-						if (evnt.key.code == sf::Keyboard::Escape)
+						if (selection == Selection::PLAYER2)
 						{
-							////calculationin alustus ja pelin käynnistys
-							//Calculation calculation(CalculationType::PLUS, NumberType::POSITIVE, 1, 30);
-							//calculationGame(calculation);
-							//this->startCalculation();
+							selection = Selection::PLAYER3;
+						}
+						if (selection == Selection::PLAYER1)
+						{
+							selection = Selection::PLAYER2;
 						}
 					}
-					if (selection == Selection::SPECIAL)
+					if (evnt.key.code == sf::Keyboard::Up)
 					{
-						std::cout << "Special selected" << std::endl;
+						if (selection == Selection::PLAYER2)
+						{
+							selection = Selection::PLAYER1;
+						}
+						if (selection == Selection::PLAYER3)
+						{
+							selection = Selection::PLAYER2;
+						}
 					}
-					if (selection == Selection::ITEM)
+					if (evnt.key.code == sf::Keyboard::Escape)
 					{
-						selectItem = true;
-						std::cout << "Item selected" << std::endl;
+						selectPlayer = false;
+						selection = Selection::ATTACK;
 					}
-					if (selection == Selection::ESCAPE)
+					if (evnt.key.code == sf::Keyboard::Return)
 					{
-						std::cout << "Escape selected" << std::endl;
+
 					}
 				}
-				//return to menu
-				if (evnt.key.code == sf::Keyboard::Escape)
+				//selecting the enemy target
+				if (selectEnemy)
 				{
-					this->backToMenu();
+					if (evnt.key.code == sf::Keyboard::Down)
+					{
+						if (selection == Selection::ENEMY2)
+						{
+							selection = Selection::ENEMY3;
+						}
+						if (selection == Selection::ENEMY1)
+						{
+							selection = Selection::ENEMY2;
+						}
+					}
+					if (evnt.key.code == sf::Keyboard::Up)
+					{
+						if (selection == Selection::ENEMY2)
+						{
+							selection = Selection::ENEMY1;
+						}
+						if (selection == Selection::ENEMY3)
+						{
+							selection = Selection::ENEMY2;
+						}
+					}
+					if (evnt.key.code == sf::Keyboard::Escape)
+					{
+						selectEnemy = false;
+						selection = Selection::ATTACK;
+					}
+					if (evnt.key.code == sf::Keyboard::Return)
+					{
+						//calculationGameIsOn = true;
+						this->startCalculation(/*characterPlayer, characterEnemy*/);
+						//if (selection == Selection::ENEMY1) 
+						//characterEnemy->healthPoints -= CalculationState::points;
+						//calculationIsOn = false;
+					}
 				}
 
-				//selection
-				if (evnt.key.code == sf::Keyboard::Right)
+				//selecting the action
+				if (!selectCharacter && !selectPlayer && !selectEnemy)
 				{
-					if (selection == Selection::ATTACK)
+					if (evnt.key.code == sf::Keyboard::F)
 					{
-						selection = Selection::SPECIAL;
+						//if (getPlayerCharacter(0) != nullptr)
+						//	getPlayerCharacter(0)->healthPoints = 0;
+						characters.back()->healthPoints = 0;
 					}
-					if (selection == Selection::ITEM)
+
+					//Go to CalculationState
+					if (evnt.key.code == sf::Keyboard::Return)
 					{
-						selection = Selection::ESCAPE;
+						if (selection == Selection::ATTACK)
+						{
+							selectEnemy = true;
+							selection = Selection::ENEMY1;
+							//selectionCharacter = SelectionCharacter::PLAYER1;
+							if (evnt.key.code == sf::Keyboard::Escape)
+							{
+								////calculationin alustus ja pelin käynnistys
+								//Calculation calculation(CalculationType::PLUS, NumberType::POSITIVE, 1, 30);
+								//calculationGame(calculation);
+								//this->startCalculation();
+							}
+						}
+						if (selection == Selection::SPECIAL)
+						{
+							std::cout << "Special selected" << std::endl;
+						}
+						if (selection == Selection::ITEM)
+						{
+							selectItem = true;
+							std::cout << "Item selected" << std::endl;
+						}
+						if (selection == Selection::ESCAPE)
+						{
+							std::cout << "Escape selected" << std::endl;
+						}
 					}
-				}
-				if (evnt.key.code == sf::Keyboard::Left)
-				{
-					if (selection == Selection::SPECIAL)
+					//return to menu
+					if (evnt.key.code == sf::Keyboard::Escape)
 					{
-						selection = Selection::ATTACK;
+						this->backToMenu();
 					}
-					if (selection == Selection::ESCAPE)
+
+					//selection (action)
+					if (evnt.key.code == sf::Keyboard::Right)
 					{
-						selection = Selection::ITEM;
+						if (selection == Selection::ATTACK)
+						{
+							selection = Selection::SPECIAL;
+						}
+						if (selection == Selection::ITEM)
+						{
+							selection = Selection::ESCAPE;
+						}
 					}
-				}
-				if (evnt.key.code == sf::Keyboard::Down)
-				{
-					if (selection == Selection::ATTACK)
+					if (evnt.key.code == sf::Keyboard::Left)
 					{
-						selection = Selection::ITEM;
+						if (selection == Selection::SPECIAL)
+						{
+							selection = Selection::ATTACK;
+						}
+						if (selection == Selection::ESCAPE)
+						{
+							selection = Selection::ITEM;
+						}
 					}
-					if (selection == Selection::SPECIAL)
+					if (evnt.key.code == sf::Keyboard::Down)
 					{
-						selection = Selection::ESCAPE;
+						if (selection == Selection::ATTACK)
+						{
+							selection = Selection::ITEM;
+						}
+						if (selection == Selection::SPECIAL)
+						{
+							selection = Selection::ESCAPE;
+						}
 					}
-				}
-				if (evnt.key.code == sf::Keyboard::Up)
-				{
-					if (selection == Selection::ITEM)
+					if (evnt.key.code == sf::Keyboard::Up)
 					{
-						selection = Selection::ATTACK;
-					}
-					if (selection == Selection::ESCAPE)
-					{
-						selection = Selection::SPECIAL;
+						if (selection == Selection::ITEM)
+						{
+							selection = Selection::ATTACK;
+						}
+						if (selection == Selection::ESCAPE)
+						{
+							selection = Selection::SPECIAL;
+						}
 					}
 				}
 			}
+		}
+		//------------------
 
+
+
+		//during calculation
+		if (calculationGameIsOn)
+		{
+			//closing the window
+			if (evnt.type == sf::Event::Closed)
+			{
+				game->window.close();
+			}
+			if (evnt.type == sf::Event::KeyPressed)
+			{
+
+			}
 		}
 	}
 
@@ -402,173 +424,194 @@ void MainGameState::handleInput()
 
 void MainGameState::update(const float dt)
 {
-	timeElapsed = clock.getElapsedTime();
-	timeLeft = 30 - timeElapsed.asSeconds();
-	//std::cout << timeElapsed.asSeconds() << " " << timeLeft << std::endl;
+	if (!calculationGameIsOn)
+	{
+		timeElapsed = clock.getElapsedTime();
+		timeLeft = 30 - timeElapsed.asSeconds();
+		//std::cout << timeElapsed.asSeconds() << " " << timeLeft << std::endl;
 
-	std::string strTimeLeft = convertToString(timeLeft);
-	textTime.setString(strTimeLeft);
+		std::string strTimeLeft = convertToString(timeLeft);
+		textTime.setString(strTimeLeft);
+	}
+	//------------------
+
+	//during calculation
+	if (calculationGameIsOn)
+	{
+
+	}
+
 }
 
 void MainGameState::draw(const float dt)
 {
-	////UPDATE
-	//Text
-	//info
-	if (selection == Selection::PLAYER1)
-		textInfoPlayer.setColor(sf::Color::Blue);
-	else
-		textInfoPlayer.setColor(sf::Color::Black);
-	//
-	if (selection == Selection::PLAYER2)
-		textInfoPlayer2.setColor(sf::Color::Blue);
-	else
-		textInfoPlayer2.setColor(sf::Color::Black);
-	//
-	if (selection == Selection::PLAYER3)
-		textInfoPlayer3.setColor(sf::Color::Blue);
-	else
-		textInfoPlayer3.setColor(sf::Color::Black);
-	//
-	if (selection == Selection::ENEMY1)
-		textInfoEnemy.setColor(sf::Color::Red);
-	else
-		textInfoEnemy.setColor(sf::Color::Black);
-	//
-	if (selection == Selection::ENEMY2)
-		textInfoEnemy2.setColor(sf::Color::Red);
-	else
-		textInfoEnemy2.setColor(sf::Color::Black);
-	//
-	if (selection == Selection::ENEMY3)
-		textInfoEnemy3.setColor(sf::Color::Red);
-	else
-		textInfoEnemy3.setColor(sf::Color::Black);
-
-	//if (selectionCharacter == SelectionCharacter::PLAYER1)
-	//	textInfoPlayer.setColor(sf::Color::White);
-	//else
-	//	textInfoPlayer.setColor(sf::Color::Black);
-	////
-	//if (selectionCharacter == SelectionCharacter::PLAYER2)
-	//	textInfoPlayer2.setColor(sf::Color::White);
-	//else
-	//	textInfoPlayer2.setColor(sf::Color::Black);
-	////
-	//if (selectionCharacter == SelectionCharacter::PLAYER3)
-	//	textInfoPlayer3.setColor(sf::Color::White);
-	//else
-	//	textInfoPlayer3.setColor(sf::Color::Black);
-	////
-	//if (selectionCharacter == SelectionCharacter::ENEMY1)
-	//	textInfoEnemy.setColor(sf::Color::White);
-	//else
-	//	textInfoEnemy.setColor(sf::Color::Black);
-	////
-	//if (selectionCharacter == SelectionCharacter::ENEMY2)
-	//	textInfoEnemy2.setColor(sf::Color::White);
-	//else
-	//	textInfoEnemy2.setColor(sf::Color::Black);
-	////
-	//if (selectionCharacter == SelectionCharacter::ENEMY3)
-	//	textInfoEnemy3.setColor(sf::Color::White);
-	//else
-	//	textInfoEnemy3.setColor(sf::Color::Black);
-
-	//selvitä tapa toteuttaa infot tekstivektoreilla tai character attribuutilla
-	if (getPlayerCharacter(0) != nullptr)
-		textInfoPlayer.setString(getPlayerCharacter(0)->getStringCharacterInfo(*getPlayerCharacter(0)));
-	if (getPlayerCharacter(1) != nullptr)
-		textInfoPlayer2.setString(getPlayerCharacter(1)->getStringCharacterInfo(*getPlayerCharacter(1)));
-	if (getPlayerCharacter(2) != nullptr)
-		textInfoPlayer3.setString(getPlayerCharacter(2)->getStringCharacterInfo(*getPlayerCharacter(2)));
-	if (getEnemyCharacter(0) != nullptr)
-		textInfoEnemy.setString(getEnemyCharacter(0)->getStringCharacterInfo(*getEnemyCharacter(0)));
-	if (getEnemyCharacter(1) != nullptr)
-		textInfoEnemy2.setString(getEnemyCharacter(1)->getStringCharacterInfo(*getEnemyCharacter(1)));
-	if (getEnemyCharacter(2) != nullptr)
-		textInfoEnemy3.setString(getEnemyCharacter(2)->getStringCharacterInfo(*getEnemyCharacter(2)));
-
-	textInfoPlayer.setPosition(0, 0);
-	textInfoPlayer2.setPosition(0, (game->window.getSize().y / 18));
-	textInfoPlayer3.setPosition(0, (game->window.getSize().y / 18) * 2);
-	textInfoEnemy.setPosition(game->window.getSize().x / 2, 0);
-	textInfoEnemy2.setPosition(game->window.getSize().x / 2, (game->window.getSize().y / 18));
-	textInfoEnemy3.setPosition(game->window.getSize().x / 2, (game->window.getSize().y / 18) * 2);
-
-	textInfoItem.setPosition((game->window.getSize().x / 4) * 2, (game->window.getSize().y / 18) * 16);
-	textInfoItem.setPosition((game->window.getSize().x / 4) * 2, (game->window.getSize().y / 18) * 17);
-
-	
-	//selection
-	if (selection == Selection::ATTACK)
-		textGameAttack.setColor(sf::Color::White);
-	else
-		textGameAttack.setColor(sf::Color::Black);
-	//
-	if (selection == Selection::ITEM)
-		textGameItem.setColor(sf::Color::White);
-	else
-		textGameItem.setColor(sf::Color::Black);
-	//
-	if (selection == Selection::SPECIAL)
-		textGameSpecial.setColor(sf::Color::White);
-	else
-		textGameSpecial.setColor(sf::Color::Black);
-	//
-	if (selection == Selection::ESCAPE)
-		textGameEscape.setColor(sf::Color::White);
-	else
-		textGameEscape.setColor(sf::Color::Black);
-
-	textGameAttack.setPosition(0, (game->window.getSize().y / 18) * 16);
-	textGameItem.setPosition(0, (game->window.getSize().y / 18) * 17);
-	textGameSpecial.setPosition(game->window.getSize().x / 4, (game->window.getSize().y / 18) * 16);
-	textGameEscape.setPosition(game->window.getSize().x / 4, (game->window.getSize().y / 18) * 17);
-
-
-
-	////DRAW
-	//Sprite
-	//background
-	game->window.draw(spritebgMainGame);
-
-	//character
-	for (size_t i = 0; i < characters.size(); i++)
+	if (!calculationGameIsOn)
 	{
-		if (characters[i]->checkIfAlive())
-			game->window.draw(characters[i]->spriteCharacter);
+		////UPDATE
+		//Text
+		//info
+		if (selection == Selection::PLAYER1)
+			textInfoPlayer.setColor(sf::Color::Blue);
+		else
+			textInfoPlayer.setColor(sf::Color::Black);
+		//
+		if (selection == Selection::PLAYER2)
+			textInfoPlayer2.setColor(sf::Color::Blue);
+		else
+			textInfoPlayer2.setColor(sf::Color::Black);
+		//
+		if (selection == Selection::PLAYER3)
+			textInfoPlayer3.setColor(sf::Color::Blue);
+		else
+			textInfoPlayer3.setColor(sf::Color::Black);
+		//
+		if (selection == Selection::ENEMY1)
+			textInfoEnemy.setColor(sf::Color::Red);
+		else
+			textInfoEnemy.setColor(sf::Color::Black);
+		//
+		if (selection == Selection::ENEMY2)
+			textInfoEnemy2.setColor(sf::Color::Red);
+		else
+			textInfoEnemy2.setColor(sf::Color::Black);
+		//
+		if (selection == Selection::ENEMY3)
+			textInfoEnemy3.setColor(sf::Color::Red);
+		else
+			textInfoEnemy3.setColor(sf::Color::Black);
+
+		//if (selectionCharacter == SelectionCharacter::PLAYER1)
+		//	textInfoPlayer.setColor(sf::Color::White);
+		//else
+		//	textInfoPlayer.setColor(sf::Color::Black);
+		////
+		//if (selectionCharacter == SelectionCharacter::PLAYER2)
+		//	textInfoPlayer2.setColor(sf::Color::White);
+		//else
+		//	textInfoPlayer2.setColor(sf::Color::Black);
+		////
+		//if (selectionCharacter == SelectionCharacter::PLAYER3)
+		//	textInfoPlayer3.setColor(sf::Color::White);
+		//else
+		//	textInfoPlayer3.setColor(sf::Color::Black);
+		////
+		//if (selectionCharacter == SelectionCharacter::ENEMY1)
+		//	textInfoEnemy.setColor(sf::Color::White);
+		//else
+		//	textInfoEnemy.setColor(sf::Color::Black);
+		////
+		//if (selectionCharacter == SelectionCharacter::ENEMY2)
+		//	textInfoEnemy2.setColor(sf::Color::White);
+		//else
+		//	textInfoEnemy2.setColor(sf::Color::Black);
+		////
+		//if (selectionCharacter == SelectionCharacter::ENEMY3)
+		//	textInfoEnemy3.setColor(sf::Color::White);
+		//else
+		//	textInfoEnemy3.setColor(sf::Color::Black);
+
+		//selvitä tapa toteuttaa infot tekstivektoreilla tai character attribuutilla
+		if (getPlayerCharacter(0) != nullptr)
+			textInfoPlayer.setString(getPlayerCharacter(0)->getStringCharacterInfo(*getPlayerCharacter(0)));
+		if (getPlayerCharacter(1) != nullptr)
+			textInfoPlayer2.setString(getPlayerCharacter(1)->getStringCharacterInfo(*getPlayerCharacter(1)));
+		if (getPlayerCharacter(2) != nullptr)
+			textInfoPlayer3.setString(getPlayerCharacter(2)->getStringCharacterInfo(*getPlayerCharacter(2)));
+		if (getEnemyCharacter(0) != nullptr)
+			textInfoEnemy.setString(getEnemyCharacter(0)->getStringCharacterInfo(*getEnemyCharacter(0)));
+		if (getEnemyCharacter(1) != nullptr)
+			textInfoEnemy2.setString(getEnemyCharacter(1)->getStringCharacterInfo(*getEnemyCharacter(1)));
+		if (getEnemyCharacter(2) != nullptr)
+			textInfoEnemy3.setString(getEnemyCharacter(2)->getStringCharacterInfo(*getEnemyCharacter(2)));
+
+		textInfoPlayer.setPosition(0, 0);
+		textInfoPlayer2.setPosition(0, (game->window.getSize().y / 18));
+		textInfoPlayer3.setPosition(0, (game->window.getSize().y / 18) * 2);
+		textInfoEnemy.setPosition(game->window.getSize().x / 2, 0);
+		textInfoEnemy2.setPosition(game->window.getSize().x / 2, (game->window.getSize().y / 18));
+		textInfoEnemy3.setPosition(game->window.getSize().x / 2, (game->window.getSize().y / 18) * 2);
+
+		textInfoItem.setPosition((game->window.getSize().x / 4) * 2, (game->window.getSize().y / 18) * 16);
+		textInfoItem.setPosition((game->window.getSize().x / 4) * 2, (game->window.getSize().y / 18) * 17);
+
+
+		//selection
+		if (selection == Selection::ATTACK)
+			textGameAttack.setColor(sf::Color::White);
+		else
+			textGameAttack.setColor(sf::Color::Black);
+		//
+		if (selection == Selection::ITEM)
+			textGameItem.setColor(sf::Color::White);
+		else
+			textGameItem.setColor(sf::Color::Black);
+		//
+		if (selection == Selection::SPECIAL)
+			textGameSpecial.setColor(sf::Color::White);
+		else
+			textGameSpecial.setColor(sf::Color::Black);
+		//
+		if (selection == Selection::ESCAPE)
+			textGameEscape.setColor(sf::Color::White);
+		else
+			textGameEscape.setColor(sf::Color::Black);
+
+		textGameAttack.setPosition(0, (game->window.getSize().y / 18) * 16);
+		textGameItem.setPosition(0, (game->window.getSize().y / 18) * 17);
+		textGameSpecial.setPosition(game->window.getSize().x / 4, (game->window.getSize().y / 18) * 16);
+		textGameEscape.setPosition(game->window.getSize().x / 4, (game->window.getSize().y / 18) * 17);
+
+
+
+		////DRAW
+		//Sprite
+		//background
+		game->window.draw(spritebgMainGame);
+
+		//character
+		for (size_t i = 0; i < characters.size(); i++)
+		{
+			if (characters[i]->checkIfAlive())
+				game->window.draw(characters[i]->spriteCharacter);
+		}
+
+		//Text
+		//game->window.draw(textTitleMainGame);
+		//game->window.draw(textTime);
+
+		//info
+		game->window.draw(textInfoPlayer);
+		game->window.draw(textInfoPlayer2);
+		game->window.draw(textInfoPlayer3);
+		game->window.draw(textInfoEnemy);
+		game->window.draw(textInfoEnemy2);
+		game->window.draw(textInfoEnemy3);
+		if (selectItem)
+		{
+			game->window.draw(textInfoItem);
+			//game->window.draw(textInfoItem2);
+		}
+
+		//selection
+		game->window.draw(textGameAttack);
+		game->window.draw(textGameItem);
+		game->window.draw(textGameSpecial);
+		game->window.draw(textGameEscape);
 	}
+	//------------------
 
-	//Text
-	//game->window.draw(textTitleMainGame);
-	//game->window.draw(textTime);
-
-	//info
-	game->window.draw(textInfoPlayer);
-	game->window.draw(textInfoPlayer2);
-	game->window.draw(textInfoPlayer3);
-	game->window.draw(textInfoEnemy);
-	game->window.draw(textInfoEnemy2);
-	game->window.draw(textInfoEnemy3);
-	if (selectItem)
+	//during calculation
+	if (calculationGameIsOn)
 	{
-		game->window.draw(textInfoItem);
-		//game->window.draw(textInfoItem2);
-	}
 
-	//selection
-	game->window.draw(textGameAttack);
-	game->window.draw(textGameItem);
-	game->window.draw(textGameSpecial);
-	game->window.draw(textGameEscape);
-	
+	}
 }
 
 
+//state management
 void MainGameState::startCalculation(/*Character* attacker, Character* defender*/)
 {
-	this->game->pushState(new CalculationState(this->game/*, attacker, defender*/));
+	//this->game->pushState(new CalculationState(this->game/*, attacker, defender*/));
 
 	return;
 }
@@ -643,6 +686,130 @@ Character* MainGameState::getEnemyCharacter(int index)
 }
 
 
+
+
+
+
+//COMBATPHASE
+
+int MainGameState::randomNumber(NumberType ntype, int level)
+{
+	int rMin;
+	int rMax;
+
+	if (ntype == NumberType::BOTH)
+	{
+		rMin = -5 * level;
+		rMax = 5 * level;
+	}
+	else if (ntype == NumberType::POSITIVE)
+	{
+		rMin = 0;
+		rMax = 10 * level;
+	}
+	else if (ntype == NumberType::NEGATIVE)
+	{
+		rMin = -10 * level;
+		rMax = 0;
+	}
+
+	std::random_device rd;
+	std::mt19937 rng(rd());
+	std::uniform_int_distribution<int> uni(rMin, rMax);
+	auto rNumber = uni(rng);
+
+	return rNumber;
+}
+
+int MainGameState::getCorrectAnswer(CalculationType type, int number, int number2)
+{
+	if (type == CalculationType::PLUS)
+	{
+		int correctAnswer = number + number2;
+
+		return correctAnswer;
+	}
+	else if (type == CalculationType::MINUS)
+	{
+		int correctAnswer = number - number2;
+
+		return correctAnswer;
+	}
+	else if (type == CalculationType::MULTIPLY)
+	{
+		int correctAnswer = number * number2;
+
+		return correctAnswer;
+	}
+	else if (type == CalculationType::DIVIDE)
+	{
+		int correctAnswer = number / number2;
+
+		return correctAnswer;
+	}
+}
+
+int MainGameState::getCorrectAnswerPlus(int number, int number2)
+{
+	int correctAnswer = number + number2;
+
+	return correctAnswer;
+}
+
+int MainGameState::getCorrectAnswerMinus(int number, int number2)
+{
+	int correctAnswer = number - number2;
+
+	return correctAnswer;
+}
+
+bool MainGameState::checkTheAnswer(int playerAnswer, int correctAnswer)
+{
+	if (playerAnswer == correctAnswer)
+	{
+		return true;
+	}
+
+	return false;
+}
+
+std::string MainGameState::getCalculationString(CalculationType type, int number, int number2)
+{
+	std::string stringNumber = convertToString(number);
+	std::string stringNumber2 = convertToString(number2);
+	std::string stringType;
+	std::string stringCalculation;
+
+
+	if (type == CalculationType::PLUS)
+	{
+		stringType = " + ";
+		stringCalculation = stringNumber + stringType + stringNumber2;
+
+		return stringCalculation;
+	}
+	else if (type == CalculationType::MINUS)
+	{
+		stringType = " - ";
+		stringCalculation = stringNumber + stringType + stringNumber2;
+
+		return stringCalculation;
+	}
+	else if (type == CalculationType::MULTIPLY)
+	{
+		stringType = " * ";
+		stringCalculation = stringNumber + stringType + stringNumber2;
+
+		return stringCalculation;
+	}
+	else if (type == CalculationType::DIVIDE)
+	{
+		stringType = " / ";
+		stringCalculation = stringNumber + stringType + stringNumber2;
+
+		return stringCalculation;
+	}
+}
 
 //#include "MainGameState.h"
 //#include "MenuState.h"
