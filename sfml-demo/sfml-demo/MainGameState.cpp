@@ -123,6 +123,60 @@ MainGameState::MainGameState(Game* game)
 
 	//clock.restart();
 
+	textTime.setFont(font);
+	textTime.setCharacterSize(30);
+	textTime.setColor(sf::Color::Black);
+
+
+
+
+
+	//COMBATPHASE
+	textTitleCalc.setFont(font);
+	textTitleCalc.setCharacterSize(30);
+	textTitleCalc.setColor(sf::Color::Black);
+
+	textCalculation.setFont(font);
+	textCalculation.setCharacterSize(30);
+	textCalculation.setColor(sf::Color::Black);
+	
+	textCalculation2.setFont(font);
+	textCalculation2.setCharacterSize(30);
+	textCalculation2.setColor(sf::Color::Black);
+	
+	textCalculation3.setFont(font);
+	textCalculation3.setCharacterSize(30);
+	textCalculation3.setColor(sf::Color::Black);
+	
+	textPlayerAnswer.setFont(font);
+	textPlayerAnswer.setCharacterSize(30);
+	textPlayerAnswer.setColor(sf::Color::Black);
+	
+	textCorrectAnswer.setFont(font);
+	textCorrectAnswer.setCharacterSize(30);
+	textCorrectAnswer.setColor(sf::Color::Black);
+	
+	textPoints.setFont(font);
+	textPoints.setCharacterSize(30);
+	textPoints.setColor(sf::Color::Black);
+	
+	textMistakes.setFont(font);
+	textMistakes.setCharacterSize(30);
+	textMistakes.setColor(sf::Color::Black);
+	
+	textCurrentCombo.setFont(font);
+	textCurrentCombo.setCharacterSize(30);
+	textCurrentCombo.setColor(sf::Color::Black);
+	
+	textMaxCombo.setFont(font);
+	textMaxCombo.setCharacterSize(30);
+	textMaxCombo.setColor(sf::Color::Black);
+	
+	textTimeLeft.setFont(font);
+	textTimeLeft.setCharacterSize(30);
+
+	calculationLevel = 1;
+
 	std::cout << "MainGameState init" << std::endl;
 }
 
@@ -297,8 +351,8 @@ void MainGameState::handleInput()
 					}
 					if (evnt.key.code == sf::Keyboard::Return)
 					{
-						//calculationGameIsOn = true;
-						this->startCalculation(/*characterPlayer, characterEnemy*/);
+						calculationGameIsOn = true;
+						//this->startCalculation(/*characterPlayer, characterEnemy*/);
 						//if (selection == Selection::ENEMY1) 
 						//characterEnemy->healthPoints -= CalculationState::points;
 						//calculationIsOn = false;
@@ -413,7 +467,231 @@ void MainGameState::handleInput()
 			}
 			if (evnt.type == sf::Event::KeyPressed)
 			{
+				//closing the window
+				if (evnt.key.code == sf::Keyboard::Escape)
+				{
+					//reset calculation stuff
+					clock.restart();
+					points = 0;
+					mistakes = 0;
+					isCalculationVisible = false;
+					isCalculationVisible2 = false;
+					isCalculationVisible3 = false;
+					answerIsChecked = false;
+					answerIsChecked2 = false;
+					answerIsChecked3 = false;
+					answerIsCorrect = false;
+					answerIsCorrect2 = false;
+					answerIsCorrect3 = false;
 
+					calculationGameIsOn = false;
+				}
+
+				//comparing the answer
+				if (evnt.key.code == sf::Keyboard::Return)
+				{
+					answerIsChecked = true;
+					//answerIsChecked2 = true;
+					//answerIsChecked3 = true;
+				
+					//ei valmis
+					if (playerAnswerNegative == true)
+					{
+						playerAnswer *= -1;
+					}
+					std::cout << "sinun vastaus: " << playerAnswer << std::endl;
+					//std::cout << "oikea vastaus1: " << correctAnswer << std::endl;
+					//std::cout << "oikea vastaus2: " << correctAnswer2 << std::endl;
+					//std::cout << "oikea vastaus3: " << correctAnswer3 << std::endl;
+				
+					//vastauksien vertaaminen
+					if (playerAnswer == correctAnswer)
+					{
+						answerIsCorrect = true;
+					}
+					//else if (playerAnswer == correctAnswer2)
+					//{
+					//	answerIsCorrect2 = true;
+					//}
+					//else if (playerAnswer == correctAnswer3)
+					//{
+					//	answerIsCorrect3 = true;
+					//}
+					else if (playerAnswer != correctAnswer)
+					{
+						answerIsCorrect = false;
+						//playerAnswer = -255;
+					}
+					//else if (playerAnswer != correctAnswer2)
+					//{
+					//	answerIsCorrect2 = false;
+					//	//playerAnswer = -255;
+					//}
+					//else if (playerAnswer != correctAnswer3)
+					//{
+					//	answerIsCorrect3 = false;
+					//	//playerAnswer = -255;
+					//}
+					playerAnswer = -255;
+					playerAnswerNegative = false;
+				}
+				
+				//the numbers
+				if (evnt.key.code == sf::Keyboard::Num0 || evnt.key.code == sf::Keyboard::Numpad0)
+				{
+					if (playerAnswer == -255)
+					{
+						playerAnswer = 0;
+					}
+					else if (playerAnswer > 100000)
+					{
+						playerAnswer += 0;
+					}
+					else
+					{
+						playerAnswer = playerAnswer * 10;
+					}
+				}
+				if (evnt.key.code == sf::Keyboard::Num1 || evnt.key.code == sf::Keyboard::Numpad1)
+				{
+					if (playerAnswer == -255)
+					{
+						playerAnswer = 1;
+					}
+					else if (playerAnswer > 100000)
+					{
+						playerAnswer += 0;
+					}
+					else
+					{
+						playerAnswer = (playerAnswer * 10) + 1;
+					}
+				}
+				if (evnt.key.code == sf::Keyboard::Num2 || evnt.key.code == sf::Keyboard::Numpad2)
+				{
+					if (playerAnswer == -255)
+					{
+						playerAnswer = 2;
+					}
+					else if (playerAnswer > 100000)
+					{
+						playerAnswer += 0;
+					}
+					else
+					{
+						playerAnswer = (playerAnswer * 10) + 2;
+					}
+				}
+				if (evnt.key.code == sf::Keyboard::Num3 || evnt.key.code == sf::Keyboard::Numpad3)
+				{
+					if (playerAnswer == -255)
+					{
+						playerAnswer = 3;
+					}
+					else if (playerAnswer > 100000)
+					{
+						playerAnswer += 0;
+					}
+					else
+					{
+						playerAnswer = (playerAnswer * 10) + 3;
+					}
+				}
+				if (evnt.key.code == sf::Keyboard::Num4 || evnt.key.code == sf::Keyboard::Numpad4)
+				{
+					if (playerAnswer == -255)
+					{
+						playerAnswer = 4;
+					}
+					else if (playerAnswer > 100000)
+					{
+						playerAnswer += 0;
+					}
+					else
+					{
+						playerAnswer = (playerAnswer * 10) + 4;
+					}
+				}
+				if (evnt.key.code == sf::Keyboard::Num5 || evnt.key.code == sf::Keyboard::Numpad5)
+				{
+					if (playerAnswer == -255)
+					{
+						playerAnswer = 5;
+					}
+					else if (playerAnswer > 100000)
+					{
+						playerAnswer += 0;
+					}
+					else
+					{
+						playerAnswer = (playerAnswer * 10) + 5;
+					}
+				}
+				if (evnt.key.code == sf::Keyboard::Num6 || evnt.key.code == sf::Keyboard::Numpad6)
+				{
+					if (playerAnswer == -255)
+					{
+						playerAnswer = 6;
+					}
+					else if (playerAnswer > 100000)
+					{
+						playerAnswer += 0;
+					}
+					else
+					{
+						playerAnswer = (playerAnswer * 10) + 6;
+					}
+				}
+				if (evnt.key.code == sf::Keyboard::Num7 || evnt.key.code == sf::Keyboard::Numpad7)
+				{
+					if (playerAnswer == -255)
+					{
+						playerAnswer = 7;
+					}
+					else if (playerAnswer > 100000)
+					{
+						playerAnswer += 0;
+					}
+					else
+					{
+						playerAnswer = (playerAnswer * 10) + 7;
+					}
+				}
+				if (evnt.key.code == sf::Keyboard::Num8 || evnt.key.code == sf::Keyboard::Numpad8)
+				{
+					if (playerAnswer == -255)
+					{
+						playerAnswer = 8;
+					}
+					else if (playerAnswer > 100000)
+					{
+						playerAnswer += 0;
+					}
+					else
+					{
+						playerAnswer = (playerAnswer * 10) + 8;
+					}
+				}
+				if (evnt.key.code == sf::Keyboard::Num9 || evnt.key.code == sf::Keyboard::Numpad9)
+				{
+					if (playerAnswer == -255)
+					{
+						playerAnswer = 9;
+					}
+					else if (playerAnswer > 100000)
+					{
+						playerAnswer += 0;
+					}
+					else
+					{
+						playerAnswer = (playerAnswer * 10) + 9;
+					}
+				}
+				if (evnt.key.code == sf::Keyboard::Subtract || evnt.key.code == sf::Keyboard::Dash)
+				{
+					playerAnswerNegative = true;
+				}
+				
 			}
 		}
 	}
@@ -426,25 +704,229 @@ void MainGameState::update(const float dt)
 {
 	if (!calculationGameIsOn)
 	{
-		timeElapsed = clock.getElapsedTime();
-		timeLeft = 30 - timeElapsed.asSeconds();
-		//std::cout << timeElapsed.asSeconds() << " " << timeLeft << std::endl;
+		//timeElapsed = clock.getElapsedTime();
+		//timeLeft = 30 - timeElapsed.asSeconds();
+		////std::cout << timeElapsed.asSeconds() << " " << timeLeft << std::endl;
 
-		std::string strTimeLeft = convertToString(timeLeft);
-		textTime.setString(strTimeLeft);
+		//std::string strTimeLeft = convertToString(timeLeft);
+		//textTime.setString(strTimeLeft);
 	}
 	//------------------
 
 	//during calculation
 	if (calculationGameIsOn)
 	{
+		//timer
+		timeElapsed = clock.getElapsedTime();
+		timeLeft = 30 - timeElapsed.asSeconds();
+		//std::cout << timeElapsed.asSeconds() << " " << timeLeft << std::endl;
+		std::string strTimeLeft = convertToString(timeLeft);
+		textTimeLeft.setString(strTimeLeft);
+		
+		if (timeLeft <= 0)
+		{
+			if (getEnemyCharacter(0))
+				getEnemyCharacter(0)->healthPoints -= points;
 
+			//reset calculation stuff
+			clock.restart();
+			points = 0;
+			mistakes = 0;
+			isCalculationVisible = false;
+			isCalculationVisible2 = false;
+			isCalculationVisible3 = false;
+			answerIsChecked = false;
+			answerIsChecked2 = false;
+			answerIsChecked3 = false;
+			answerIsCorrect = false;
+			answerIsCorrect2 = false;
+			answerIsCorrect3 = false;
+
+			calculationGameIsOn = false;
+		}
+			
+		
+		//MUISTA ALUSTAA KAIKKI!
+		CalculationType calculationType = CalculationType::MINUS;
+		NumberType numberType = NumberType::POSITIVE;
+		//int calculationLevel = MainGameState::calculationLevel;
+		
+		std::string strPlayerAnswer = convertToString(playerAnswer);
+		
+		if (playerAnswer != -255)
+		{
+			textPlayerAnswer.setString(strPlayerAnswer);
+		}
+		if (playerAnswer == -255)
+		{
+			textPlayerAnswer.setString("Give the Answer");
+		}
+		if (playerAnswerNegative)
+		{
+			if (playerAnswer == -255)
+			{
+				textPlayerAnswer.setString(" - ");
+			}
+			else
+			{
+				textPlayerAnswer.setString("-" + strPlayerAnswer);
+			}
+		
+		}
+		
+		//std::cout << playerAnswer << std::endl;
+		//std::cout << "calculationLevel: " << calculationLevel << std::endl;
+		
+		//generating the calculations
+		if (!isCalculationVisible)
+		{
+			isCalculationVisible = true;
+		
+			int number = randomNumber(numberType, calculationLevel);
+			int number2 = randomNumber(numberType, calculationLevel);
+				
+			correctAnswer = getCorrectAnswer(calculationType, number, number2);
+			std::string strCalculation = getCalculationString(calculationType, number, number2);
+			textCalculation.setString(strCalculation);
+		
+			//std::string strPlayerAnswer = convertToString(playerAnswer);
+			//textPlayerAnswer.setString(strPlayerAnswer);
+		}
+		//if (!isCalculationVisible2)
+		//{
+		//	isCalculationVisible2 = true;
+		
+		//	int number = randomNumber(numberType, calculationLevel);
+		//	int number2 = randomNumber(numberType, calculationLevel);
+		
+		//	correctAnswer2 = getCorrectAnswer(calculationType, number, number2);
+		//	std::string strCalculation = getCalculationString(calculationType, number, number2);
+		//	textCalculation2.setString(strCalculation);
+		
+		//	//std::string strPlayerAnswer = convertToString(playerAnswer);
+		//	//textPlayerAnswer.setString(strPlayerAnswer);
+		//}
+		//if (!isCalculationVisible3)
+		//{
+		//	isCalculationVisible3 = true;
+		
+		//	int number = randomNumber(numberType, calculationLevel);
+		//	int number2 = randomNumber(numberType, calculationLevel);
+		
+		//	correctAnswer3 = getCorrectAnswer(calculationType, number, number2);
+		//	std::string strCalculation = getCalculationString(calculationType, number, number2);
+		//	textCalculation3.setString(strCalculation);
+		
+		//	//std::string strPlayerAnswer = convertToString(playerAnswer);
+		//	//textPlayerAnswer.setString(strPlayerAnswer);
+		//}
+		
+		//checking the answers
+		if (answerIsChecked)
+		{
+				
+			if (answerIsCorrect)
+			{
+				std::cout << "Oikea vastaus 1 on: " << correctAnswer << "	oikein!" << std::endl;
+				points++;
+				if (points == 5 || points == 10 || points == 15 || points == 20 || points == 25)
+				{
+					calculationLevel++;
+					std::cout << "taso nousi" << std::endl;
+				}
+				//playerAnswer = -255;
+				isCalculationVisible = false;
+			}
+			else if (!answerIsCorrect)
+			{
+				std::cout << "Oikea vastaus 1 on: " << correctAnswer << "	kurahti..." << std::endl;
+				mistakes++;
+			}
+		
+		
+		
+			std::cout << "Pisteet: " << points << ". Virheet: " << mistakes << "." << std::endl;
+		
+			//charaEnemy->healthPoints -= points;
+		
+		
+			//estä monen laskuun vastaaminen kerralla
+			//esim. siirtämällä seuraavaa linea iffeihin
+			answerIsChecked = false;
+		}
+		
+		//if (answerIsChecked2)
+		//{
+		//	if (answerIsCorrect2)
+		//	{
+		//		std::cout << "Oikea vastaus 2 on: " << correctAnswer2 << "	oikein!" << std::endl;
+		//		points++;
+		//		if (points == 5 || points == 10 || points == 15 || points == 20 || points == 25)
+		//		{
+		//			calculationLevel++;
+		//			std::cout << "taso nousi" << std::endl;
+		//		}
+		//		//playerAnswer = -255;
+		//		isCalculationVisible2 = false;
+		//		answerIsChecked = false;
+		//	}
+		//	else if (!answerIsCorrect2)
+		//	{
+		//		std::cout << "Oikea vastaus 2 on: " << correctAnswer2 << "	kurahti..." << std::endl;
+		//		mistakes++;
+		//		answerIsChecked = false;
+		//	}
+		//	std::cout << "Pisteet: " << points << ". Virheet: " << mistakes << "." << std::endl;
+		//	answerIsChecked2 = false;
+		//}
+		
+		//if (answerIsChecked3)
+		//{
+		//	if (answerIsCorrect3)
+		//	{
+		//		std::cout << "Oikea vastaus 3 on: " << correctAnswer3 << "	oikein!" << std::endl;
+		//		points++;
+		//		if (points == 5 || points == 10 || points == 15 || points == 20 || points == 25)
+		//		{
+		//			calculationLevel++;
+		//			std::cout << "taso nousi" << std::endl;
+		//		}
+		//		//playerAnswer = -255;
+		//		isCalculationVisible3 = false;
+		//		answerIsChecked = false;
+		//	}
+		//	else if (!answerIsCorrect3)
+		//	{
+		//		std::cout << "Oikea vastaus 3 on: " << correctAnswer3 << "	kurahti..." << std::endl;
+		//		mistakes++;
+		//		answerIsChecked = false;
+		//	}
+		//	std::cout << "Pisteet: " << points << ". Virheet: " << mistakes << "." << std::endl;
+		//	answerIsChecked3 = false;
+		//}
+			
 	}
 
 }
 
 void MainGameState::draw(const float dt)
 {
+	//during whole battle
+	//DRAW
+	//Sprite
+	//background
+	game->window.draw(spritebgMainGame);
+
+	//character
+	for (size_t i = 0; i < characters.size(); i++)
+	{
+		if (characters[i]->checkIfAlive())
+			game->window.draw(characters[i]->spriteCharacter);
+	}
+
+	
+
+	//during main phase
 	if (!calculationGameIsOn)
 	{
 		////UPDATE
@@ -564,17 +1046,6 @@ void MainGameState::draw(const float dt)
 
 
 		////DRAW
-		//Sprite
-		//background
-		game->window.draw(spritebgMainGame);
-
-		//character
-		for (size_t i = 0; i < characters.size(); i++)
-		{
-			if (characters[i]->checkIfAlive())
-				game->window.draw(characters[i]->spriteCharacter);
-		}
-
 		//Text
 		//game->window.draw(textTitleMainGame);
 		//game->window.draw(textTime);
@@ -600,10 +1071,37 @@ void MainGameState::draw(const float dt)
 	}
 	//------------------
 
+
+
 	//during calculation
 	if (calculationGameIsOn)
 	{
-
+		textTitleCalc.setString("Calculation");
+		textTitleCalc.setOrigin(textTitleCalc.getGlobalBounds().width / 2, textTitleCalc.getGlobalBounds().height / 2);
+		textTitleCalc.setPosition(game->window.getSize().x / 2, 10);
+		
+		textCalculation.setOrigin(textCalculation.getGlobalBounds().width / 2, textCalculation.getGlobalBounds().height);
+		textCalculation.setPosition((game->window.getSize().x / 4) * 2, game->window.getSize().y / 3);
+		//textCalculation2.setOrigin(textCalculation.getGlobalBounds().width / 2, textCalculation.getGlobalBounds().height);
+		//textCalculation2.setPosition((game->window.getSize().x / 4) * 2, game->window.getSize().y / 3);
+		//textCalculation3.setOrigin(textCalculation.getGlobalBounds().width / 2, textCalculation.getGlobalBounds().height);
+		//textCalculation3.setPosition((game->window.getSize().x / 4) * 3, game->window.getSize().y / 3);
+		
+		textPlayerAnswer.setOrigin(textPlayerAnswer.getGlobalBounds().width / 2, textPlayerAnswer.getGlobalBounds().height);
+		textPlayerAnswer.setPosition(game->window.getSize().x / 2, (game->window.getSize().y / 3) * 2);
+		
+		if (timeLeft <= 5.00f)
+			textTimeLeft.setColor(sf::Color::Red);
+		else
+			textTimeLeft.setColor(sf::Color::Black);
+		
+		game->window.draw(textTitleCalc);
+		game->window.draw(textCalculation);
+		//game->window.draw(textCalculation2);
+		//game->window.draw(textCalculation3);
+		game->window.draw(textPlayerAnswer);
+		
+		game->window.draw(textTimeLeft);
 	}
 }
 
