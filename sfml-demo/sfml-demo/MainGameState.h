@@ -118,6 +118,9 @@ private:
 
 
 	//COMBATPHASE
+	void initCalculation();
+	void uninitCalculation();
+
 	//Methods
 	static int randomNumber(NumberType ntype, int level);
 	static int getCorrectAnswer(CalculationType type, int number, int number2);

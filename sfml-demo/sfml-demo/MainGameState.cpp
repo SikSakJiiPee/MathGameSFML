@@ -316,7 +316,7 @@ void MainGameState::handleInput()
 					}
 					if (evnt.key.code == sf::Keyboard::Return)
 					{
-
+						
 					}
 				}
 				//selecting the enemy target
@@ -351,7 +351,7 @@ void MainGameState::handleInput()
 					}
 					if (evnt.key.code == sf::Keyboard::Return)
 					{
-						calculationGameIsOn = true;
+						initCalculation();
 						//this->startCalculation(/*characterPlayer, characterEnemy*/);
 						//if (selection == Selection::ENEMY1) 
 						//characterEnemy->healthPoints -= CalculationState::points;
@@ -470,21 +470,7 @@ void MainGameState::handleInput()
 				//closing the window
 				if (evnt.key.code == sf::Keyboard::Escape)
 				{
-					//reset calculation stuff
-					clock.restart();
-					points = 0;
-					mistakes = 0;
-					isCalculationVisible = false;
-					isCalculationVisible2 = false;
-					isCalculationVisible3 = false;
-					answerIsChecked = false;
-					answerIsChecked2 = false;
-					answerIsChecked3 = false;
-					answerIsCorrect = false;
-					answerIsCorrect2 = false;
-					answerIsCorrect3 = false;
-
-					calculationGameIsOn = false;
+					uninitCalculation();
 				}
 
 				//comparing the answer
@@ -1189,6 +1175,30 @@ Character* MainGameState::getEnemyCharacter(int index)
 
 
 //COMBATPHASE
+void MainGameState::initCalculation() //tarvitsee jonkun tiedon taistelijoista
+{
+	calculationGameIsOn = true;
+
+}
+void MainGameState::uninitCalculation()
+{
+	//reset calculation stuff
+	clock.restart();
+	points = 0;
+	mistakes = 0;
+	isCalculationVisible = false;
+	isCalculationVisible2 = false;
+	isCalculationVisible3 = false;
+	answerIsChecked = false;
+	answerIsChecked2 = false;
+	answerIsChecked3 = false;
+	answerIsCorrect = false;
+	answerIsCorrect2 = false;
+	answerIsCorrect3 = false;
+
+	calculationGameIsOn = false;
+}
+
 
 int MainGameState::randomNumber(NumberType ntype, int level)
 {
