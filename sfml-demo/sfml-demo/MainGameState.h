@@ -97,11 +97,16 @@ private:
 	sf::Texture texturebgMainGame;
 	sf::Sprite spritebgMainGame;
 
+	//SpecialMoves
+
 
 	//Item
 	Item* item;
 	Item* item2;
 
+	//Equipment
+	Equipment* eqArmor;
+	Equipment* eqWeapon;
 
 	//Selection
 	Selection selection;
@@ -110,6 +115,7 @@ private:
 	bool selectPlayer = false;
 	bool selectEnemy = false;
 	bool selectItem = false;
+	bool escapeCalculation = false;
 	bool calculationIsOn = false;
 
 
@@ -154,7 +160,7 @@ private:
 
 	CalculationType calculationType;
 	NumberType numberType;
-	int calculationLevel;
+	int calculationLevel = 0;
 	float calculationTime;
 
 	int playerAnswer = -255; //Pitää olla pienempi
@@ -172,9 +178,11 @@ private:
 	int maxCombo;
 	float averageCombo;
 
+	int damageDealt = 0;
+	int damageReflected = 0;
+	int damageTotal = 0;
 
-
-
+	
 
 	//int correctAnswer;
 	//int playerAnswer = -255; //tsekkaa null, koska vastaus voi olla myös nolla, joten se ei voi olla alustus.

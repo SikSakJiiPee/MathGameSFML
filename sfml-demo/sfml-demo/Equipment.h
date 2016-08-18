@@ -7,7 +7,7 @@ enum class EquipmentType {WEAPON, ARMOR};
 class Equipment
 {
 public:
-	Equipment(std::string name, EquipmentType etype, int ctime, int mass, 
+	Equipment(std::string name, EquipmentType etype, int ctime, int clevel, int mass, 
 		int atk, int def, int spd, int hp, int sp);
 	~Equipment();
 
@@ -16,6 +16,7 @@ public:
 	//CalculationType calculationtype
 	//NumberType numberType
 	int calculationTime;
+	int calculationLevel;
 	int equipmentMass;
 
 	//ei varmuutta

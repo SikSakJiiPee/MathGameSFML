@@ -18,28 +18,55 @@ MainGameState::MainGameState(Game* game)
 	//selectionCharacter = SelectionCharacter::NONE;
 
 	//Character
-	characters.push_back(new Character(true, "Player1", "Texture/Sprite/player1.png", 1, 0, 20, 20, 10, 10, 5, 5, 5, sf::Vector2f((game->window.getSize().x / 8) * 3, (game->window.getSize().y / 3))));
-	characters.push_back(new Character(true, "Player2", "Texture/Sprite/player2.png", 1, 0, 20, 20, 10, 10, 5, 5, 5, sf::Vector2f((game->window.getSize().x / 8) * 2, ((game->window.getSize().y / 3) + (game->window.getSize().y / 9)))));
-	characters.push_back(new Character(true, "Player3", "Texture/Sprite/player3.png", 1, 0, 20, 20, 10, 10, 5, 5, 5, sf::Vector2f((game->window.getSize().x / 8) * 1, ((game->window.getSize().y / 3) + (game->window.getSize().y / 9) * 2))));
-	characters.push_back(new Character(false, "Enemy1", "Texture/Sprite/enemy1.png", 1, 0, 20, 20, 10, 10, 5, 5, 5, sf::Vector2f((game->window.getSize().x / 8) * 5, (game->window.getSize().y / 3))));
-	characters.push_back(new Character(false, "Enemy2", "Texture/Sprite/enemy2.png", 1, 0, 20, 20, 10, 10, 5, 5, 5, sf::Vector2f((game->window.getSize().x / 8) * 6, ((game->window.getSize().y / 3) + (game->window.getSize().y / 9)))));
-	characters.push_back(new Character(false, "Enemy3", "Texture/Sprite/enemy3.png", 1, 0, 20, 20, 10, 10, 5, 5, 5, sf::Vector2f((game->window.getSize().x / 8) * 7, ((game->window.getSize().y / 3) + (game->window.getSize().y / 9) * 2))));
+	characters.push_back(new Character(true, "Player1", "Texture/Sprite/player1.png", 1, 0, 200, 200, 10, 10, 5, 5, 6, sf::Vector2f((game->window.getSize().x / 8) * 3, (game->window.getSize().y / 3))));
+	characters.push_back(new Character(true, "Player2", "Texture/Sprite/player2.png", 1, 0, 200, 200, 10, 10, 5, 5, 5, sf::Vector2f((game->window.getSize().x / 8) * 2, ((game->window.getSize().y / 3) + (game->window.getSize().y / 9)))));
+	characters.push_back(new Character(true, "Player3", "Texture/Sprite/player3.png", 1, 0, 200, 200, 10, 10, 5, 5, 4, sf::Vector2f((game->window.getSize().x / 8) * 1, ((game->window.getSize().y / 3) + (game->window.getSize().y / 9) * 2))));
+	characters.push_back(new Character(false, "Enemy1", "Texture/Sprite/enemy1.png", 1, 0, 200, 200, 10, 10, 5, 5, 3, sf::Vector2f((game->window.getSize().x / 8) * 5, (game->window.getSize().y / 3))));
+	characters.push_back(new Character(false, "Enemy2", "Texture/Sprite/enemy2.png", 1, 0, 200, 200, 10, 10, 5, 5, 2, sf::Vector2f((game->window.getSize().x / 8) * 6, ((game->window.getSize().y / 3) + (game->window.getSize().y / 9)))));
+	characters.push_back(new Character(false, "Enemy3", "Texture/Sprite/enemy3.png", 1, 0, 200, 200, 10, 10, 5, 5, 1, sf::Vector2f((game->window.getSize().x / 8) * 7, ((game->window.getSize().y / 3) + (game->window.getSize().y / 9) * 2))));
 	
 	//järjestä characterit myöhemmin nopeusjärjestykseen
 
-
+	//
 	//SpecialMoves
 
 	
+	//
 	//Item
 	item = new Item("Potion");
 	//item = new Item("Potion2");
 	if (getPlayerCharacter(0) != nullptr)
 		getPlayerCharacter(0)->items.push_back(*item);
 
+	//
 	//Equipment
+	//armor
+	eqArmor = new Equipment("Basic Armor", EquipmentType::ARMOR, 20, 1, 50, 0, 5, 0, 0, 0);
+	//eqArmor = new Equipment("Basic Armor", EquipmentType::ARMOR, 20, 1, 50, 0, 10, 0, 0, 0);
+	//weapon
+	eqWeapon = new Equipment("Basic Weapon", EquipmentType::WEAPON, 15, 1, 50, 7, 0, 0, 0, 0);
 
+	//pushing equipments to every character
+	for (size_t i = 0; i < characters.size(); i++)
+	{
+		characters[i]->equipments.push_back(*eqArmor);
+		characters[i]->equipments.push_back(*eqWeapon);
+	}
 
+	//applying stats from the equipments
+	for (size_t i = 0; i < characters.size(); i++)
+	{
+		for (size_t j = 0; j < characters[i]->equipments.size(); j++)
+		{
+			characters[i]->maxHp += characters[i]->equipments[j].healthPoints;
+			characters[i]->maxSp += characters[i]->equipments[j].specialPoints;
+			characters[i]->attack += characters[i]->equipments[j].attack;
+			characters[i]->defence += characters[i]->equipments[j].defence;
+			characters[i]->speed += characters[i]->equipments[j].speed;
+		}
+	}
+
+	//
 	//Font and Text
 	if (!font.loadFromFile("Font/arial.ttf"))
 	{
@@ -127,6 +154,7 @@ MainGameState::MainGameState(Game* game)
 	textTime.setCharacterSize(30);
 	textTime.setColor(sf::Color::Black);
 
+	//-----------
 
 
 
@@ -174,8 +202,6 @@ MainGameState::MainGameState(Game* game)
 	
 	textTimeLeft.setFont(font);
 	textTimeLeft.setCharacterSize(30);
-
-	calculationLevel = 1;
 
 	std::cout << "MainGameState init" << std::endl;
 }
@@ -271,6 +297,7 @@ void MainGameState::handleInput()
 {
 	sf::Event evnt;
 
+	//korjaa ongelma valintojen "nopeuden" kansssa
 	while (this->game->window.pollEvent(evnt))
 	{
 		if (!calculationGameIsOn)
@@ -396,6 +423,8 @@ void MainGameState::handleInput()
 						}
 						if (selection == Selection::ESCAPE)
 						{
+							escapeCalculation = true;
+							initCalculation();
 							std::cout << "Escape selected" << std::endl;
 						}
 					}
@@ -467,6 +496,7 @@ void MainGameState::handleInput()
 			}
 			if (evnt.type == sf::Event::KeyPressed)
 			{
+
 				//closing the window
 				if (evnt.key.code == sf::Keyboard::Escape)
 				{
@@ -702,40 +732,45 @@ void MainGameState::update(const float dt)
 	//during calculation
 	if (calculationGameIsOn)
 	{
+		
+		
 		//timer
 		timeElapsed = clock.getElapsedTime();
-		timeLeft = 30 - timeElapsed.asSeconds();
+		timeLeft = 15 - timeElapsed.asSeconds();
 		//std::cout << timeElapsed.asSeconds() << " " << timeLeft << std::endl;
 		std::string strTimeLeft = convertToString(timeLeft);
 		textTimeLeft.setString(strTimeLeft);
 		
 		if (timeLeft <= 0)
 		{
-			if (getEnemyCharacter(0))
-				getEnemyCharacter(0)->healthPoints -= points;
+			if (getEnemyCharacter(0) != false || getPlayerCharacter(0) != false)
+			{
+				damageDealt = (points * getPlayerCharacter(0)->attack);
+				damageReflected = (((randomNumber(NumberType::POSITIVE, 1)) * getEnemyCharacter(0)->defence) / 2);
+				damageTotal = damageDealt - damageReflected;
+				if (damageDealt < damageReflected)
+					damageTotal = 0;
 
-			//reset calculation stuff
-			clock.restart();
-			points = 0;
-			mistakes = 0;
-			isCalculationVisible = false;
-			isCalculationVisible2 = false;
-			isCalculationVisible3 = false;
-			answerIsChecked = false;
-			answerIsChecked2 = false;
-			answerIsChecked3 = false;
-			answerIsCorrect = false;
-			answerIsCorrect2 = false;
-			answerIsCorrect3 = false;
+				std::cout << getEnemyCharacter(0)->defence << std::endl;
+				std::cout << "damageDealt: " << damageDealt << "  damageReflected: " << damageReflected << std::endl;
+				std::cout << "damageTotal: " << damageTotal << std::endl;
 
-			calculationGameIsOn = false;
+				getEnemyCharacter(0)->healthPoints -= damageTotal;
+
+				if (getEnemyCharacter(0)->healthPoints > getEnemyCharacter(0)->maxHp)
+					getEnemyCharacter(0)->healthPoints = getEnemyCharacter(0)->maxHp;
+				if (getEnemyCharacter(0)->healthPoints < 0)
+					getEnemyCharacter(0)->healthPoints = 0;
+			}
+				
+			uninitCalculation();
 		}
 			
 		
 		//MUISTA ALUSTAA KAIKKI!
-		CalculationType calculationType = CalculationType::MINUS;
+		CalculationType calculationType = CalculationType::PLUS;
 		NumberType numberType = NumberType::POSITIVE;
-		//int calculationLevel = MainGameState::calculationLevel;
+		int calculationLevel = 1;
 		
 		std::string strPlayerAnswer = convertToString(playerAnswer);
 		
@@ -764,6 +799,20 @@ void MainGameState::update(const float dt)
 		//std::cout << "calculationLevel: " << calculationLevel << std::endl;
 		
 		//generating the calculations
+		if (!isCalculationVisible && escapeCalculation)
+		{
+			isCalculationVisible = true;
+
+			calculationType = CalculationType::PLUS;
+
+			int number = 1;
+			int number2 = 1;
+
+			correctAnswer = getCorrectAnswer(calculationType, number, number2);
+			std::string strCalculation = getCalculationString(calculationType, number, number2);
+			textCalculation.setString(strCalculation);
+		}
+
 		if (!isCalculationVisible)
 		{
 			isCalculationVisible = true;
@@ -810,7 +859,21 @@ void MainGameState::update(const float dt)
 		//checking the answers
 		if (answerIsChecked)
 		{
-				
+			//Escape
+			if (escapeCalculation)
+			{
+				if (answerIsCorrect)
+				{
+					//escapeCalculation = false;
+					backToMenu();
+				}
+				else if (!answerIsCorrect)
+				{
+					uninitCalculation();
+				}
+			}
+
+			//Normal
 			if (answerIsCorrect)
 			{
 				std::cout << "Oikea vastaus 1 on: " << correctAnswer << "	oikein!" << std::endl;
@@ -1178,14 +1241,14 @@ Character* MainGameState::getEnemyCharacter(int index)
 void MainGameState::initCalculation() //tarvitsee jonkun tiedon taistelijoista
 {
 	calculationGameIsOn = true;
-
+	clock.restart();
 }
 void MainGameState::uninitCalculation()
 {
 	//reset calculation stuff
-	clock.restart();
 	points = 0;
 	mistakes = 0;
+	calculationLevel = 0;
 	isCalculationVisible = false;
 	isCalculationVisible2 = false;
 	isCalculationVisible3 = false;
@@ -1196,7 +1259,14 @@ void MainGameState::uninitCalculation()
 	answerIsCorrect2 = false;
 	answerIsCorrect3 = false;
 
+	selectCharacter = false;
+	selectPlayer = false;
+	selectEnemy = false;
+	selection = Selection::ATTACK;
+	escapeCalculation = false;
+
 	calculationGameIsOn = false;
+	
 }
 
 

@@ -35,13 +35,15 @@ public:
 	int speed;
 	//int attackLuck;
 	//int defenceLuck;
+	sf::Vector2f position;
 
 	bool isAlive = true;
+	bool activeCharacter = false;
 
 	sf::Texture textureCharacter;
 	sf::Sprite spriteCharacter;
 
-	sf::Vector2f position;
+	
 
 	//ei varmuutta
 	int upgradePoints;

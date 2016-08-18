@@ -21,6 +21,7 @@ Character::Character(bool isplayer, std::string name, std::string path, int lvl,
 	//attackLuck = atkl;
 	//defenceLuck = defl;
 	position = pos;
+	
 
 	//texture and sprite
 	if (!textureCharacter.loadFromFile(pathTexture))
