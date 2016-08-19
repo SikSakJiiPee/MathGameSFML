@@ -6,6 +6,7 @@ Game::Game()
 {
 	this->window.create(sf::VideoMode(640, 480), "MathGame");
 	this->window.setFramerateLimit(60);
+	this->window.setKeyRepeatEnabled(false);
 }
 
 Game::~Game()

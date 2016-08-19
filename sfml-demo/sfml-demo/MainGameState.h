@@ -56,6 +56,9 @@ private:
 	void combatAttack();
 	void combatDefend();
 
+	void inputSelectPlayer();
+	
+	int selectedEnemy = 0;
 
 	//character vector management
 	size_t getPlayerCharacterCount();

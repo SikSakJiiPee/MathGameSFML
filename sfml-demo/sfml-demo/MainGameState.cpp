@@ -296,7 +296,7 @@ MainGameState::~MainGameState()
 void MainGameState::handleInput()
 {
 	sf::Event evnt;
-
+	
 	//korjaa ongelma valintojen "nopeuden" kansssa
 	while (this->game->window.pollEvent(evnt))
 	{
@@ -349,28 +349,43 @@ void MainGameState::handleInput()
 				//selecting the enemy target
 				if (selectEnemy)
 				{
+					//korjaa valinnan ylimeneminen
+					for (size_t i = 0; i < characters.size(); i++)
+					{
+						characters[i]->isSelected = false;
+					}
+
 					if (evnt.key.code == sf::Keyboard::Down)
 					{
-						if (selection == Selection::ENEMY2)
-						{
-							selection = Selection::ENEMY3;
-						}
-						if (selection == Selection::ENEMY1)
-						{
-							selection = Selection::ENEMY2;
-						}
+						selectedEnemy++;
+
+						//if (selection == Selection::ENEMY2)
+						//{
+						//	selection = Selection::ENEMY3;
+						//}
+						//if (selection == Selection::ENEMY1)
+						//{
+						//	selection = Selection::ENEMY2;
+						//}
 					}
 					if (evnt.key.code == sf::Keyboard::Up)
 					{
-						if (selection == Selection::ENEMY2)
-						{
-							selection = Selection::ENEMY1;
-						}
-						if (selection == Selection::ENEMY3)
-						{
-							selection = Selection::ENEMY2;
-						}
+						selectedEnemy--;
+						
+						//if (selection == Selection::ENEMY2)
+						//{
+						//	selection = Selection::ENEMY1;
+						//}
+						//if (selection == Selection::ENEMY3)
+						//{
+						//	selection = Selection::ENEMY2;
+						//}
 					}
+					if (getEnemyCharacter(selectedEnemy) != false)
+					{
+						getEnemyCharacter(selectedEnemy)->isSelected = true;
+					}
+
 					if (evnt.key.code == sf::Keyboard::Escape)
 					{
 						selectEnemy = false;
@@ -402,7 +417,9 @@ void MainGameState::handleInput()
 						if (selection == Selection::ATTACK)
 						{
 							selectEnemy = true;
-							selection = Selection::ENEMY1;
+							if (getEnemyCharacter(0) != false)
+								getEnemyCharacter(0)->isSelected = true;
+							//selection = Selection::ENEMY1;
 							//selectionCharacter = SelectionCharacter::PLAYER1;
 							if (evnt.key.code == sf::Keyboard::Escape)
 							{
@@ -981,35 +998,83 @@ void MainGameState::draw(const float dt)
 		////UPDATE
 		//Text
 		//info
-		if (selection == Selection::PLAYER1)
-			textInfoPlayer.setColor(sf::Color::Blue);
-		else
-			textInfoPlayer.setColor(sf::Color::Black);
+		////ei toimi vielä
+		//for (size_t i = 0; i < characters.size(); i++)
+		//{
+		//	if (characters[i]->isSelected)
+		//		textInfoPlayer.setColor(sf::Color::Blue);
+		//	if (characters[i]->isSelected && characters[i]->isPlayerCharacter == false)
+		//		textInfoPlayer.setColor(sf::Color::Red);
+		//	else
+		//		textInfoPlayer.setColor(sf::Color::Black);
+		//}
+
+		if (getPlayerCharacter(0) != false)
+			if (getPlayerCharacter(0)->isSelected == true)
+				textInfoPlayer.setColor(sf::Color::Blue);
+			else
+				textInfoPlayer.setColor(sf::Color::Black);
 		//
-		if (selection == Selection::PLAYER2)
-			textInfoPlayer2.setColor(sf::Color::Blue);
-		else
-			textInfoPlayer2.setColor(sf::Color::Black);
+		if (getPlayerCharacter(1) != false)
+			if (getPlayerCharacter(1)->isSelected == true)
+				textInfoPlayer2.setColor(sf::Color::Blue);
+			else
+				textInfoPlayer2.setColor(sf::Color::Black);
 		//
-		if (selection == Selection::PLAYER3)
-			textInfoPlayer3.setColor(sf::Color::Blue);
-		else
-			textInfoPlayer3.setColor(sf::Color::Black);
+		if (getPlayerCharacter(2) != false)
+			if (getPlayerCharacter(2)->isSelected == true)
+				textInfoPlayer3.setColor(sf::Color::Blue);
+			else
+				textInfoPlayer3.setColor(sf::Color::Black);
 		//
-		if (selection == Selection::ENEMY1)
-			textInfoEnemy.setColor(sf::Color::Red);
-		else
-			textInfoEnemy.setColor(sf::Color::Black);
+		if (getEnemyCharacter(0) != false)
+			if (getEnemyCharacter(0)->isSelected == true)
+				textInfoEnemy.setColor(sf::Color::Red);
+			else
+				textInfoEnemy.setColor(sf::Color::Black);
 		//
-		if (selection == Selection::ENEMY2)
-			textInfoEnemy2.setColor(sf::Color::Red);
-		else
-			textInfoEnemy2.setColor(sf::Color::Black);
+		if (getEnemyCharacter(1) != false)
+			if (getEnemyCharacter(1)->isSelected == true)
+				textInfoEnemy2.setColor(sf::Color::Red);
+			else
+				textInfoEnemy2.setColor(sf::Color::Black);
 		//
-		if (selection == Selection::ENEMY3)
-			textInfoEnemy3.setColor(sf::Color::Red);
-		else
-			textInfoEnemy3.setColor(sf::Color::Black);
+		if (getEnemyCharacter(2) != false)
+			if (getEnemyCharacter(2)->isSelected == true)
+				textInfoEnemy3.setColor(sf::Color::Red);
+			else
+				textInfoEnemy3.setColor(sf::Color::Black);
+		//
+
+		//if (selection == Selection::PLAYER1)
+		//	textInfoPlayer.setColor(sf::Color::Blue);
+		//else
+		//	textInfoPlayer.setColor(sf::Color::Black);
+		////
+		//if (selection == Selection::PLAYER2)
+		//	textInfoPlayer2.setColor(sf::Color::Blue);
+		//else
+		//	textInfoPlayer2.setColor(sf::Color::Black);
+		////
+		//if (selection == Selection::PLAYER3)
+		//	textInfoPlayer3.setColor(sf::Color::Blue);
+		//else
+		//	textInfoPlayer3.setColor(sf::Color::Black);
+		////
+		//if (selection == Selection::ENEMY1)
+		//	textInfoEnemy.setColor(sf::Color::Red);
+		//else
+		//	textInfoEnemy.setColor(sf::Color::Black);
+		////
+		//if (selection == Selection::ENEMY2)
+		//	textInfoEnemy2.setColor(sf::Color::Red);
+		//else
+		//	textInfoEnemy2.setColor(sf::Color::Black);
+		////
+		//if (selection == Selection::ENEMY3)
+		//	textInfoEnemy3.setColor(sf::Color::Red);
+		//else
+		//	textInfoEnemy3.setColor(sf::Color::Black);
 
 		//if (selectionCharacter == SelectionCharacter::PLAYER1)
 		//	textInfoPlayer.setColor(sf::Color::White);
@@ -1232,6 +1297,11 @@ Character* MainGameState::getEnemyCharacter(int index)
 	return nullptr;
 }
 
+//input
+void MainGameState::inputSelectPlayer()
+{
+
+}
 
 
 
@@ -1264,6 +1334,11 @@ void MainGameState::uninitCalculation()
 	selectEnemy = false;
 	selection = Selection::ATTACK;
 	escapeCalculation = false;
+
+	for (size_t i = 0; i < characters.size(); i++)
+	{
+		characters[i]->isSelected = false;
+	}
 
 	calculationGameIsOn = false;
 	

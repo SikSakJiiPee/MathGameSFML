@@ -38,6 +38,7 @@ public:
 	sf::Vector2f position;
 
 	bool isAlive = true;
+	bool isSelected = false;
 	bool activeCharacter = false;
 
 	sf::Texture textureCharacter;
