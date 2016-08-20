@@ -37,7 +37,7 @@ public:
 	//int defenceLuck;
 	sf::Vector2f position;
 
-	bool isAlive = true;
+	//bool isAlive = true;
 	bool isSelected = false;
 	bool activeCharacter = false;
 

@@ -20,9 +20,9 @@ MainGameState::MainGameState(Game* game)
 	characters.push_back(new Character(true, "Player1", "Texture/Sprite/player1.png", 1, 0, 200, 200, 10, 10, 5, 5, 6, sf::Vector2f((game->window.getSize().x / 8) * 3, (game->window.getSize().y / 3))));
 	characters.push_back(new Character(true, "Player2", "Texture/Sprite/player2.png", 1, 0, 200, 200, 10, 10, 5, 5, 5, sf::Vector2f((game->window.getSize().x / 8) * 2, ((game->window.getSize().y / 3) + (game->window.getSize().y / 9)))));
 	characters.push_back(new Character(true, "Player3", "Texture/Sprite/player3.png", 1, 0, 200, 200, 10, 10, 5, 5, 4, sf::Vector2f((game->window.getSize().x / 8) * 1, ((game->window.getSize().y / 3) + (game->window.getSize().y / 9) * 2))));
-	characters.push_back(new Character(false, "Enemy1", "Texture/Sprite/enemy1.png", 1, 0, 200, 200, 10, 10, 5, 5, 3, sf::Vector2f((game->window.getSize().x / 8) * 5, (game->window.getSize().y / 3))));
-	characters.push_back(new Character(false, "Enemy2", "Texture/Sprite/enemy2.png", 1, 0, 200, 200, 10, 10, 5, 5, 2, sf::Vector2f((game->window.getSize().x / 8) * 6, ((game->window.getSize().y / 3) + (game->window.getSize().y / 9)))));
-	characters.push_back(new Character(false, "Enemy3", "Texture/Sprite/enemy3.png", 1, 0, 200, 200, 10, 10, 5, 5, 1, sf::Vector2f((game->window.getSize().x / 8) * 7, ((game->window.getSize().y / 3) + (game->window.getSize().y / 9) * 2))));
+	characters.push_back(new Character(false, "Enemy1", "Texture/Sprite/enemy1.png", 1, 0, 100, 100, 10, 10, 5, 5, 3, sf::Vector2f((game->window.getSize().x / 8) * 5, (game->window.getSize().y / 3))));
+	characters.push_back(new Character(false, "Enemy2", "Texture/Sprite/enemy2.png", 1, 0, 100, 100, 10, 10, 5, 5, 2, sf::Vector2f((game->window.getSize().x / 8) * 6, ((game->window.getSize().y / 3) + (game->window.getSize().y / 9)))));
+	characters.push_back(new Character(false, "Enemy3", "Texture/Sprite/enemy3.png", 1, 0, 100, 100, 10, 10, 5, 5, 1, sf::Vector2f((game->window.getSize().x / 8) * 7, ((game->window.getSize().y / 3) + (game->window.getSize().y / 9) * 2))));
 	
 	//järjestä characterit myöhemmin nopeusjärjestykseen
 
@@ -732,6 +732,17 @@ void MainGameState::handleInput()
 
 void MainGameState::update(const float dt)
 {
+	if (noPlayerAlive())
+	{
+		std::cout << "Game Over!" << std::endl;
+		backToMenu();
+	}
+	if (noEnemyAlive())
+	{
+		std::cout << "You Won!" << std::endl;
+		backToMenu();
+	}
+	
 	if (!calculationGameIsOn)
 	{
 		//timeElapsed = clock.getElapsedTime();
@@ -740,6 +751,8 @@ void MainGameState::update(const float dt)
 
 		//std::string strTimeLeft = convertToString(timeLeft);
 		//textTime.setString(strTimeLeft);
+
+
 	}
 	//------------------
 
@@ -1226,6 +1239,38 @@ Character* MainGameState::getEnemyCharacter(int index)
 	}
 
 	return nullptr;
+}
+
+//checks for alive characters
+bool MainGameState::noPlayerAlive()
+{
+	size_t alive(0);
+
+	for (size_t i = 0; i < characters.size(); i++)
+	{
+		if (characters[i]->isPlayerCharacter && characters[i]->checkIfAlive())
+			alive++;
+	}
+
+	if (alive == 0)
+		return true;
+
+	return false;
+}
+bool MainGameState::noEnemyAlive()
+{
+	size_t alive(0);
+
+	for (size_t i = 0; i < characters.size(); i++)
+	{
+		if (!characters[i]->isPlayerCharacter && characters[i]->checkIfAlive())
+			alive++;
+	}
+
+	if (alive == 0)
+		return true;
+
+	return false;
 }
 
 //input

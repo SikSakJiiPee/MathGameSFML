@@ -69,6 +69,10 @@ private:
 	///Returns Enemy Character by its index. Returns nullptr if index is invalid.
 	Character* getEnemyCharacter(int index);
 
+	///Returns true if any no player character is alive
+	bool noPlayerAlive();
+	///Returns true if any no enemy character is alive
+	bool noEnemyAlive();
 
 	//MAINPHASE
 	//Time
