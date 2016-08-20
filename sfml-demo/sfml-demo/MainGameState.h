@@ -14,11 +14,9 @@
 #include <random>
 
 
-enum class Selection { NONE, ATTACK, SPECIAL, ITEM, ESCAPE, 
-	PLAYER1, PLAYER2, PLAYER3, ENEMY1, ENEMY2, ENEMY3 };
+enum class Selection { NONE, ATTACK, SPECIAL, ITEM, ESCAPE};
 enum class Turn {PLAYER, ENEMY};
 enum class Phase {MAIN, COMBAT, COMBATEND};
-//enum class SelectionCharacter { NONE, PLAYER1, PLAYER2, PLAYER3, ENEMY1, ENEMY2, ENEMY3 };
 
 enum class CalculationType { PLUS, MINUS, MULTIPLY, DIVIDE }; //Pitäisikö nimet olla Addition, Subtraction, Multiplication ja Division
 enum class NumberType { BOTH, POSITIVE, NEGATIVE };
@@ -50,7 +48,6 @@ public:
 
 private:
 	//state management
-	void startCalculation(/* Character* attacker, Character* defender*/);
 	void backToMenu();
 
 	void combatAttack();
@@ -58,7 +55,9 @@ private:
 
 	void inputSelectPlayer();
 	
+	int selectedPlayer = 0;
 	int selectedEnemy = 0;
+	
 
 	//character vector management
 	size_t getPlayerCharacterCount();
@@ -131,11 +130,13 @@ private:
 	void uninitCalculation();
 
 	//Methods
+	///Return random number
 	static int randomNumber(NumberType ntype, int level);
+	///Returns correct answer
 	static int getCorrectAnswer(CalculationType type, int number, int number2);
-	static int getCorrectAnswerPlus(int number, int number2);
-	static int getCorrectAnswerMinus(int number, int number2);
+	///Returns true if player's answer is the correct answer
 	static bool checkTheAnswer(int playerAnswer, int correctAnswer);
+	///Returns calculation as a string
 	static std::string getCalculationString(CalculationType type, int number, int number2);
 	
 	//Text
@@ -187,20 +188,7 @@ private:
 
 	
 
-	//int correctAnswer;
-	//int playerAnswer = -255; //tsekkaa null, koska vastaus voi olla myös nolla, joten se ei voi olla alustus.
-	//bool answerIsCorrect = false;
-	//bool playerAnswerNegative;
-
-	//int points = 0;
-	//int mistakes = 0;
-
 	
-	//Calculation calculation(CalculationType ctype, NumberType ntype, int level, float time);
-	//int calculationGame(Calculation calculation);
-	//int calculationGame(Character* player, Character* enemy); 
-	
-
 
 };
 

@@ -15,7 +15,6 @@ MainGameState::MainGameState(Game* game)
 	this->game = game;
 
 	selection = Selection::ATTACK;
-	//selectionCharacter = SelectionCharacter::NONE;
 
 	//Character
 	characters.push_back(new Character(true, "Player1", "Texture/Sprite/player1.png", 1, 0, 200, 200, 10, 10, 5, 5, 6, sf::Vector2f((game->window.getSize().x / 8) * 3, (game->window.getSize().y / 3))));
@@ -42,7 +41,7 @@ MainGameState::MainGameState(Game* game)
 	//Equipment
 	//armor
 	eqArmor = new Equipment("Basic Armor", EquipmentType::ARMOR, 20, 1, 50, 0, 5, 0, 0, 0);
-	//eqArmor = new Equipment("Basic Armor", EquipmentType::ARMOR, 20, 1, 50, 0, 10, 0, 0, 0);
+	//eqArmor2 = new Equipment("Basic Armor", EquipmentType::ARMOR, 20, 1, 50, 0, 10, 0, 0, 0);
 	//weapon
 	eqWeapon = new Equipment("Basic Weapon", EquipmentType::WEAPON, 15, 1, 50, 7, 0, 0, 0, 0);
 
@@ -215,6 +214,11 @@ MainGameState::~MainGameState()
 
 	//selvitä tarvitseeko jonkun paremman systeemin itemien poistoon
 	delete item;
+
+	delete eqArmor;
+	delete eqWeapon;
+
+	//selvitä poistuuko kaikki itemit, equipit ja specialit poistettaessa characterit
 }
 
 //void MainGameState::init()
@@ -314,28 +318,31 @@ void MainGameState::handleInput()
 				//selecting the player target
 				if (selectPlayer)
 				{
+					for (size_t i = 0; i < characters.size(); i++)
+					{
+						characters[i]->isSelected = false;
+					}
+
 					if (evnt.key.code == sf::Keyboard::Down)
 					{
-						if (selection == Selection::PLAYER2)
-						{
-							selection = Selection::PLAYER3;
-						}
-						if (selection == Selection::PLAYER1)
-						{
-							selection = Selection::PLAYER2;
-						}
+						selectedPlayer++;
+
+						if (selectedPlayer >= getPlayerCharacterCount() - 1)
+							selectedPlayer = getPlayerCharacterCount() - 1;
 					}
 					if (evnt.key.code == sf::Keyboard::Up)
 					{
-						if (selection == Selection::PLAYER2)
-						{
-							selection = Selection::PLAYER1;
-						}
-						if (selection == Selection::PLAYER3)
-						{
-							selection = Selection::PLAYER2;
-						}
+						selectedPlayer--;
+
+						if (selectedPlayer <= 0)
+							selectedPlayer = 0;
 					}
+					if (getPlayerCharacter(selectedPlayer) != false)
+					{
+						getPlayerCharacter(selectedPlayer)->isSelected = true;
+					}
+
+
 					if (evnt.key.code == sf::Keyboard::Escape)
 					{
 						selectPlayer = false;
@@ -349,7 +356,6 @@ void MainGameState::handleInput()
 				//selecting the enemy target
 				if (selectEnemy)
 				{
-					//korjaa valinnan ylimeneminen
 					for (size_t i = 0; i < characters.size(); i++)
 					{
 						characters[i]->isSelected = false;
@@ -359,27 +365,15 @@ void MainGameState::handleInput()
 					{
 						selectedEnemy++;
 
-						//if (selection == Selection::ENEMY2)
-						//{
-						//	selection = Selection::ENEMY3;
-						//}
-						//if (selection == Selection::ENEMY1)
-						//{
-						//	selection = Selection::ENEMY2;
-						//}
+						if (selectedEnemy >= getEnemyCharacterCount() - 1)
+							selectedEnemy = getEnemyCharacterCount() - 1;
 					}
 					if (evnt.key.code == sf::Keyboard::Up)
 					{
 						selectedEnemy--;
 						
-						//if (selection == Selection::ENEMY2)
-						//{
-						//	selection = Selection::ENEMY1;
-						//}
-						//if (selection == Selection::ENEMY3)
-						//{
-						//	selection = Selection::ENEMY2;
-						//}
+						if (selectedEnemy <= 0)
+							selectedEnemy = 0;
 					}
 					if (getEnemyCharacter(selectedEnemy) != false)
 					{
@@ -394,10 +388,6 @@ void MainGameState::handleInput()
 					if (evnt.key.code == sf::Keyboard::Return)
 					{
 						initCalculation();
-						//this->startCalculation(/*characterPlayer, characterEnemy*/);
-						//if (selection == Selection::ENEMY1) 
-						//characterEnemy->healthPoints -= CalculationState::points;
-						//calculationIsOn = false;
 					}
 				}
 
@@ -406,9 +396,14 @@ void MainGameState::handleInput()
 				{
 					if (evnt.key.code == sf::Keyboard::F)
 					{
-						//if (getPlayerCharacter(0) != nullptr)
-						//	getPlayerCharacter(0)->healthPoints = 0;
-						characters.back()->healthPoints = 0;
+						if (getPlayerCharacter(0) != nullptr)
+							getPlayerCharacter(0)->healthPoints = 0;
+						if (getPlayerCharacter(1) != nullptr)
+							getPlayerCharacter(1)->healthPoints = 0;
+						if (getPlayerCharacter(2) != nullptr)
+							getPlayerCharacter(2)->healthPoints = 0;
+
+						//characters.back()->healthPoints = 0;
 					}
 
 					//Go to CalculationState
@@ -419,23 +414,25 @@ void MainGameState::handleInput()
 							selectEnemy = true;
 							if (getEnemyCharacter(0) != false)
 								getEnemyCharacter(0)->isSelected = true;
-							//selection = Selection::ENEMY1;
-							//selectionCharacter = SelectionCharacter::PLAYER1;
+							selection = Selection::NONE;
 							if (evnt.key.code == sf::Keyboard::Escape)
 							{
-								////calculationin alustus ja pelin käynnistys
-								//Calculation calculation(CalculationType::PLUS, NumberType::POSITIVE, 1, 30);
-								//calculationGame(calculation);
-								//this->startCalculation();
+
 							}
 						}
 						if (selection == Selection::SPECIAL)
 						{
+							selectPlayer = true;
+							if (getPlayerCharacter(0) != false)
+								getPlayerCharacter(0)->isSelected = true;
+							selection = Selection::NONE;
+
 							std::cout << "Special selected" << std::endl;
 						}
 						if (selection == Selection::ITEM)
 						{
 							selectItem = true;
+
 							std::cout << "Item selected" << std::endl;
 						}
 						if (selection == Selection::ESCAPE)
@@ -760,24 +757,24 @@ void MainGameState::update(const float dt)
 		
 		if (timeLeft <= 0)
 		{
-			if (getEnemyCharacter(0) != false || getPlayerCharacter(0) != false)
+			if (getEnemyCharacter(selectedEnemy) != false || getPlayerCharacter(0) != false)
 			{
 				damageDealt = (points * getPlayerCharacter(0)->attack);
-				damageReflected = (((randomNumber(NumberType::POSITIVE, 1)) * getEnemyCharacter(0)->defence) / 2);
+				damageReflected = (((randomNumber(NumberType::POSITIVE, 1)) * getEnemyCharacter(selectedEnemy)->defence) / 2);
 				damageTotal = damageDealt - damageReflected;
 				if (damageDealt < damageReflected)
 					damageTotal = 0;
 
-				std::cout << getEnemyCharacter(0)->defence << std::endl;
+				std::cout << getEnemyCharacter(selectedEnemy)->defence << std::endl;
 				std::cout << "damageDealt: " << damageDealt << "  damageReflected: " << damageReflected << std::endl;
 				std::cout << "damageTotal: " << damageTotal << std::endl;
 
-				getEnemyCharacter(0)->healthPoints -= damageTotal;
+				getEnemyCharacter(selectedEnemy)->healthPoints -= damageTotal;
 
-				if (getEnemyCharacter(0)->healthPoints > getEnemyCharacter(0)->maxHp)
-					getEnemyCharacter(0)->healthPoints = getEnemyCharacter(0)->maxHp;
-				if (getEnemyCharacter(0)->healthPoints < 0)
-					getEnemyCharacter(0)->healthPoints = 0;
+				if (getEnemyCharacter(selectedEnemy)->healthPoints > getEnemyCharacter(selectedEnemy)->maxHp)
+					getEnemyCharacter(selectedEnemy)->healthPoints = getEnemyCharacter(selectedEnemy)->maxHp;
+				if (getEnemyCharacter(selectedEnemy)->healthPoints < 0)
+					getEnemyCharacter(selectedEnemy)->healthPoints = 0;
 			}
 				
 			uninitCalculation();
@@ -1046,65 +1043,6 @@ void MainGameState::draw(const float dt)
 				textInfoEnemy3.setColor(sf::Color::Black);
 		//
 
-		//if (selection == Selection::PLAYER1)
-		//	textInfoPlayer.setColor(sf::Color::Blue);
-		//else
-		//	textInfoPlayer.setColor(sf::Color::Black);
-		////
-		//if (selection == Selection::PLAYER2)
-		//	textInfoPlayer2.setColor(sf::Color::Blue);
-		//else
-		//	textInfoPlayer2.setColor(sf::Color::Black);
-		////
-		//if (selection == Selection::PLAYER3)
-		//	textInfoPlayer3.setColor(sf::Color::Blue);
-		//else
-		//	textInfoPlayer3.setColor(sf::Color::Black);
-		////
-		//if (selection == Selection::ENEMY1)
-		//	textInfoEnemy.setColor(sf::Color::Red);
-		//else
-		//	textInfoEnemy.setColor(sf::Color::Black);
-		////
-		//if (selection == Selection::ENEMY2)
-		//	textInfoEnemy2.setColor(sf::Color::Red);
-		//else
-		//	textInfoEnemy2.setColor(sf::Color::Black);
-		////
-		//if (selection == Selection::ENEMY3)
-		//	textInfoEnemy3.setColor(sf::Color::Red);
-		//else
-		//	textInfoEnemy3.setColor(sf::Color::Black);
-
-		//if (selectionCharacter == SelectionCharacter::PLAYER1)
-		//	textInfoPlayer.setColor(sf::Color::White);
-		//else
-		//	textInfoPlayer.setColor(sf::Color::Black);
-		////
-		//if (selectionCharacter == SelectionCharacter::PLAYER2)
-		//	textInfoPlayer2.setColor(sf::Color::White);
-		//else
-		//	textInfoPlayer2.setColor(sf::Color::Black);
-		////
-		//if (selectionCharacter == SelectionCharacter::PLAYER3)
-		//	textInfoPlayer3.setColor(sf::Color::White);
-		//else
-		//	textInfoPlayer3.setColor(sf::Color::Black);
-		////
-		//if (selectionCharacter == SelectionCharacter::ENEMY1)
-		//	textInfoEnemy.setColor(sf::Color::White);
-		//else
-		//	textInfoEnemy.setColor(sf::Color::Black);
-		////
-		//if (selectionCharacter == SelectionCharacter::ENEMY2)
-		//	textInfoEnemy2.setColor(sf::Color::White);
-		//else
-		//	textInfoEnemy2.setColor(sf::Color::Black);
-		////
-		//if (selectionCharacter == SelectionCharacter::ENEMY3)
-		//	textInfoEnemy3.setColor(sf::Color::White);
-		//else
-		//	textInfoEnemy3.setColor(sf::Color::Black);
 
 		//selvitä tapa toteuttaa infot tekstivektoreilla tai character attribuutilla
 		if (getPlayerCharacter(0) != nullptr)
@@ -1221,13 +1159,6 @@ void MainGameState::draw(const float dt)
 
 
 //state management
-void MainGameState::startCalculation(/*Character* attacker, Character* defender*/)
-{
-	//this->game->pushState(new CalculationState(this->game/*, attacker, defender*/));
-
-	return;
-}
-
 void MainGameState::backToMenu()
 {
 	this->game->popState();
@@ -1332,6 +1263,7 @@ void MainGameState::uninitCalculation()
 	selectCharacter = false;
 	selectPlayer = false;
 	selectEnemy = false;
+	selectedEnemy = 0;
 	selection = Selection::ATTACK;
 	escapeCalculation = false;
 
@@ -1400,20 +1332,6 @@ int MainGameState::getCorrectAnswer(CalculationType type, int number, int number
 
 		return correctAnswer;
 	}
-}
-
-int MainGameState::getCorrectAnswerPlus(int number, int number2)
-{
-	int correctAnswer = number + number2;
-
-	return correctAnswer;
-}
-
-int MainGameState::getCorrectAnswerMinus(int number, int number2)
-{
-	int correctAnswer = number - number2;
-
-	return correctAnswer;
 }
 
 bool MainGameState::checkTheAnswer(int playerAnswer, int correctAnswer)
