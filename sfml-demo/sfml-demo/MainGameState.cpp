@@ -202,6 +202,33 @@ MainGameState::MainGameState(Game* game)
 	textTimeLeft.setFont(font);
 	textTimeLeft.setCharacterSize(30);
 
+	//-------------
+
+
+
+	//WIN BATTLE
+	textBattleWin.setFont(font);
+	textBattleWin.setCharacterSize(30);
+	textBattleWin.setColor(sf::Color::White);
+	textBattleWin.setString("YOU WON");
+
+
+	//-------------
+
+
+
+
+	//BATTLE LOSE
+	textBattleLose.setFont(font);
+	textBattleLose.setCharacterSize(30);
+	textBattleLose.setColor(sf::Color::White);
+	textBattleLose.setString("GAME OVER");
+
+
+
+
+	//-------------
+
 	std::cout << "MainGameState init" << std::endl;
 }
 
@@ -299,9 +326,48 @@ MainGameState::~MainGameState()
 
 void MainGameState::handleInput()
 {
+	//during select player
+	if (selectPlayer)
+	{
+		inputSelectPlayer();
+	}
+	//--------------
+
+	//during select enemy
+	if (selectEnemy)
+	{
+		inputSelectEnemy();
+	}
+	//--------------
+
+
+
+	//during calculation
+	if (calculationGameIsOn)
+	{
+		inputCalculation();
+	}
+	//--------------
+
+
+
+	//during battle lose
+	if (noPlayerAlive())
+	{
+		inputBattleLose();
+	}
+	//--------------
+
+	//during battle win
+	if (noEnemyAlive())
+	{
+		inputBattleWin();
+	}
+	//--------------
+	
+	//muuta loputkin inputit omiksi metodeikseen
 	sf::Event evnt;
 	
-	//korjaa ongelma valintojen "nopeuden" kansssa
 	while (this->game->window.pollEvent(evnt))
 	{
 		if (!calculationGameIsOn)
@@ -315,95 +381,26 @@ void MainGameState::handleInput()
 			//keyboard
 			if (evnt.type == sf::Event::KeyPressed)
 			{
-				//selecting the player target
-				if (selectPlayer)
-				{
-					for (size_t i = 0; i < characters.size(); i++)
-					{
-						characters[i]->isSelected = false;
-					}
-
-					if (evnt.key.code == sf::Keyboard::Down)
-					{
-						selectedPlayer++;
-
-						if (selectedPlayer >= getPlayerCharacterCount() - 1)
-							selectedPlayer = getPlayerCharacterCount() - 1;
-					}
-					if (evnt.key.code == sf::Keyboard::Up)
-					{
-						selectedPlayer--;
-
-						if (selectedPlayer <= 0)
-							selectedPlayer = 0;
-					}
-					if (getPlayerCharacter(selectedPlayer) != false)
-					{
-						getPlayerCharacter(selectedPlayer)->isSelected = true;
-					}
-
-
-					if (evnt.key.code == sf::Keyboard::Escape)
-					{
-						selectPlayer = false;
-						selection = Selection::ATTACK;
-					}
-					if (evnt.key.code == sf::Keyboard::Return)
-					{
-						
-					}
-				}
-				//selecting the enemy target
-				if (selectEnemy)
-				{
-					for (size_t i = 0; i < characters.size(); i++)
-					{
-						characters[i]->isSelected = false;
-					}
-
-					if (evnt.key.code == sf::Keyboard::Down)
-					{
-						selectedEnemy++;
-
-						if (selectedEnemy >= getEnemyCharacterCount() - 1)
-							selectedEnemy = getEnemyCharacterCount() - 1;
-					}
-					if (evnt.key.code == sf::Keyboard::Up)
-					{
-						selectedEnemy--;
-						
-						if (selectedEnemy <= 0)
-							selectedEnemy = 0;
-					}
-					if (getEnemyCharacter(selectedEnemy) != false)
-					{
-						getEnemyCharacter(selectedEnemy)->isSelected = true;
-					}
-
-					if (evnt.key.code == sf::Keyboard::Escape)
-					{
-						selectEnemy = false;
-						selection = Selection::ATTACK;
-					}
-					if (evnt.key.code == sf::Keyboard::Return)
-					{
-						initCalculation();
-					}
-				}
-
 				//selecting the action
 				if (!selectCharacter && !selectPlayer && !selectEnemy)
 				{
+					//quick button to kill all players
 					if (evnt.key.code == sf::Keyboard::F)
 					{
-						if (getPlayerCharacter(0) != nullptr)
-							getPlayerCharacter(0)->healthPoints = 0;
-						if (getPlayerCharacter(1) != nullptr)
-							getPlayerCharacter(1)->healthPoints = 0;
-						if (getPlayerCharacter(2) != nullptr)
-							getPlayerCharacter(2)->healthPoints = 0;
-
-						//characters.back()->healthPoints = 0;
+						for (size_t i = 0; i < characters.size(); i++)
+						{
+							if (characters[i]->isPlayerCharacter == true)
+								characters[i]->healthPoints = 0;
+						}
+					}
+					//quick button to kill all enemies
+					if (evnt.key.code == sf::Keyboard::G)
+					{
+						for (size_t i = 0; i < characters.size(); i++)
+						{
+							if (characters[i]->isPlayerCharacter == false)
+								characters[i]->healthPoints = 0;
+						}
 					}
 
 					//Go to CalculationState
@@ -496,234 +493,6 @@ void MainGameState::handleInput()
 				}
 			}
 		}
-		//------------------
-
-
-
-		//during calculation
-		if (calculationGameIsOn)
-		{
-			//closing the window
-			if (evnt.type == sf::Event::Closed)
-			{
-				game->window.close();
-			}
-			if (evnt.type == sf::Event::KeyPressed)
-			{
-
-				//closing the window
-				if (evnt.key.code == sf::Keyboard::Escape)
-				{
-					uninitCalculation();
-				}
-
-				//comparing the answer
-				if (evnt.key.code == sf::Keyboard::Return)
-				{
-					answerIsChecked = true;
-					//answerIsChecked2 = true;
-					//answerIsChecked3 = true;
-				
-					//ei valmis
-					if (playerAnswerNegative == true)
-					{
-						playerAnswer *= -1;
-					}
-					std::cout << "sinun vastaus: " << playerAnswer << std::endl;
-					//std::cout << "oikea vastaus1: " << correctAnswer << std::endl;
-					//std::cout << "oikea vastaus2: " << correctAnswer2 << std::endl;
-					//std::cout << "oikea vastaus3: " << correctAnswer3 << std::endl;
-				
-					//vastauksien vertaaminen
-					if (playerAnswer == correctAnswer)
-					{
-						answerIsCorrect = true;
-					}
-					//else if (playerAnswer == correctAnswer2)
-					//{
-					//	answerIsCorrect2 = true;
-					//}
-					//else if (playerAnswer == correctAnswer3)
-					//{
-					//	answerIsCorrect3 = true;
-					//}
-					else if (playerAnswer != correctAnswer)
-					{
-						answerIsCorrect = false;
-						//playerAnswer = -255;
-					}
-					//else if (playerAnswer != correctAnswer2)
-					//{
-					//	answerIsCorrect2 = false;
-					//	//playerAnswer = -255;
-					//}
-					//else if (playerAnswer != correctAnswer3)
-					//{
-					//	answerIsCorrect3 = false;
-					//	//playerAnswer = -255;
-					//}
-					playerAnswer = -255;
-					playerAnswerNegative = false;
-				}
-				
-				//the numbers
-				if (evnt.key.code == sf::Keyboard::Num0 || evnt.key.code == sf::Keyboard::Numpad0)
-				{
-					if (playerAnswer == -255)
-					{
-						playerAnswer = 0;
-					}
-					else if (playerAnswer > 100000)
-					{
-						playerAnswer += 0;
-					}
-					else
-					{
-						playerAnswer = playerAnswer * 10;
-					}
-				}
-				if (evnt.key.code == sf::Keyboard::Num1 || evnt.key.code == sf::Keyboard::Numpad1)
-				{
-					if (playerAnswer == -255)
-					{
-						playerAnswer = 1;
-					}
-					else if (playerAnswer > 100000)
-					{
-						playerAnswer += 0;
-					}
-					else
-					{
-						playerAnswer = (playerAnswer * 10) + 1;
-					}
-				}
-				if (evnt.key.code == sf::Keyboard::Num2 || evnt.key.code == sf::Keyboard::Numpad2)
-				{
-					if (playerAnswer == -255)
-					{
-						playerAnswer = 2;
-					}
-					else if (playerAnswer > 100000)
-					{
-						playerAnswer += 0;
-					}
-					else
-					{
-						playerAnswer = (playerAnswer * 10) + 2;
-					}
-				}
-				if (evnt.key.code == sf::Keyboard::Num3 || evnt.key.code == sf::Keyboard::Numpad3)
-				{
-					if (playerAnswer == -255)
-					{
-						playerAnswer = 3;
-					}
-					else if (playerAnswer > 100000)
-					{
-						playerAnswer += 0;
-					}
-					else
-					{
-						playerAnswer = (playerAnswer * 10) + 3;
-					}
-				}
-				if (evnt.key.code == sf::Keyboard::Num4 || evnt.key.code == sf::Keyboard::Numpad4)
-				{
-					if (playerAnswer == -255)
-					{
-						playerAnswer = 4;
-					}
-					else if (playerAnswer > 100000)
-					{
-						playerAnswer += 0;
-					}
-					else
-					{
-						playerAnswer = (playerAnswer * 10) + 4;
-					}
-				}
-				if (evnt.key.code == sf::Keyboard::Num5 || evnt.key.code == sf::Keyboard::Numpad5)
-				{
-					if (playerAnswer == -255)
-					{
-						playerAnswer = 5;
-					}
-					else if (playerAnswer > 100000)
-					{
-						playerAnswer += 0;
-					}
-					else
-					{
-						playerAnswer = (playerAnswer * 10) + 5;
-					}
-				}
-				if (evnt.key.code == sf::Keyboard::Num6 || evnt.key.code == sf::Keyboard::Numpad6)
-				{
-					if (playerAnswer == -255)
-					{
-						playerAnswer = 6;
-					}
-					else if (playerAnswer > 100000)
-					{
-						playerAnswer += 0;
-					}
-					else
-					{
-						playerAnswer = (playerAnswer * 10) + 6;
-					}
-				}
-				if (evnt.key.code == sf::Keyboard::Num7 || evnt.key.code == sf::Keyboard::Numpad7)
-				{
-					if (playerAnswer == -255)
-					{
-						playerAnswer = 7;
-					}
-					else if (playerAnswer > 100000)
-					{
-						playerAnswer += 0;
-					}
-					else
-					{
-						playerAnswer = (playerAnswer * 10) + 7;
-					}
-				}
-				if (evnt.key.code == sf::Keyboard::Num8 || evnt.key.code == sf::Keyboard::Numpad8)
-				{
-					if (playerAnswer == -255)
-					{
-						playerAnswer = 8;
-					}
-					else if (playerAnswer > 100000)
-					{
-						playerAnswer += 0;
-					}
-					else
-					{
-						playerAnswer = (playerAnswer * 10) + 8;
-					}
-				}
-				if (evnt.key.code == sf::Keyboard::Num9 || evnt.key.code == sf::Keyboard::Numpad9)
-				{
-					if (playerAnswer == -255)
-					{
-						playerAnswer = 9;
-					}
-					else if (playerAnswer > 100000)
-					{
-						playerAnswer += 0;
-					}
-					else
-					{
-						playerAnswer = (playerAnswer * 10) + 9;
-					}
-				}
-				if (evnt.key.code == sf::Keyboard::Subtract || evnt.key.code == sf::Keyboard::Dash)
-				{
-					playerAnswerNegative = true;
-				}
-				
-			}
-		}
 	}
 
 	return;
@@ -732,35 +501,20 @@ void MainGameState::handleInput()
 
 void MainGameState::update(const float dt)
 {
-	if (noPlayerAlive())
-	{
-		std::cout << "Game Over!" << std::endl;
-		backToMenu();
-	}
-	if (noEnemyAlive())
-	{
-		std::cout << "You Won!" << std::endl;
-		backToMenu();
-	}
-	
+	//during main phase
 	if (!calculationGameIsOn)
 	{
-		//timeElapsed = clock.getElapsedTime();
-		//timeLeft = 30 - timeElapsed.asSeconds();
-		////std::cout << timeElapsed.asSeconds() << " " << timeLeft << std::endl;
-
-		//std::string strTimeLeft = convertToString(timeLeft);
-		//textTime.setString(strTimeLeft);
+	
 
 
 	}
 	//------------------
 
+
+
 	//during calculation
 	if (calculationGameIsOn)
 	{
-		
-		
 		//timer
 		timeElapsed = clock.getElapsedTime();
 		timeLeft = 15 - timeElapsed.asSeconds();
@@ -793,7 +547,6 @@ void MainGameState::update(const float dt)
 			uninitCalculation();
 		}
 			
-		
 		//MUISTA ALUSTAA KAIKKI!
 		CalculationType calculationType = CalculationType::PLUS;
 		NumberType numberType = NumberType::POSITIVE;
@@ -801,6 +554,7 @@ void MainGameState::update(const float dt)
 		
 		std::string strPlayerAnswer = convertToString(playerAnswer);
 		
+		//handling text for the player answer
 		if (playerAnswer != -255)
 		{
 			textPlayerAnswer.setString(strPlayerAnswer);
@@ -821,9 +575,6 @@ void MainGameState::update(const float dt)
 			}
 		
 		}
-		
-		//std::cout << playerAnswer << std::endl;
-		//std::cout << "calculationLevel: " << calculationLevel << std::endl;
 		
 		//generating the calculations
 		if (!isCalculationVisible && escapeCalculation)
@@ -857,28 +608,28 @@ void MainGameState::update(const float dt)
 		//if (!isCalculationVisible2)
 		//{
 		//	isCalculationVisible2 = true;
-		
+		//
 		//	int number = randomNumber(numberType, calculationLevel);
 		//	int number2 = randomNumber(numberType, calculationLevel);
-		
+		//
 		//	correctAnswer2 = getCorrectAnswer(calculationType, number, number2);
 		//	std::string strCalculation = getCalculationString(calculationType, number, number2);
 		//	textCalculation2.setString(strCalculation);
-		
+		//
 		//	//std::string strPlayerAnswer = convertToString(playerAnswer);
 		//	//textPlayerAnswer.setString(strPlayerAnswer);
 		//}
 		//if (!isCalculationVisible3)
 		//{
 		//	isCalculationVisible3 = true;
-		
+		//
 		//	int number = randomNumber(numberType, calculationLevel);
 		//	int number2 = randomNumber(numberType, calculationLevel);
-		
+		//
 		//	correctAnswer3 = getCorrectAnswer(calculationType, number, number2);
 		//	std::string strCalculation = getCalculationString(calculationType, number, number2);
 		//	textCalculation3.setString(strCalculation);
-		
+		//
 		//	//std::string strPlayerAnswer = convertToString(playerAnswer);
 		//	//textPlayerAnswer.setString(strPlayerAnswer);
 		//}
@@ -900,7 +651,7 @@ void MainGameState::update(const float dt)
 				}
 			}
 
-			//Normal
+			//Normal (Attack and Defend)
 			if (answerIsCorrect)
 			{
 				std::cout << "Oikea vastaus 1 on: " << correctAnswer << "	oikein!" << std::endl;
@@ -922,8 +673,7 @@ void MainGameState::update(const float dt)
 		
 		
 			std::cout << "Pisteet: " << points << ". Virheet: " << mistakes << "." << std::endl;
-		
-			//charaEnemy->healthPoints -= points;
+
 		
 		
 			//estä monen laskuun vastaaminen kerralla
@@ -955,7 +705,7 @@ void MainGameState::update(const float dt)
 		//	std::cout << "Pisteet: " << points << ". Virheet: " << mistakes << "." << std::endl;
 		//	answerIsChecked2 = false;
 		//}
-		
+		//
 		//if (answerIsChecked3)
 		//{
 		//	if (answerIsCorrect3)
@@ -982,6 +732,25 @@ void MainGameState::update(const float dt)
 		//}
 			
 	}
+	//--------------
+
+
+
+	//during battle lose
+	if (noPlayerAlive())
+	{
+		//std::cout << "Game Over!" << std::endl;
+	}
+	//--------------
+
+
+
+	//during battle win
+	if (noEnemyAlive())
+	{
+		//std::cout << "You Won!" << std::endl;
+	}
+	//--------------
 
 }
 
@@ -1168,6 +937,26 @@ void MainGameState::draw(const float dt)
 		
 		game->window.draw(textTimeLeft);
 	}
+	//------------------
+
+
+
+	//during battle lose
+	if (noPlayerAlive())
+	{
+		game->window.clear(sf::Color::Black);
+		game->window.draw(textBattleLose);
+	}
+	//------------------
+
+
+
+	//during battle win
+	if (noEnemyAlive())
+	{
+		game->window.clear(sf::Color::Black);
+		game->window.draw(textBattleWin);
+	}
 }
 
 
@@ -1273,12 +1062,394 @@ bool MainGameState::noEnemyAlive()
 	return false;
 }
 
-//input
+//INPUT
 void MainGameState::inputSelectPlayer()
 {
+	sf::Event evnt;
 
+	while (this->game->window.pollEvent(evnt))
+	{
+		//closing the window
+		if (evnt.type == sf::Event::Closed)
+		{
+			game->window.close();
+		}
+
+		//keyboard
+		if (evnt.type == sf::Event::KeyPressed)
+		{
+			for (size_t i = 0; i < characters.size(); i++)
+			{
+				characters[i]->isSelected = false;
+			}
+
+			if (evnt.key.code == sf::Keyboard::Down)
+			{
+				selectedPlayer++;
+
+				if (selectedPlayer >= getPlayerCharacterCount() - 1)
+					selectedPlayer = getPlayerCharacterCount() - 1;
+			}
+			if (evnt.key.code == sf::Keyboard::Up)
+			{
+				selectedPlayer--;
+
+				if (selectedPlayer <= 0)
+					selectedPlayer = 0;
+			}
+			if (getPlayerCharacter(selectedPlayer) != false)
+			{
+				getPlayerCharacter(selectedPlayer)->isSelected = true;
+			}
+
+
+			if (evnt.key.code == sf::Keyboard::Escape)
+			{
+				for (size_t i = 0; i < characters.size(); i++)
+				{
+					characters[i]->isSelected = false;
+				}
+				selectPlayer = false;
+				selection = Selection::ATTACK;
+			}
+			if (evnt.key.code == sf::Keyboard::Return)
+			{
+
+			}
+		}
+	}
 }
 
+void MainGameState::inputSelectEnemy()
+{
+	sf::Event evnt;
+
+	while (this->game->window.pollEvent(evnt))
+	{
+		//closing the window
+		if (evnt.type == sf::Event::Closed)
+		{
+			game->window.close();
+		}
+
+		//keyboard
+		if (evnt.type == sf::Event::KeyPressed)
+		{
+			for (size_t i = 0; i < characters.size(); i++)
+			{
+				characters[i]->isSelected = false;
+			}
+
+			if (evnt.key.code == sf::Keyboard::Down)
+			{
+				selectedEnemy++;
+
+				if (selectedEnemy >= getEnemyCharacterCount() - 1)
+					selectedEnemy = getEnemyCharacterCount() - 1;
+			}
+			if (evnt.key.code == sf::Keyboard::Up)
+			{
+				selectedEnemy--;
+
+				if (selectedEnemy <= 0)
+					selectedEnemy = 0;
+			}
+			if (getEnemyCharacter(selectedEnemy) != false)
+			{
+				getEnemyCharacter(selectedEnemy)->isSelected = true;
+			}
+
+			if (evnt.key.code == sf::Keyboard::Escape)
+			{
+				for (size_t i = 0; i < characters.size(); i++)
+				{
+					characters[i]->isSelected = false;
+				}
+				selectEnemy = false;
+				selection = Selection::ATTACK;
+			}
+			if (evnt.key.code == sf::Keyboard::Return)
+			{
+				initCalculation();
+			}
+		}
+	}
+}
+
+void MainGameState::inputCalculation()
+{
+	sf::Event evnt;
+
+	while (this->game->window.pollEvent(evnt))
+	{
+		//closing the window
+		if (evnt.type == sf::Event::Closed)
+		{
+			game->window.close();
+		}
+		if (evnt.type == sf::Event::KeyPressed)
+		{
+			//closing the window
+			if (evnt.key.code == sf::Keyboard::Escape)
+			{
+				uninitCalculation();
+			}
+
+			//comparing the answer
+			if (evnt.key.code == sf::Keyboard::Return)
+			{
+				answerIsChecked = true;
+				//answerIsChecked2 = true;
+				//answerIsChecked3 = true;
+
+				//ei valmis
+				if (playerAnswerNegative == true)
+				{
+					playerAnswer *= -1;
+				}
+				std::cout << "sinun vastaus: " << playerAnswer << std::endl;
+				//std::cout << "oikea vastaus1: " << correctAnswer << std::endl;
+				//std::cout << "oikea vastaus2: " << correctAnswer2 << std::endl;
+				//std::cout << "oikea vastaus3: " << correctAnswer3 << std::endl;
+
+				//vastauksien vertaaminen
+				if (playerAnswer == correctAnswer)
+				{
+					answerIsCorrect = true;
+				}
+				//else if (playerAnswer == correctAnswer2)
+				//{
+				//	answerIsCorrect2 = true;
+				//}
+				//else if (playerAnswer == correctAnswer3)
+				//{
+				//	answerIsCorrect3 = true;
+				//}
+				else if (playerAnswer != correctAnswer)
+				{
+					answerIsCorrect = false;
+					//playerAnswer = -255;
+				}
+				//else if (playerAnswer != correctAnswer2)
+				//{
+				//	answerIsCorrect2 = false;
+				//	//playerAnswer = -255;
+				//}
+				//else if (playerAnswer != correctAnswer3)
+				//{
+				//	answerIsCorrect3 = false;
+				//	//playerAnswer = -255;
+				//}
+				playerAnswer = -255;
+				playerAnswerNegative = false;
+			}
+
+			//the numbers
+			if (evnt.key.code == sf::Keyboard::Num0 || evnt.key.code == sf::Keyboard::Numpad0)
+			{
+				if (playerAnswer == -255)
+				{
+					playerAnswer = 0;
+				}
+				else if (playerAnswer > 100000)
+				{
+					playerAnswer += 0;
+				}
+				else
+				{
+					playerAnswer = playerAnswer * 10;
+				}
+			}
+			if (evnt.key.code == sf::Keyboard::Num1 || evnt.key.code == sf::Keyboard::Numpad1)
+			{
+				if (playerAnswer == -255)
+				{
+					playerAnswer = 1;
+				}
+				else if (playerAnswer > 100000)
+				{
+					playerAnswer += 0;
+				}
+				else
+				{
+					playerAnswer = (playerAnswer * 10) + 1;
+				}
+			}
+			if (evnt.key.code == sf::Keyboard::Num2 || evnt.key.code == sf::Keyboard::Numpad2)
+			{
+				if (playerAnswer == -255)
+				{
+					playerAnswer = 2;
+				}
+				else if (playerAnswer > 100000)
+				{
+					playerAnswer += 0;
+				}
+				else
+				{
+					playerAnswer = (playerAnswer * 10) + 2;
+				}
+			}
+			if (evnt.key.code == sf::Keyboard::Num3 || evnt.key.code == sf::Keyboard::Numpad3)
+			{
+				if (playerAnswer == -255)
+				{
+					playerAnswer = 3;
+				}
+				else if (playerAnswer > 100000)
+				{
+					playerAnswer += 0;
+				}
+				else
+				{
+					playerAnswer = (playerAnswer * 10) + 3;
+				}
+			}
+			if (evnt.key.code == sf::Keyboard::Num4 || evnt.key.code == sf::Keyboard::Numpad4)
+			{
+				if (playerAnswer == -255)
+				{
+					playerAnswer = 4;
+				}
+				else if (playerAnswer > 100000)
+				{
+					playerAnswer += 0;
+				}
+				else
+				{
+					playerAnswer = (playerAnswer * 10) + 4;
+				}
+			}
+			if (evnt.key.code == sf::Keyboard::Num5 || evnt.key.code == sf::Keyboard::Numpad5)
+			{
+				if (playerAnswer == -255)
+				{
+					playerAnswer = 5;
+				}
+				else if (playerAnswer > 100000)
+				{
+					playerAnswer += 0;
+				}
+				else
+				{
+					playerAnswer = (playerAnswer * 10) + 5;
+				}
+			}
+			if (evnt.key.code == sf::Keyboard::Num6 || evnt.key.code == sf::Keyboard::Numpad6)
+			{
+				if (playerAnswer == -255)
+				{
+					playerAnswer = 6;
+				}
+				else if (playerAnswer > 100000)
+				{
+					playerAnswer += 0;
+				}
+				else
+				{
+					playerAnswer = (playerAnswer * 10) + 6;
+				}
+			}
+			if (evnt.key.code == sf::Keyboard::Num7 || evnt.key.code == sf::Keyboard::Numpad7)
+			{
+				if (playerAnswer == -255)
+				{
+					playerAnswer = 7;
+				}
+				else if (playerAnswer > 100000)
+				{
+					playerAnswer += 0;
+				}
+				else
+				{
+					playerAnswer = (playerAnswer * 10) + 7;
+				}
+			}
+			if (evnt.key.code == sf::Keyboard::Num8 || evnt.key.code == sf::Keyboard::Numpad8)
+			{
+				if (playerAnswer == -255)
+				{
+					playerAnswer = 8;
+				}
+				else if (playerAnswer > 100000)
+				{
+					playerAnswer += 0;
+				}
+				else
+				{
+					playerAnswer = (playerAnswer * 10) + 8;
+				}
+			}
+			if (evnt.key.code == sf::Keyboard::Num9 || evnt.key.code == sf::Keyboard::Numpad9)
+			{
+				if (playerAnswer == -255)
+				{
+					playerAnswer = 9;
+				}
+				else if (playerAnswer > 100000)
+				{
+					playerAnswer += 0;
+				}
+				else
+				{
+					playerAnswer = (playerAnswer * 10) + 9;
+				}
+			}
+			if (evnt.key.code == sf::Keyboard::Subtract || evnt.key.code == sf::Keyboard::Dash)
+			{
+				playerAnswerNegative = true;
+			}
+
+		}
+	}
+}
+
+void MainGameState::inputBattleWin()
+{
+	sf::Event evnt;
+
+	while (this->game->window.pollEvent(evnt))
+	{
+		//closing the window
+		if (evnt.type == sf::Event::Closed)
+		{
+			game->window.close();
+		}
+
+		//keyboard
+		if (evnt.type == sf::Event::KeyPressed)
+		{
+			if (evnt.key.code == sf::Keyboard::Return)
+			{
+				backToMenu();
+			}
+		}
+
+	}
+}
+void MainGameState::inputBattleLose()
+{
+	sf::Event evnt;
+
+	while (this->game->window.pollEvent(evnt))
+	{
+		//closing the window
+		if (evnt.type == sf::Event::Closed)
+		{
+			game->window.close();
+		}
+
+		//keyboard
+		if (evnt.type == sf::Event::KeyPressed)
+		{
+			if (evnt.key.code == sf::Keyboard::Return)
+			{
+				backToMenu();
+			}
+		}
+
+	}
+}
 
 
 
@@ -1286,12 +1457,16 @@ void MainGameState::inputSelectPlayer()
 //COMBATPHASE
 void MainGameState::initCalculation() //tarvitsee jonkun tiedon taistelijoista
 {
+	selectCharacter = false;
+	selectPlayer = false;
+	selectEnemy = false;
 	calculationGameIsOn = true;
 	clock.restart();
 }
 void MainGameState::uninitCalculation()
 {
 	//reset calculation stuff
+	playerAnswer = -255;
 	points = 0;
 	mistakes = 0;
 	calculationLevel = 0;
@@ -1305,9 +1480,7 @@ void MainGameState::uninitCalculation()
 	answerIsCorrect2 = false;
 	answerIsCorrect3 = false;
 
-	selectCharacter = false;
-	selectPlayer = false;
-	selectEnemy = false;
+
 	selectedEnemy = 0;
 	selection = Selection::ATTACK;
 	escapeCalculation = false;

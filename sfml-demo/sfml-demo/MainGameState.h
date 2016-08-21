@@ -53,8 +53,6 @@ private:
 	void combatAttack();
 	void combatDefend();
 
-	void inputSelectPlayer();
-	
 	int selectedPlayer = 0;
 	int selectedEnemy = 0;
 	
@@ -73,6 +71,13 @@ private:
 	bool noPlayerAlive();
 	///Returns true if any no enemy character is alive
 	bool noEnemyAlive();
+
+	//INPUT
+	//void inputSelectCharacter();
+	void inputSelectPlayer();
+	void inputSelectEnemy();
+	void inputBattleWin();
+	void inputBattleLose();
 
 	//MAINPHASE
 	//Time
@@ -133,6 +138,9 @@ private:
 	void initCalculation();
 	void uninitCalculation();
 
+	//INPUT
+	void inputCalculation();
+
 	//Methods
 	///Return random number
 	static int randomNumber(NumberType ntype, int level);
@@ -190,8 +198,22 @@ private:
 	int damageReflected = 0;
 	int damageTotal = 0;
 
-	
+	//-------------
 
+
+
+	//WIN BATTLE
+	sf::Text textBattleWin;
+
+
+
+	//-------------
+
+
+
+
+	//LOSE BATTLE
+	sf::Text textBattleLose;
 	
 
 };
