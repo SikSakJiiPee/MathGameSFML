@@ -45,6 +45,8 @@ public:
 	
 	//Character
 	std::vector<Character*> characters;
+	Character* activeCharacter;
+	Character* targetCharacter;
 
 private:
 	//state management
@@ -74,9 +76,13 @@ private:
 
 	//INPUT
 	//void inputSelectCharacter();
+	///handles the input during player selection
 	void inputSelectPlayer();
+	///handles the input during enemy selection
 	void inputSelectEnemy();
+	///handles the input after winning a battle 
 	void inputBattleWin();
+	///handles the input after losing a battle 
 	void inputBattleLose();
 
 	//MAINPHASE
@@ -108,6 +114,9 @@ private:
 	sf::Texture texturebgMainGame;
 	sf::Sprite spritebgMainGame;
 
+	
+
+
 	//SpecialMoves
 
 
@@ -129,7 +138,7 @@ private:
 	bool escapeCalculation = false;
 	bool calculationIsOn = false;
 
-
+	//-----------
 
 
 

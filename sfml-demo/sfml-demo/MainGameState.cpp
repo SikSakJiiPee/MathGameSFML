@@ -18,13 +18,22 @@ MainGameState::MainGameState(Game* game)
 
 	//Character
 	characters.push_back(new Character(true, "Player1", "Texture/Sprite/player1.png", 1, 0, 200, 200, 10, 10, 5, 5, 6, sf::Vector2f((game->window.getSize().x / 8) * 3, (game->window.getSize().y / 3))));
-	characters.push_back(new Character(true, "Player2", "Texture/Sprite/player2.png", 1, 0, 200, 200, 10, 10, 5, 5, 5, sf::Vector2f((game->window.getSize().x / 8) * 2, ((game->window.getSize().y / 3) + (game->window.getSize().y / 9)))));
-	characters.push_back(new Character(true, "Player3", "Texture/Sprite/player3.png", 1, 0, 200, 200, 10, 10, 5, 5, 4, sf::Vector2f((game->window.getSize().x / 8) * 1, ((game->window.getSize().y / 3) + (game->window.getSize().y / 9) * 2))));
-	characters.push_back(new Character(false, "Enemy1", "Texture/Sprite/enemy1.png", 1, 0, 100, 100, 10, 10, 5, 5, 3, sf::Vector2f((game->window.getSize().x / 8) * 5, (game->window.getSize().y / 3))));
-	characters.push_back(new Character(false, "Enemy2", "Texture/Sprite/enemy2.png", 1, 0, 100, 100, 10, 10, 5, 5, 2, sf::Vector2f((game->window.getSize().x / 8) * 6, ((game->window.getSize().y / 3) + (game->window.getSize().y / 9)))));
-	characters.push_back(new Character(false, "Enemy3", "Texture/Sprite/enemy3.png", 1, 0, 100, 100, 10, 10, 5, 5, 1, sf::Vector2f((game->window.getSize().x / 8) * 7, ((game->window.getSize().y / 3) + (game->window.getSize().y / 9) * 2))));
+	characters.push_back(new Character(true, "Player2", "Texture/Sprite/player2.png", 1, 0, 200, 200, 10, 10, 10, 5, 4, sf::Vector2f((game->window.getSize().x / 8) * 2, ((game->window.getSize().y / 3) + (game->window.getSize().y / 9)))));
+	characters.push_back(new Character(true, "Player3", "Texture/Sprite/player3.png", 1, 0, 200, 200, 10, 10, 15, 5, 3, sf::Vector2f((game->window.getSize().x / 8) * 1, ((game->window.getSize().y / 3) + (game->window.getSize().y / 9) * 2))));
+	characters.push_back(new Character(false, "Enemy1", "Texture/Sprite/enemy1.png", 1, 0, 100, 100, 10, 10, 5, 5, 5, sf::Vector2f((game->window.getSize().x / 8) * 5, (game->window.getSize().y / 3))));
+	characters.push_back(new Character(false, "Enemy2", "Texture/Sprite/enemy2.png", 1, 0, 100, 100, 10, 10, 5, 15, 2, sf::Vector2f((game->window.getSize().x / 8) * 6, ((game->window.getSize().y / 3) + (game->window.getSize().y / 9)))));
+	characters.push_back(new Character(false, "Enemy3", "Texture/Sprite/enemy3.png", 1, 0, 100, 100, 10, 10, 5, 30, 1, sf::Vector2f((game->window.getSize().x / 8) * 7, ((game->window.getSize().y / 3) + (game->window.getSize().y / 9) * 2))));
 	
-	//järjestä characterit myöhemmin nopeusjärjestykseen
+	//Search the fastest character and make it active
+	for (size_t i = 0; i < characters.size(); i++)
+	{
+		activeCharacter = characters[0];
+
+		if (characters[i]->speed > activeCharacter->speed)
+			activeCharacter = characters[i];
+	}
+	activeCharacter->isActive = true;
+	std::cout << "Active Character: " << activeCharacter->characterName << std::endl;
 
 	//
 	//SpecialMoves
@@ -97,27 +106,21 @@ MainGameState::MainGameState(Game* game)
 	textGameEscape.setString("Escape");
 
 	textInfoPlayer.setFont(font);
-	textInfoPlayer.setCharacterSize(20);
 	textInfoPlayer.setColor(sf::Color::Black);
 	
 	textInfoPlayer2.setFont(font);
-	textInfoPlayer2.setCharacterSize(20);
 	textInfoPlayer2.setColor(sf::Color::Black);
 
 	textInfoPlayer3.setFont(font);
-	textInfoPlayer3.setCharacterSize(20);
 	textInfoPlayer3.setColor(sf::Color::Black);
 
 	textInfoEnemy.setFont(font);
-	textInfoEnemy.setCharacterSize(20);
 	textInfoEnemy.setColor(sf::Color::Black);
 
 	textInfoEnemy2.setFont(font);
-	textInfoEnemy2.setCharacterSize(20);
 	textInfoEnemy2.setColor(sf::Color::Black);
 
 	textInfoEnemy3.setFont(font);
-	textInfoEnemy3.setCharacterSize(20);
 	textInfoEnemy3.setColor(sf::Color::Black);
 
 	//item
@@ -524,24 +527,24 @@ void MainGameState::update(const float dt)
 		
 		if (timeLeft <= 0)
 		{
-			if (getEnemyCharacter(selectedEnemy) != false || getPlayerCharacter(0) != false)
+			if (targetCharacter != false || activeCharacter != false)
 			{
-				damageDealt = (points * getPlayerCharacter(0)->attack);
-				damageReflected = (((randomNumber(NumberType::POSITIVE, 1)) * getEnemyCharacter(selectedEnemy)->defence) / 2);
+				damageDealt = (points * activeCharacter->attack);
+				damageReflected = (((randomNumber(NumberType::POSITIVE, 1)) * targetCharacter->defence) / 2);
 				damageTotal = damageDealt - damageReflected;
 				if (damageDealt < damageReflected)
 					damageTotal = 0;
 
-				std::cout << getEnemyCharacter(selectedEnemy)->defence << std::endl;
+				std::cout << targetCharacter->defence << std::endl;
 				std::cout << "damageDealt: " << damageDealt << "  damageReflected: " << damageReflected << std::endl;
 				std::cout << "damageTotal: " << damageTotal << std::endl;
 
-				getEnemyCharacter(selectedEnemy)->healthPoints -= damageTotal;
+				targetCharacter->healthPoints -= damageTotal;
 
-				if (getEnemyCharacter(selectedEnemy)->healthPoints > getEnemyCharacter(selectedEnemy)->maxHp)
-					getEnemyCharacter(selectedEnemy)->healthPoints = getEnemyCharacter(selectedEnemy)->maxHp;
-				if (getEnemyCharacter(selectedEnemy)->healthPoints < 0)
-					getEnemyCharacter(selectedEnemy)->healthPoints = 0;
+				if (targetCharacter->healthPoints > targetCharacter->maxHp)
+					targetCharacter->healthPoints = targetCharacter->maxHp;
+				if (targetCharacter->healthPoints < 0)
+					targetCharacter->healthPoints = 0;
 			}
 				
 			uninitCalculation();
@@ -788,37 +791,63 @@ void MainGameState::draw(const float dt)
 		//		textInfoPlayer.setColor(sf::Color::Black);
 		//}
 
+	
+
 		if (getPlayerCharacter(0) != false)
+			if (getPlayerCharacter(0)->isActive == true)
+				textInfoPlayer.setCharacterSize(21);
+			else
+				textInfoPlayer.setCharacterSize(20);
 			if (getPlayerCharacter(0)->isSelected == true)
 				textInfoPlayer.setColor(sf::Color::Blue);
 			else
 				textInfoPlayer.setColor(sf::Color::Black);
 		//
 		if (getPlayerCharacter(1) != false)
+			if (getPlayerCharacter(1)->isActive == true)
+				textInfoPlayer2.setCharacterSize(21);
+			else
+				textInfoPlayer2.setCharacterSize(20);
 			if (getPlayerCharacter(1)->isSelected == true)
 				textInfoPlayer2.setColor(sf::Color::Blue);
 			else
 				textInfoPlayer2.setColor(sf::Color::Black);
 		//
 		if (getPlayerCharacter(2) != false)
+			if (getPlayerCharacter(2)->isActive == true)
+				textInfoPlayer3.setCharacterSize(21);
+			else
+				textInfoPlayer3.setCharacterSize(20);
 			if (getPlayerCharacter(2)->isSelected == true)
 				textInfoPlayer3.setColor(sf::Color::Blue);
 			else
 				textInfoPlayer3.setColor(sf::Color::Black);
 		//
 		if (getEnemyCharacter(0) != false)
+			if (getEnemyCharacter(0)->isActive == true)
+				textInfoEnemy.setCharacterSize(21);
+			else
+				textInfoEnemy.setCharacterSize(20);
 			if (getEnemyCharacter(0)->isSelected == true)
 				textInfoEnemy.setColor(sf::Color::Red);
 			else
 				textInfoEnemy.setColor(sf::Color::Black);
 		//
 		if (getEnemyCharacter(1) != false)
+			if (getEnemyCharacter(1)->isActive == true)
+				textInfoEnemy2.setCharacterSize(21);
+			else
+				textInfoEnemy2.setCharacterSize(20);
 			if (getEnemyCharacter(1)->isSelected == true)
 				textInfoEnemy2.setColor(sf::Color::Red);
 			else
 				textInfoEnemy2.setColor(sf::Color::Black);
 		//
 		if (getEnemyCharacter(2) != false)
+			if (getEnemyCharacter(2)->isActive == true)
+				textInfoEnemy3.setCharacterSize(21);
+			else
+				textInfoEnemy3.setCharacterSize(20);
 			if (getEnemyCharacter(2)->isSelected == true)
 				textInfoEnemy3.setColor(sf::Color::Red);
 			else
@@ -911,6 +940,8 @@ void MainGameState::draw(const float dt)
 	if (calculationGameIsOn)
 	{
 		textTitleCalc.setString("Calculation");
+		if (escapeCalculation)
+			textTitleCalc.setString("Escape");
 		textTitleCalc.setOrigin(textTitleCalc.getGlobalBounds().width / 2, textTitleCalc.getGlobalBounds().height / 2);
 		textTitleCalc.setPosition(game->window.getSize().x / 2, 10);
 		
@@ -1110,11 +1141,23 @@ void MainGameState::inputSelectPlayer()
 					characters[i]->isSelected = false;
 				}
 				selectPlayer = false;
+				selectedPlayer = 0;
 				selection = Selection::ATTACK;
 			}
 			if (evnt.key.code == sf::Keyboard::Return)
 			{
+				for (size_t i = 0; i < characters.size(); i++)
+				{
+					characters[i]->isActive = false;
 
+					if (characters[i]->isSelected == true)
+					{
+						characters[i]->isActive = true;
+						activeCharacter = characters[i];
+					}
+						
+
+				}
 			}
 		}
 	}
@@ -1166,10 +1209,12 @@ void MainGameState::inputSelectEnemy()
 					characters[i]->isSelected = false;
 				}
 				selectEnemy = false;
+				selectedEnemy = 0;
 				selection = Selection::ATTACK;
 			}
 			if (evnt.key.code == sf::Keyboard::Return)
 			{
+				targetCharacter = getEnemyCharacter(selectedEnemy);
 				initCalculation();
 			}
 		}
@@ -1424,7 +1469,6 @@ void MainGameState::inputBattleWin()
 				backToMenu();
 			}
 		}
-
 	}
 }
 void MainGameState::inputBattleLose()
@@ -1447,7 +1491,6 @@ void MainGameState::inputBattleLose()
 				backToMenu();
 			}
 		}
-
 	}
 }
 
@@ -1490,11 +1533,38 @@ void MainGameState::uninitCalculation()
 		characters[i]->isSelected = false;
 	}
 
+	activeCharacter->turnCompleted = true;
+	//Check which characters have completed turn
+	std::cout << "Turn Completed:" << std::endl;
+	for (size_t i = 0; i < characters.size(); i++)
+	{
+		if (characters[i]->turnCompleted == true)
+			std::cout << characters[i]->characterName << std::endl;
+	}
+	//Make every character inactive
+	for (size_t i = 0; i < characters.size(); i++)
+	{
+		characters[i]->isActive = false;
+	}
+	//tämä bugaa ja johtuu luultavasti nopeudesta
+	for (size_t i = 0; i < characters.size(); i++)
+	{
+		//tähän löytyy luultavasti parempikin tapa
+		if (characters[i]->turnCompleted == false)
+			activeCharacter = characters[i];
+
+		if (characters[i]->speed > activeCharacter->speed && characters[i]->turnCompleted == false)
+			activeCharacter = characters[i];
+	}
+	activeCharacter->isActive = true;
+	std::cout << "Active Character: " << activeCharacter->characterName << std::endl;
+
 	calculationGameIsOn = false;
 	
 }
 
 
+//Calculation stuff
 int MainGameState::randomNumber(NumberType ntype, int level)
 {
 	int rMin;

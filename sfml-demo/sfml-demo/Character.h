@@ -39,7 +39,8 @@ public:
 
 	//bool isAlive = true;
 	bool isSelected = false;
-	bool activeCharacter = false;
+	bool isActive = false;
+	bool turnCompleted = false;
 
 	sf::Texture textureCharacter;
 	sf::Sprite spriteCharacter;
