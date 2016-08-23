@@ -138,6 +138,13 @@ private:
 	bool escapeCalculation = false;
 	bool calculationIsOn = false;
 
+	//Turns
+	Turn turn;
+	int turnsPassed = 0;
+
+	//Enemy Turn
+	void enemyChoosesTarget();
+
 	//-----------
 
 

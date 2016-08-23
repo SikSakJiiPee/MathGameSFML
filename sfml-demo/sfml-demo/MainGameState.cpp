@@ -17,23 +17,36 @@ MainGameState::MainGameState(Game* game)
 	selection = Selection::ATTACK;
 
 	//Character
-	characters.push_back(new Character(true, "Player1", "Texture/Sprite/player1.png", 1, 0, 200, 200, 10, 10, 5, 5, 6, sf::Vector2f((game->window.getSize().x / 8) * 3, (game->window.getSize().y / 3))));
-	characters.push_back(new Character(true, "Player2", "Texture/Sprite/player2.png", 1, 0, 200, 200, 10, 10, 10, 5, 4, sf::Vector2f((game->window.getSize().x / 8) * 2, ((game->window.getSize().y / 3) + (game->window.getSize().y / 9)))));
-	characters.push_back(new Character(true, "Player3", "Texture/Sprite/player3.png", 1, 0, 200, 200, 10, 10, 15, 5, 3, sf::Vector2f((game->window.getSize().x / 8) * 1, ((game->window.getSize().y / 3) + (game->window.getSize().y / 9) * 2))));
-	characters.push_back(new Character(false, "Enemy1", "Texture/Sprite/enemy1.png", 1, 0, 100, 100, 10, 10, 5, 5, 5, sf::Vector2f((game->window.getSize().x / 8) * 5, (game->window.getSize().y / 3))));
-	characters.push_back(new Character(false, "Enemy2", "Texture/Sprite/enemy2.png", 1, 0, 100, 100, 10, 10, 5, 15, 2, sf::Vector2f((game->window.getSize().x / 8) * 6, ((game->window.getSize().y / 3) + (game->window.getSize().y / 9)))));
-	characters.push_back(new Character(false, "Enemy3", "Texture/Sprite/enemy3.png", 1, 0, 100, 100, 10, 10, 5, 30, 1, sf::Vector2f((game->window.getSize().x / 8) * 7, ((game->window.getSize().y / 3) + (game->window.getSize().y / 9) * 2))));
+	characters.push_back(new Character(true, "Player1", "Texture/Sprite/player1.png", 1, 0, 100, 100, 10, 10, 5, 5, 1, sf::Vector2f((game->window.getSize().x / 8) * 3, (game->window.getSize().y / 3))));
+	characters.push_back(new Character(true, "Player2", "Texture/Sprite/player2.png", 1, 0, 100, 100, 10, 10, 7, 5, 4, sf::Vector2f((game->window.getSize().x / 8) * 2, ((game->window.getSize().y / 3) + (game->window.getSize().y / 9)))));
+	characters.push_back(new Character(true, "Player3", "Texture/Sprite/player3.png", 1, 0, 100, 100, 10, 10, 10, 5, 3, sf::Vector2f((game->window.getSize().x / 8) * 1, ((game->window.getSize().y / 3) + (game->window.getSize().y / 9) * 2))));
+	characters.push_back(new Character(false, "Enemy1", "Texture/Sprite/enemy1.png", 1, 0, 100, 100, 10, 10, 10, 5, 5, sf::Vector2f((game->window.getSize().x / 8) * 5, (game->window.getSize().y / 3))));
+	characters.push_back(new Character(false, "Enemy2", "Texture/Sprite/enemy2.png", 1, 0, 100, 100, 10, 10, 15, 15, 2, sf::Vector2f((game->window.getSize().x / 8) * 6, ((game->window.getSize().y / 3) + (game->window.getSize().y / 9)))));
+	characters.push_back(new Character(false, "Enemy3", "Texture/Sprite/enemy3.png", 1, 0, 100, 100, 10, 10, 20, 30, 1, sf::Vector2f((game->window.getSize().x / 8) * 7, ((game->window.getSize().y / 3) + (game->window.getSize().y / 9) * 2))));
 	
-	//Search the fastest character and make it active
-	for (size_t i = 0; i < characters.size(); i++)
-	{
-		activeCharacter = characters[0];
-
-		if (characters[i]->speed > activeCharacter->speed)
-			activeCharacter = characters[i];
-	}
+	////Search the fastest character and make it active
+	//for (size_t i = 0; i < characters.size(); i++)
+	//{
+	//	activeCharacter = characters[0];
+	//
+	//	if (characters[i]->speed > activeCharacter->speed)
+	//		activeCharacter = characters[i];
+	//}
+	
+	activeCharacter = characters[0];
 	activeCharacter->isActive = true;
 	std::cout << "Active Character: " << activeCharacter->characterName << std::endl;
+
+	if (activeCharacter->isPlayerCharacter)
+	{
+		turn = Turn::PLAYER;
+	}		
+	else
+	{
+		turn = Turn::ENEMY;
+	}
+		
+	
 
 	//
 	//SpecialMoves
@@ -329,170 +342,217 @@ MainGameState::~MainGameState()
 
 void MainGameState::handleInput()
 {
-	//during select player
-	if (selectPlayer)
+	//During player turn
+	if (turn == Turn::PLAYER)
 	{
-		inputSelectPlayer();
-	}
-	//--------------
-
-	//during select enemy
-	if (selectEnemy)
-	{
-		inputSelectEnemy();
-	}
-	//--------------
-
-
-
-	//during calculation
-	if (calculationGameIsOn)
-	{
-		inputCalculation();
-	}
-	//--------------
-
-
-
-	//during battle lose
-	if (noPlayerAlive())
-	{
-		inputBattleLose();
-	}
-	//--------------
-
-	//during battle win
-	if (noEnemyAlive())
-	{
-		inputBattleWin();
-	}
-	//--------------
-	
-	//muuta loputkin inputit omiksi metodeikseen
-	sf::Event evnt;
-	
-	while (this->game->window.pollEvent(evnt))
-	{
-		if (!calculationGameIsOn)
+		//during select player
+		if (selectPlayer)
 		{
-			//closing the window
-			if (evnt.type == sf::Event::Closed)
-			{
-				game->window.close();
-			}
+			inputSelectPlayer();
+		}
+		//--------------
 
-			//keyboard
-			if (evnt.type == sf::Event::KeyPressed)
+		//during select enemy
+		if (selectEnemy)
+		{
+			inputSelectEnemy();
+		}
+		//--------------
+
+
+
+		//during calculation
+		if (calculationGameIsOn)
+		{
+			inputCalculation();
+		}
+		//--------------
+
+
+
+		//during battle lose
+		if (noPlayerAlive())
+		{
+			inputBattleLose();
+		}
+		//--------------
+
+		//during battle win
+		if (noEnemyAlive())
+		{
+			inputBattleWin();
+		}
+		//--------------
+
+		//muuta loputkin inputit omiksi metodeikseen
+		sf::Event evnt;
+
+		while (this->game->window.pollEvent(evnt))
+		{
+			if (!calculationGameIsOn)
 			{
-				//selecting the action
-				if (!selectCharacter && !selectPlayer && !selectEnemy)
+				//closing the window
+				if (evnt.type == sf::Event::Closed)
 				{
-					//quick button to kill all players
-					if (evnt.key.code == sf::Keyboard::F)
-					{
-						for (size_t i = 0; i < characters.size(); i++)
-						{
-							if (characters[i]->isPlayerCharacter == true)
-								characters[i]->healthPoints = 0;
-						}
-					}
-					//quick button to kill all enemies
-					if (evnt.key.code == sf::Keyboard::G)
-					{
-						for (size_t i = 0; i < characters.size(); i++)
-						{
-							if (characters[i]->isPlayerCharacter == false)
-								characters[i]->healthPoints = 0;
-						}
-					}
+					game->window.close();
+				}
 
-					//Go to CalculationState
-					if (evnt.key.code == sf::Keyboard::Return)
+				//keyboard
+				if (evnt.type == sf::Event::KeyPressed)
+				{
+					//selecting the action
+					if (!selectCharacter && !selectPlayer && !selectEnemy)
 					{
-						if (selection == Selection::ATTACK)
+						//quick button to kill all players
+						if (evnt.key.code == sf::Keyboard::F)
 						{
-							selectEnemy = true;
-							if (getEnemyCharacter(0) != false)
-								getEnemyCharacter(0)->isSelected = true;
-							selection = Selection::NONE;
-							if (evnt.key.code == sf::Keyboard::Escape)
+							for (size_t i = 0; i < characters.size(); i++)
 							{
-
+								if (characters[i]->isPlayerCharacter == true)
+									characters[i]->healthPoints = 0;
 							}
 						}
-						if (selection == Selection::SPECIAL)
+						//quick button to kill all enemies
+						if (evnt.key.code == sf::Keyboard::G)
 						{
-							selectPlayer = true;
-							if (getPlayerCharacter(0) != false)
-								getPlayerCharacter(0)->isSelected = true;
-							selection = Selection::NONE;
+							for (size_t i = 0; i < characters.size(); i++)
+							{
+								if (characters[i]->isPlayerCharacter == false)
+									characters[i]->healthPoints = 0;
+							}
+						}
 
-							std::cout << "Special selected" << std::endl;
-						}
-						if (selection == Selection::ITEM)
+						//Go to CalculationState
+						if (evnt.key.code == sf::Keyboard::Return)
 						{
-							selectItem = true;
+							if (selection == Selection::ATTACK)
+							{
+								selectEnemy = true;
+								if (getEnemyCharacter(0) != false)
+									getEnemyCharacter(0)->isSelected = true;
+								selection = Selection::NONE;
+								if (evnt.key.code == sf::Keyboard::Escape)
+								{
 
-							std::cout << "Item selected" << std::endl;
-						}
-						if (selection == Selection::ESCAPE)
-						{
-							escapeCalculation = true;
-							initCalculation();
-							std::cout << "Escape selected" << std::endl;
-						}
-					}
-					//return to menu
-					if (evnt.key.code == sf::Keyboard::Escape)
-					{
-						this->backToMenu();
-					}
+								}
+							}
+							if (selection == Selection::SPECIAL)
+							{
+								selectPlayer = true;
+								if (getPlayerCharacter(0) != false)
+									getPlayerCharacter(0)->isSelected = true;
+								selection = Selection::NONE;
 
-					//selection (action)
-					if (evnt.key.code == sf::Keyboard::Right)
-					{
-						if (selection == Selection::ATTACK)
-						{
-							selection = Selection::SPECIAL;
+								std::cout << "Special selected" << std::endl;
+							}
+							if (selection == Selection::ITEM)
+							{
+								selectItem = true;
+								initCalculation();
+								uninitCalculation();
+								std::cout << "Item selected" << std::endl;
+							}
+							if (selection == Selection::ESCAPE)
+							{
+								escapeCalculation = true;
+								initCalculation();
+								std::cout << "Escape selected" << std::endl;
+							}
 						}
-						if (selection == Selection::ITEM)
+						//return to menu
+						if (evnt.key.code == sf::Keyboard::Escape)
 						{
-							selection = Selection::ESCAPE;
+							this->backToMenu();
+						}
+
+						//selection (action)
+						if (evnt.key.code == sf::Keyboard::Right)
+						{
+							if (selection == Selection::ATTACK)
+							{
+								selection = Selection::SPECIAL;
+							}
+							if (selection == Selection::ITEM)
+							{
+								selection = Selection::ESCAPE;
+							}
+						}
+						if (evnt.key.code == sf::Keyboard::Left)
+						{
+							if (selection == Selection::SPECIAL)
+							{
+								selection = Selection::ATTACK;
+							}
+							if (selection == Selection::ESCAPE)
+							{
+								selection = Selection::ITEM;
+							}
+						}
+						if (evnt.key.code == sf::Keyboard::Down)
+						{
+							if (selection == Selection::ATTACK)
+							{
+								selection = Selection::ITEM;
+							}
+							if (selection == Selection::SPECIAL)
+							{
+								selection = Selection::ESCAPE;
+							}
+						}
+						if (evnt.key.code == sf::Keyboard::Up)
+						{
+							if (selection == Selection::ITEM)
+							{
+								selection = Selection::ATTACK;
+							}
+							if (selection == Selection::ESCAPE)
+							{
+								selection = Selection::SPECIAL;
+							}
 						}
 					}
-					if (evnt.key.code == sf::Keyboard::Left)
-					{
-						if (selection == Selection::SPECIAL)
-						{
-							selection = Selection::ATTACK;
-						}
-						if (selection == Selection::ESCAPE)
-						{
-							selection = Selection::ITEM;
-						}
-					}
-					if (evnt.key.code == sf::Keyboard::Down)
-					{
-						if (selection == Selection::ATTACK)
-						{
-							selection = Selection::ITEM;
-						}
-						if (selection == Selection::SPECIAL)
-						{
-							selection = Selection::ESCAPE;
-						}
-					}
-					if (evnt.key.code == sf::Keyboard::Up)
-					{
-						if (selection == Selection::ITEM)
-						{
-							selection = Selection::ATTACK;
-						}
-						if (selection == Selection::ESCAPE)
-						{
-							selection = Selection::SPECIAL;
-						}
-					}
+				}
+			}
+		}
+	}
+	//-----
+
+	//During enemy turn
+	if (turn == Turn::ENEMY)
+	{
+		//during calculation
+		if (calculationGameIsOn)
+		{
+			inputCalculation();
+		}
+		//--------------
+
+
+
+		//during battle lose
+		if (noPlayerAlive())
+		{
+			inputBattleLose();
+		}
+		//--------------
+
+		//during battle win
+		if (noEnemyAlive())
+		{
+			inputBattleWin();
+		}
+		//--------------
+		
+		sf::Event evnt;
+
+		while (this->game->window.pollEvent(evnt))
+		{
+			if (evnt.type == sf::Event::KeyPressed)
+			{
+				if (evnt.key.code == sf::Keyboard::Return)
+				{
+					enemyChoosesTarget();
+					initCalculation();
 				}
 			}
 		}
@@ -504,6 +564,11 @@ void MainGameState::handleInput()
 
 void MainGameState::update(const float dt)
 {
+	//if (turn == Turn::PLAYER)
+	//{
+
+	//}
+
 	//during main phase
 	if (!calculationGameIsOn)
 	{
@@ -527,10 +592,23 @@ void MainGameState::update(const float dt)
 		
 		if (timeLeft <= 0)
 		{
+
 			if (targetCharacter != false || activeCharacter != false)
 			{
-				damageDealt = (points * activeCharacter->attack);
-				damageReflected = (((randomNumber(NumberType::POSITIVE, 1)) * targetCharacter->defence) / 2);
+				if (turn == Turn::PLAYER)
+					damageDealt = (points * activeCharacter->attack);
+				if (turn == Turn::ENEMY)
+					damageDealt = ((randomNumber(NumberType::POSITIVE, 1)) * activeCharacter->attack);
+				
+				if (turn == Turn::PLAYER)
+				{
+					damageReflected = (((randomNumber(NumberType::POSITIVE, 1)) * targetCharacter->defence) / 2);
+				}
+				if (turn == Turn::ENEMY)
+				{
+					damageReflected = ((points * targetCharacter->defence) / 2);
+				}
+
 				damageTotal = damageDealt - damageReflected;
 				if (damageDealt < damageReflected)
 					damageTotal = 0;
@@ -989,6 +1067,9 @@ void MainGameState::draw(const float dt)
 		game->window.draw(textBattleWin);
 	}
 }
+//-----
+
+
 
 
 //state management
@@ -998,6 +1079,7 @@ void MainGameState::backToMenu()
 
 	return;
 }
+//-----
 
 
 //character vector management
@@ -1060,6 +1142,9 @@ Character* MainGameState::getEnemyCharacter(int index)
 
 	return nullptr;
 }
+//-----
+
+
 
 //checks for alive characters
 bool MainGameState::noPlayerAlive()
@@ -1092,6 +1177,10 @@ bool MainGameState::noEnemyAlive()
 
 	return false;
 }
+//-----
+
+
+
 
 //INPUT
 void MainGameState::inputSelectPlayer()
@@ -1493,6 +1582,28 @@ void MainGameState::inputBattleLose()
 		}
 	}
 }
+//-----
+
+
+
+
+//Turns
+void MainGameState::enemyChoosesTarget()
+{
+	for (size_t i = 0; i < characters.size(); i++)
+	{
+		if (characters[i]->isPlayerCharacter && characters[i]->checkIfAlive())
+		{
+			targetCharacter = characters[i];
+		}
+	}
+}
+//------
+
+
+
+
+
 
 
 
@@ -1523,7 +1634,6 @@ void MainGameState::uninitCalculation()
 	answerIsCorrect2 = false;
 	answerIsCorrect3 = false;
 
-
 	selectedEnemy = 0;
 	selection = Selection::ATTACK;
 	escapeCalculation = false;
@@ -1533,31 +1643,75 @@ void MainGameState::uninitCalculation()
 		characters[i]->isSelected = false;
 	}
 
-	activeCharacter->turnCompleted = true;
+	//Changes to characters after completing the turn
 	//Check which characters have completed turn
+	activeCharacter->turnCompleted = true;
 	std::cout << "Turn Completed:" << std::endl;
 	for (size_t i = 0; i < characters.size(); i++)
 	{
 		if (characters[i]->turnCompleted == true)
 			std::cout << characters[i]->characterName << std::endl;
 	}
+	
 	//Make every character inactive
 	for (size_t i = 0; i < characters.size(); i++)
 	{
 		characters[i]->isActive = false;
 	}
-	//tämä bugaa ja johtuu luultavasti nopeudesta
+
+	turnsPassed++;
+	if (turnsPassed == getPlayerCharacterCount() + getEnemyCharacterCount())
+	{
+		turnsPassed = 0;
+		for (size_t i = 0; i < characters.size(); i++)
+		{
+			characters[i]->turnCompleted = false;
+		}
+	}
+		
+	activeCharacter = characters[0 + turnsPassed];
+	activeCharacter->isActive = true;
+
+	if (activeCharacter->isPlayerCharacter)
+	{
+		turn = Turn::PLAYER;
+	}
+	else
+	{
+		turn = Turn::ENEMY;
+	}
+
+	//mieti joku tapa jatkaa vuoroja nopeusjärjestyksessä
+	////tämä bugaa ja johtuu luultavasti nopeudesta
+	//for (size_t i = 0; i < characters.size(); i++)
+	//{
+	//	
+	//	
+	//	//tähän löytyy luultavasti parempikin tapa
+	//	if (characters[i]->turnCompleted == false)
+	//	{
+	//		characters[i]->isActive = false;
+	//		activeCharacter = characters[i];
+	//		activeCharacter->isActive = true;
+	//	}
+	//		
+
+	//	//if (characters[i]->speed < activeCharacter->speed && characters[i]->turnCompleted == false)
+	//	//{
+	//	//	activeCharacter = characters[i];
+	//	//	
+	//	//}
+	//		
+	//}
+
+	//activeCharacter->isActive = true;
 	for (size_t i = 0; i < characters.size(); i++)
 	{
-		//tähän löytyy luultavasti parempikin tapa
-		if (characters[i]->turnCompleted == false)
-			activeCharacter = characters[i];
-
-		if (characters[i]->speed > activeCharacter->speed && characters[i]->turnCompleted == false)
-			activeCharacter = characters[i];
+		if (characters[i]->isActive == true)
+			std::cout << "Active Character: " << characters[i]->characterName << std::endl;
 	}
-	activeCharacter->isActive = true;
-	std::cout << "Active Character: " << activeCharacter->characterName << std::endl;
+
+	
 
 	calculationGameIsOn = false;
 	
