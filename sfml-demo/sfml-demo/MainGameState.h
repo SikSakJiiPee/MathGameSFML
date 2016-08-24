@@ -74,6 +74,8 @@ private:
 	///Returns true if any no enemy character is alive
 	bool noEnemyAlive();
 
+	void getFirstAliveCharacter();
+
 	//INPUT
 	//void inputSelectCharacter();
 	///handles the input during player selection
@@ -170,6 +172,8 @@ private:
 	//Text
 	//sf::Font font;
 	sf::Text textTitleCalc;
+	sf::Text textAttacker;
+	sf::Text textDefender;
 	sf::Text textCalculation;
 	sf::Text textCalculation2;
 	sf::Text textCalculation3;
@@ -178,7 +182,7 @@ private:
 	sf::Text textPoints;
 	sf::Text textMistakes;
 	sf::Text textCurrentCombo;
-	sf::Text textMaxCombo;
+	sf::Text textBestCombo;
 	sf::Text textTimeLeft;
 	
 	//other
@@ -206,8 +210,8 @@ private:
 
 	int points = 0;
 	int mistakes = 0;
-	int currentCombo;
-	int maxCombo;
+	int currentCombo = 0;
+	int bestCombo = 0;
 	float averageCombo;
 
 	int damageDealt = 0;

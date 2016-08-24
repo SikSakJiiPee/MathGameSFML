@@ -20,9 +20,9 @@ MainGameState::MainGameState(Game* game)
 	characters.push_back(new Character(true, "Player1", "Texture/Sprite/player1.png", 1, 0, 100, 100, 10, 10, 5, 5, 1, sf::Vector2f((game->window.getSize().x / 8) * 3, (game->window.getSize().y / 3))));
 	characters.push_back(new Character(true, "Player2", "Texture/Sprite/player2.png", 1, 0, 100, 100, 10, 10, 7, 5, 4, sf::Vector2f((game->window.getSize().x / 8) * 2, ((game->window.getSize().y / 3) + (game->window.getSize().y / 9)))));
 	characters.push_back(new Character(true, "Player3", "Texture/Sprite/player3.png", 1, 0, 100, 100, 10, 10, 10, 5, 3, sf::Vector2f((game->window.getSize().x / 8) * 1, ((game->window.getSize().y / 3) + (game->window.getSize().y / 9) * 2))));
-	characters.push_back(new Character(false, "Enemy1", "Texture/Sprite/enemy1.png", 1, 0, 100, 100, 10, 10, 10, 5, 5, sf::Vector2f((game->window.getSize().x / 8) * 5, (game->window.getSize().y / 3))));
-	characters.push_back(new Character(false, "Enemy2", "Texture/Sprite/enemy2.png", 1, 0, 100, 100, 10, 10, 15, 15, 2, sf::Vector2f((game->window.getSize().x / 8) * 6, ((game->window.getSize().y / 3) + (game->window.getSize().y / 9)))));
-	characters.push_back(new Character(false, "Enemy3", "Texture/Sprite/enemy3.png", 1, 0, 100, 100, 10, 10, 20, 30, 1, sf::Vector2f((game->window.getSize().x / 8) * 7, ((game->window.getSize().y / 3) + (game->window.getSize().y / 9) * 2))));
+	characters.push_back(new Character(false, "Enemy1", "Texture/Sprite/enemy1.png", 1, 0, 100, 100, 10, 10, 7, 5, 5, sf::Vector2f((game->window.getSize().x / 8) * 5, (game->window.getSize().y / 3))));
+	characters.push_back(new Character(false, "Enemy2", "Texture/Sprite/enemy2.png", 1, 0, 100, 100, 10, 10, 7, 15, 2, sf::Vector2f((game->window.getSize().x / 8) * 6, ((game->window.getSize().y / 3) + (game->window.getSize().y / 9)))));
+	characters.push_back(new Character(false, "Enemy3", "Texture/Sprite/enemy3.png", 1, 0, 100, 100, 10, 10, 7, 30, 1, sf::Vector2f((game->window.getSize().x / 8) * 7, ((game->window.getSize().y / 3) + (game->window.getSize().y / 9) * 2))));
 	
 	////Search the fastest character and make it active
 	//for (size_t i = 0; i < characters.size(); i++)
@@ -179,6 +179,14 @@ MainGameState::MainGameState(Game* game)
 	textTitleCalc.setCharacterSize(30);
 	textTitleCalc.setColor(sf::Color::Black);
 
+	textAttacker.setFont(font);
+	textAttacker.setCharacterSize(30);
+	textAttacker.setColor(sf::Color::Black);
+
+	textDefender.setFont(font);
+	textDefender.setCharacterSize(30);
+	textDefender.setColor(sf::Color::Black);
+
 	textCalculation.setFont(font);
 	textCalculation.setCharacterSize(30);
 	textCalculation.setColor(sf::Color::Black);
@@ -211,9 +219,9 @@ MainGameState::MainGameState(Game* game)
 	textCurrentCombo.setCharacterSize(30);
 	textCurrentCombo.setColor(sf::Color::Black);
 	
-	textMaxCombo.setFont(font);
-	textMaxCombo.setCharacterSize(30);
-	textMaxCombo.setColor(sf::Color::Black);
+	textBestCombo.setFont(font);
+	textBestCombo.setCharacterSize(30);
+	textBestCombo.setColor(sf::Color::Black);
 	
 	textTimeLeft.setFont(font);
 	textTimeLeft.setCharacterSize(30);
@@ -588,7 +596,7 @@ void MainGameState::update(const float dt)
 		timeLeft = 15 - timeElapsed.asSeconds();
 		//std::cout << timeElapsed.asSeconds() << " " << timeLeft << std::endl;
 		std::string strTimeLeft = convertToString(timeLeft);
-		textTimeLeft.setString(strTimeLeft);
+		textTimeLeft.setString("Time: " + strTimeLeft);
 		
 		if (timeLeft <= 0)
 		{
@@ -737,6 +745,10 @@ void MainGameState::update(const float dt)
 			{
 				std::cout << "Oikea vastaus 1 on: " << correctAnswer << "	oikein!" << std::endl;
 				points++;
+				currentCombo++;
+				if (bestCombo < currentCombo)
+					bestCombo = currentCombo;
+				
 				if (points == 5 || points == 10 || points == 15 || points == 20 || points == 25)
 				{
 					calculationLevel++;
@@ -749,15 +761,12 @@ void MainGameState::update(const float dt)
 			{
 				std::cout << "Oikea vastaus 1 on: " << correctAnswer << "	kurahti..." << std::endl;
 				mistakes++;
+				currentCombo = 0;
 			}
 		
-		
-		
 			std::cout << "Pisteet: " << points << ". Virheet: " << mistakes << "." << std::endl;
-
 		
-		
-			//estä monen laskuun vastaaminen kerralla
+			//estä moneen laskuun vastaaminen kerralla
 			//esim. siirtämällä seuraavaa linea iffeihin
 			answerIsChecked = false;
 		}
@@ -1017,14 +1026,41 @@ void MainGameState::draw(const float dt)
 	//during calculation
 	if (calculationGameIsOn)
 	{
-		textTitleCalc.setString("Calculation");
+		if (turn == Turn::PLAYER)
+			textTitleCalc.setString("Attack");
+		if (turn == Turn::ENEMY)
+			textTitleCalc.setString("Defend");
 		if (escapeCalculation)
 			textTitleCalc.setString("Escape");
-		textTitleCalc.setOrigin(textTitleCalc.getGlobalBounds().width / 2, textTitleCalc.getGlobalBounds().height / 2);
-		textTitleCalc.setPosition(game->window.getSize().x / 2, 10);
 		
+		//textTitleCalc.setOrigin(textTitleCalc.getGlobalBounds().width / 2, textTitleCalc.getGlobalBounds().height / 2);
+		//textTitleCalc.setPosition(game->window.getSize().x / 2, 10);
+		
+		if (timeLeft <= 5.00f)
+			textTimeLeft.setColor(sf::Color::Red);
+		else
+			textTimeLeft.setColor(sf::Color::Black);
+		textTimeLeft.setPosition(game->window.getSize().x / 2, 0);
+
+		textAttacker.setString(activeCharacter->characterName);
+		textDefender.setString(targetCharacter->characterName);
+		if (turn == Turn::PLAYER)
+		{
+			textAttacker.setPosition(0, (game->window.getSize().y / 18));
+			textDefender.setPosition(game->window.getSize().x / 2, (game->window.getSize().y / 18));
+		}
+		if (turn == Turn::ENEMY)
+		{
+			textDefender.setPosition(0, (game->window.getSize().y / 18));
+			textAttacker.setPosition(game->window.getSize().x / 2, (game->window.getSize().y / 18));
+		}
+
+
 		textCalculation.setOrigin(textCalculation.getGlobalBounds().width / 2, textCalculation.getGlobalBounds().height);
 		textCalculation.setPosition((game->window.getSize().x / 4) * 2, game->window.getSize().y / 3);
+		//lähempänä oikeaa
+		//textCalculation.setPosition((game->window.getSize().x / 4) * 2, (game->window.getSize().y / 18) * 3);
+		
 		//textCalculation2.setOrigin(textCalculation.getGlobalBounds().width / 2, textCalculation.getGlobalBounds().height);
 		//textCalculation2.setPosition((game->window.getSize().x / 4) * 2, game->window.getSize().y / 3);
 		//textCalculation3.setOrigin(textCalculation.getGlobalBounds().width / 2, textCalculation.getGlobalBounds().height);
@@ -1032,17 +1068,32 @@ void MainGameState::draw(const float dt)
 		
 		textPlayerAnswer.setOrigin(textPlayerAnswer.getGlobalBounds().width / 2, textPlayerAnswer.getGlobalBounds().height);
 		textPlayerAnswer.setPosition(game->window.getSize().x / 2, (game->window.getSize().y / 3) * 2);
-		
-		if (timeLeft <= 5.00f)
-			textTimeLeft.setColor(sf::Color::Red);
-		else
-			textTimeLeft.setColor(sf::Color::Black);
-		
+		//lähempänä oikeaa
+		//textPlayerAnswer.setPosition((game->window.getSize().x / 4) * 2, (game->window.getSize().y / 18) * 4);
+
+		textPoints.setString("Correct: " + convertToString(points));
+		textMistakes.setString("Miss: " + convertToString(mistakes));
+		textCurrentCombo.setString("Combo: " + convertToString(currentCombo));
+		textBestCombo.setString("Best Combo: " + convertToString(bestCombo));
+		textPoints.setPosition(0, (game->window.getSize().y / 18) * 16);
+		textMistakes.setPosition(0, (game->window.getSize().y / 18) * 17);
+		textCurrentCombo.setPosition(game->window.getSize().x / 4, (game->window.getSize().y / 18) * 16);
+		textBestCombo.setPosition(game->window.getSize().x / 4, (game->window.getSize().y / 18) * 17);
+
+
+
+		//DRAW
 		game->window.draw(textTitleCalc);
 		game->window.draw(textCalculation);
 		//game->window.draw(textCalculation2);
 		//game->window.draw(textCalculation3);
 		game->window.draw(textPlayerAnswer);
+		game->window.draw(textAttacker);
+		game->window.draw(textDefender);
+		game->window.draw(textPoints);
+		game->window.draw(textMistakes);
+		game->window.draw(textCurrentCombo);
+		game->window.draw(textBestCombo);
 		
 		game->window.draw(textTimeLeft);
 	}
@@ -1176,6 +1227,25 @@ bool MainGameState::noEnemyAlive()
 		return true;
 
 	return false;
+}
+
+
+////ei ajatus kulje enää, jatka myöhemmin
+void MainGameState::getFirstAliveCharacter()
+{
+	size_t count(0);
+	
+	for (size_t i = 0; i < characters.size(); i++)
+	{
+		if (characters[i]->checkIfAlive())
+		{
+			activeCharacter = characters[count];
+			return;
+		}
+
+		count++;
+	}
+	return;
 }
 //-----
 
@@ -1623,6 +1693,7 @@ void MainGameState::uninitCalculation()
 	playerAnswer = -255;
 	points = 0;
 	mistakes = 0;
+	currentCombo = 0;
 	calculationLevel = 0;
 	isCalculationVisible = false;
 	isCalculationVisible2 = false;
@@ -1670,6 +1741,8 @@ void MainGameState::uninitCalculation()
 	}
 		
 	activeCharacter = characters[0 + turnsPassed];
+	//if (activeCharacter->checkIfAlive() == false)
+	//	getFirstAliveCharacter();
 	activeCharacter->isActive = true;
 
 	if (activeCharacter->isPlayerCharacter)
