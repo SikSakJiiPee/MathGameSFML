@@ -5,10 +5,6 @@
 #include "Game.h"
 #include "GameState.h"
 
-//#include <SFML/Graphics.hpp>
-
-//#include <iostream>
-
 
 MainGameState::MainGameState(Game* game)
 {
@@ -54,18 +50,24 @@ MainGameState::MainGameState(Game* game)
 	
 	//
 	//Item
-	item = new Item("Potion");
-	//item = new Item("Potion2");
-	if (getPlayerCharacter(0) != nullptr)
-		getPlayerCharacter(0)->items.push_back(*item);
+	item = new Item("Potion", Target::PLAYER, EffectType::HPUP, 2, 50, 0, 0, 0);
+	item2 = new Item("Potion2", Target::PLAYER, EffectType::HPUP, 2, 75, 0, 0, 0);
+	//if (getPlayerCharacter(0) != nullptr)
+	//	getPlayerCharacter(0)->items.push_back(*item);
+	//pushing items to every character
+	for (size_t i = 0; i < characters.size(); i++)
+	{
+		characters[i]->items.push_back(*item);
+		characters[i]->items.push_back(*item2);
+	}
 
 	//
 	//Equipment
 	//armor
-	eqArmor = new Equipment("Basic Armor", EquipmentType::ARMOR, 20, 1, 50, 0, 5, 0, 0, 0);
+	eqArmor = new Equipment("Basic Armor", EquipmentType::ARMOR, 20, 5, 50, 0, 5, 0, 0, 0);
 	//eqArmor2 = new Equipment("Basic Armor", EquipmentType::ARMOR, 20, 1, 50, 0, 10, 0, 0, 0);
 	//weapon
-	eqWeapon = new Equipment("Basic Weapon", EquipmentType::WEAPON, 15, 1, 50, 7, 0, 0, 0, 0);
+	eqWeapon = new Equipment("Basic Weapon", EquipmentType::WEAPON, 15, 5, 50, 7, 0, 0, 0, 0);
 
 	//pushing equipments to every character
 	for (size_t i = 0; i < characters.size(); i++)
@@ -138,14 +140,14 @@ MainGameState::MainGameState(Game* game)
 
 	//item
 	textInfoItem.setFont(font);
-	textInfoItem.setCharacterSize(20);
+	textInfoItem.setCharacterSize(24);
 	textInfoItem.setColor(sf::Color::Black);
 	textInfoItem.setString(item->getStringItemInfo(*item));
 
 	textInfoItem2.setFont(font);
-	textInfoItem2.setCharacterSize(20);
+	textInfoItem2.setCharacterSize(24);
 	textInfoItem2.setColor(sf::Color::Black);
-	//textInfoItem2.setString(item2->getStringItemInfo(*item2));
+	textInfoItem2.setString(item2->getStringItemInfo(*item2));
 
 	textTime.setFont(font);
 	textTime.setCharacterSize(30);
@@ -176,55 +178,57 @@ MainGameState::MainGameState(Game* game)
 
 	//COMBATPHASE
 	textTitleCalc.setFont(font);
-	textTitleCalc.setCharacterSize(30);
+	textTitleCalc.setCharacterSize(24);
 	textTitleCalc.setColor(sf::Color::Black);
 
+	textTimeLeft.setFont(font);
+	textTimeLeft.setCharacterSize(24);
+
 	textAttacker.setFont(font);
-	textAttacker.setCharacterSize(30);
+	textAttacker.setCharacterSize(24);
 	textAttacker.setColor(sf::Color::Black);
 
 	textDefender.setFont(font);
-	textDefender.setCharacterSize(30);
+	textDefender.setCharacterSize(24);
 	textDefender.setColor(sf::Color::Black);
 
 	textCalculation.setFont(font);
-	textCalculation.setCharacterSize(30);
+	textCalculation.setCharacterSize(24);
 	textCalculation.setColor(sf::Color::Black);
 	
 	textCalculation2.setFont(font);
-	textCalculation2.setCharacterSize(30);
+	textCalculation2.setCharacterSize(24);
 	textCalculation2.setColor(sf::Color::Black);
 	
 	textCalculation3.setFont(font);
-	textCalculation3.setCharacterSize(30);
+	textCalculation3.setCharacterSize(24);
 	textCalculation3.setColor(sf::Color::Black);
 	
 	textPlayerAnswer.setFont(font);
-	textPlayerAnswer.setCharacterSize(30);
+	textPlayerAnswer.setCharacterSize(24);
 	textPlayerAnswer.setColor(sf::Color::Black);
 	
-	textCorrectAnswer.setFont(font);
-	textCorrectAnswer.setCharacterSize(30);
+	textCorrectAnswer.setFont(font); //tarvitseeko?
+	textCorrectAnswer.setCharacterSize(24);
 	textCorrectAnswer.setColor(sf::Color::Black);
 	
 	textPoints.setFont(font);
-	textPoints.setCharacterSize(30);
+	textPoints.setCharacterSize(24);
 	textPoints.setColor(sf::Color::Black);
 	
 	textMistakes.setFont(font);
-	textMistakes.setCharacterSize(30);
+	textMistakes.setCharacterSize(24);
 	textMistakes.setColor(sf::Color::Black);
 	
 	textCurrentCombo.setFont(font);
-	textCurrentCombo.setCharacterSize(30);
+	textCurrentCombo.setCharacterSize(24);
 	textCurrentCombo.setColor(sf::Color::Black);
 	
 	textBestCombo.setFont(font);
-	textBestCombo.setCharacterSize(30);
+	textBestCombo.setCharacterSize(24);
 	textBestCombo.setColor(sf::Color::Black);
 	
-	textTimeLeft.setFont(font);
-	textTimeLeft.setCharacterSize(30);
+
 
 	//-------------
 
@@ -348,6 +352,10 @@ MainGameState::~MainGameState()
 //	std::cout << "MainGameState resume" << std::endl;
 //}
 
+
+
+
+//INPUT
 void MainGameState::handleInput()
 {
 	//During player turn
@@ -456,8 +464,6 @@ void MainGameState::handleInput()
 							if (selection == Selection::ITEM)
 							{
 								selectItem = true;
-								initCalculation();
-								uninitCalculation();
 								std::cout << "Item selected" << std::endl;
 							}
 							if (selection == Selection::ESCAPE)
@@ -568,8 +574,13 @@ void MainGameState::handleInput()
 
 	return;
 }
+//-----
 
 
+
+
+
+//UPDATE
 void MainGameState::update(const float dt)
 {
 	//if (turn == Turn::PLAYER)
@@ -606,11 +617,11 @@ void MainGameState::update(const float dt)
 				if (turn == Turn::PLAYER)
 					damageDealt = (points * activeCharacter->attack);
 				if (turn == Turn::ENEMY)
-					damageDealt = ((randomNumber(NumberType::POSITIVE, 1)) * activeCharacter->attack);
+					damageDealt = ((randomNumber(NumberType::POSITIVE, 10)) * activeCharacter->attack);
 				
 				if (turn == Turn::PLAYER)
 				{
-					damageReflected = (((randomNumber(NumberType::POSITIVE, 1)) * targetCharacter->defence) / 2);
+					damageReflected = (((randomNumber(NumberType::POSITIVE, 10)) * targetCharacter->defence) / 2);
 				}
 				if (turn == Turn::ENEMY)
 				{
@@ -639,7 +650,7 @@ void MainGameState::update(const float dt)
 		//MUISTA ALUSTAA KAIKKI!
 		CalculationType calculationType = CalculationType::PLUS;
 		NumberType numberType = NumberType::POSITIVE;
-		int calculationLevel = 1;
+		int calculationLevel = 5;
 		
 		std::string strPlayerAnswer = convertToString(playerAnswer);
 		
@@ -843,7 +854,13 @@ void MainGameState::update(const float dt)
 	//--------------
 
 }
+//-----
 
+
+
+
+
+//DRAW
 void MainGameState::draw(const float dt)
 {
 	//during whole battle
@@ -963,9 +980,6 @@ void MainGameState::draw(const float dt)
 		textInfoEnemy2.setPosition(game->window.getSize().x / 2, (game->window.getSize().y / 18));
 		textInfoEnemy3.setPosition(game->window.getSize().x / 2, (game->window.getSize().y / 18) * 2);
 
-		textInfoItem.setPosition((game->window.getSize().x / 4) * 2, (game->window.getSize().y / 18) * 16);
-		textInfoItem.setPosition((game->window.getSize().x / 4) * 2, (game->window.getSize().y / 18) * 17);
-
 
 		//selection
 		if (selection == Selection::ATTACK)
@@ -994,6 +1008,11 @@ void MainGameState::draw(const float dt)
 		textGameEscape.setPosition(game->window.getSize().x / 4, (game->window.getSize().y / 18) * 17);
 
 
+		//item
+		textInfoItem.setPosition((game->window.getSize().x / 4) * 2, (game->window.getSize().y / 18) * 16);
+		textInfoItem2.setPosition((game->window.getSize().x / 4) * 2, (game->window.getSize().y / 18) * 17);
+
+
 
 		////DRAW
 		//Text
@@ -1007,17 +1026,19 @@ void MainGameState::draw(const float dt)
 		game->window.draw(textInfoEnemy);
 		game->window.draw(textInfoEnemy2);
 		game->window.draw(textInfoEnemy3);
-		if (selectItem)
-		{
-			game->window.draw(textInfoItem);
-			//game->window.draw(textInfoItem2);
-		}
-
+		
 		//selection
 		game->window.draw(textGameAttack);
 		game->window.draw(textGameItem);
 		game->window.draw(textGameSpecial);
 		game->window.draw(textGameEscape);
+
+		//item
+		if (selectItem)
+		{
+			game->window.draw(textInfoItem);
+			game->window.draw(textInfoItem2);
+		}
 	}
 	//------------------
 
@@ -1133,7 +1154,7 @@ void MainGameState::backToMenu()
 //-----
 
 
-//character vector management
+//characters vector management
 size_t MainGameState::getPlayerCharacterCount()
 {
 	size_t count(0);
@@ -1305,17 +1326,13 @@ void MainGameState::inputSelectPlayer()
 			}
 			if (evnt.key.code == sf::Keyboard::Return)
 			{
-				for (size_t i = 0; i < characters.size(); i++)
+				if (selection == Selection::SPECIAL)
 				{
-					characters[i]->isActive = false;
-
-					if (characters[i]->isSelected == true)
-					{
-						characters[i]->isActive = true;
-						activeCharacter = characters[i];
-					}
-						
-
+					std::cout << "Player target for a special selected" << std::endl;
+				}
+				if (selection == Selection::ITEM)
+				{
+					std::cout << "Player target for an item selected" << std::endl;
 				}
 			}
 		}
@@ -1380,6 +1397,207 @@ void MainGameState::inputSelectEnemy()
 	}
 }
 
+void MainGameState::inputSelectSpecial()
+{
+
+}
+
+void MainGameState::inputSelectItem()
+{
+
+}
+
+
+void MainGameState::inputBattleWin()
+{
+	sf::Event evnt;
+
+	while (this->game->window.pollEvent(evnt))
+	{
+		//closing the window
+		if (evnt.type == sf::Event::Closed)
+		{
+			game->window.close();
+		}
+
+		//keyboard
+		if (evnt.type == sf::Event::KeyPressed)
+		{
+			if (evnt.key.code == sf::Keyboard::Return)
+			{
+				backToMenu();
+			}
+		}
+	}
+}
+void MainGameState::inputBattleLose()
+{
+	sf::Event evnt;
+
+	while (this->game->window.pollEvent(evnt))
+	{
+		//closing the window
+		if (evnt.type == sf::Event::Closed)
+		{
+			game->window.close();
+		}
+
+		//keyboard
+		if (evnt.type == sf::Event::KeyPressed)
+		{
+			if (evnt.key.code == sf::Keyboard::Return)
+			{
+				backToMenu();
+			}
+		}
+	}
+}
+//-----
+
+
+
+
+//Turns
+void MainGameState::enemyChoosesTarget()
+{
+	for (size_t i = 0; i < characters.size(); i++)
+	{
+		if (characters[i]->isPlayerCharacter && characters[i]->checkIfAlive())
+		{
+			targetCharacter = characters[i];
+		}
+	}
+}
+//------
+
+
+
+
+
+
+
+
+
+//COMBATPHASE
+//INIT AND UNINIT
+void MainGameState::initCalculation() //tarvitsee jonkun tiedon taistelijoista
+{
+	selectCharacter = false;
+	selectPlayer = false;
+	selectEnemy = false;
+	calculationGameIsOn = true;
+	clock.restart();
+}
+void MainGameState::uninitCalculation()
+{
+	//reset calculation stuff
+	playerAnswer = -255;
+	playerAnswerNegative = false;
+	points = 0;
+	mistakes = 0;
+	currentCombo = 0;
+	calculationLevel = 0;
+	isCalculationVisible = false;
+	isCalculationVisible2 = false;
+	isCalculationVisible3 = false;
+	answerIsChecked = false;
+	answerIsChecked2 = false;
+	answerIsChecked3 = false;
+	answerIsCorrect = false;
+	answerIsCorrect2 = false;
+	answerIsCorrect3 = false;
+
+	selectedEnemy = 0;
+	selection = Selection::ATTACK;
+	escapeCalculation = false;
+
+	for (size_t i = 0; i < characters.size(); i++)
+	{
+		characters[i]->isSelected = false;
+	}
+
+	//Changes to characters after completing the turn
+	//Check which characters have completed turn
+	activeCharacter->turnCompleted = true;
+	std::cout << "Turn Completed:" << std::endl;
+	for (size_t i = 0; i < characters.size(); i++)
+	{
+		if (characters[i]->turnCompleted == true)
+			std::cout << characters[i]->characterName << std::endl;
+	}
+	
+	//Make every character inactive
+	for (size_t i = 0; i < characters.size(); i++)
+	{
+		characters[i]->isActive = false;
+	}
+
+	turnsPassed++;
+	if (turnsPassed == getPlayerCharacterCount() + getEnemyCharacterCount())
+	{
+		turnsPassed = 0;
+		for (size_t i = 0; i < characters.size(); i++)
+		{
+			characters[i]->turnCompleted = false;
+		}
+	}
+		
+	activeCharacter = characters[0 + turnsPassed];
+	//if (activeCharacter->checkIfAlive() == false)
+	//	getFirstAliveCharacter();
+	activeCharacter->isActive = true;
+
+	if (activeCharacter->isPlayerCharacter)
+	{
+		turn = Turn::PLAYER;
+	}
+	else
+	{
+		turn = Turn::ENEMY;
+	}
+
+	//mieti joku tapa jatkaa vuoroja nopeusjärjestyksessä
+	////tämä bugaa ja johtuu luultavasti nopeudesta
+	//for (size_t i = 0; i < characters.size(); i++)
+	//{
+	//	
+	//	
+	//	//tähän löytyy luultavasti parempikin tapa
+	//	if (characters[i]->turnCompleted == false)
+	//	{
+	//		characters[i]->isActive = false;
+	//		activeCharacter = characters[i];
+	//		activeCharacter->isActive = true;
+	//	}
+	//		
+
+	//	//if (characters[i]->speed < activeCharacter->speed && characters[i]->turnCompleted == false)
+	//	//{
+	//	//	activeCharacter = characters[i];
+	//	//	
+	//	//}
+	//		
+	//}
+
+	//activeCharacter->isActive = true;
+	for (size_t i = 0; i < characters.size(); i++)
+	{
+		if (characters[i]->isActive == true)
+			std::cout << "Active Character: " << characters[i]->characterName << std::endl;
+	}
+
+	
+
+	calculationGameIsOn = false;
+	
+}
+//-----
+
+
+
+
+
+//INPUT
 void MainGameState::inputCalculation()
 {
 	sf::Event evnt;
@@ -1607,188 +1825,10 @@ void MainGameState::inputCalculation()
 		}
 	}
 }
-
-void MainGameState::inputBattleWin()
-{
-	sf::Event evnt;
-
-	while (this->game->window.pollEvent(evnt))
-	{
-		//closing the window
-		if (evnt.type == sf::Event::Closed)
-		{
-			game->window.close();
-		}
-
-		//keyboard
-		if (evnt.type == sf::Event::KeyPressed)
-		{
-			if (evnt.key.code == sf::Keyboard::Return)
-			{
-				backToMenu();
-			}
-		}
-	}
-}
-void MainGameState::inputBattleLose()
-{
-	sf::Event evnt;
-
-	while (this->game->window.pollEvent(evnt))
-	{
-		//closing the window
-		if (evnt.type == sf::Event::Closed)
-		{
-			game->window.close();
-		}
-
-		//keyboard
-		if (evnt.type == sf::Event::KeyPressed)
-		{
-			if (evnt.key.code == sf::Keyboard::Return)
-			{
-				backToMenu();
-			}
-		}
-	}
-}
 //-----
 
 
 
-
-//Turns
-void MainGameState::enemyChoosesTarget()
-{
-	for (size_t i = 0; i < characters.size(); i++)
-	{
-		if (characters[i]->isPlayerCharacter && characters[i]->checkIfAlive())
-		{
-			targetCharacter = characters[i];
-		}
-	}
-}
-//------
-
-
-
-
-
-
-
-
-
-//COMBATPHASE
-void MainGameState::initCalculation() //tarvitsee jonkun tiedon taistelijoista
-{
-	selectCharacter = false;
-	selectPlayer = false;
-	selectEnemy = false;
-	calculationGameIsOn = true;
-	clock.restart();
-}
-void MainGameState::uninitCalculation()
-{
-	//reset calculation stuff
-	playerAnswer = -255;
-	points = 0;
-	mistakes = 0;
-	currentCombo = 0;
-	calculationLevel = 0;
-	isCalculationVisible = false;
-	isCalculationVisible2 = false;
-	isCalculationVisible3 = false;
-	answerIsChecked = false;
-	answerIsChecked2 = false;
-	answerIsChecked3 = false;
-	answerIsCorrect = false;
-	answerIsCorrect2 = false;
-	answerIsCorrect3 = false;
-
-	selectedEnemy = 0;
-	selection = Selection::ATTACK;
-	escapeCalculation = false;
-
-	for (size_t i = 0; i < characters.size(); i++)
-	{
-		characters[i]->isSelected = false;
-	}
-
-	//Changes to characters after completing the turn
-	//Check which characters have completed turn
-	activeCharacter->turnCompleted = true;
-	std::cout << "Turn Completed:" << std::endl;
-	for (size_t i = 0; i < characters.size(); i++)
-	{
-		if (characters[i]->turnCompleted == true)
-			std::cout << characters[i]->characterName << std::endl;
-	}
-	
-	//Make every character inactive
-	for (size_t i = 0; i < characters.size(); i++)
-	{
-		characters[i]->isActive = false;
-	}
-
-	turnsPassed++;
-	if (turnsPassed == getPlayerCharacterCount() + getEnemyCharacterCount())
-	{
-		turnsPassed = 0;
-		for (size_t i = 0; i < characters.size(); i++)
-		{
-			characters[i]->turnCompleted = false;
-		}
-	}
-		
-	activeCharacter = characters[0 + turnsPassed];
-	//if (activeCharacter->checkIfAlive() == false)
-	//	getFirstAliveCharacter();
-	activeCharacter->isActive = true;
-
-	if (activeCharacter->isPlayerCharacter)
-	{
-		turn = Turn::PLAYER;
-	}
-	else
-	{
-		turn = Turn::ENEMY;
-	}
-
-	//mieti joku tapa jatkaa vuoroja nopeusjärjestyksessä
-	////tämä bugaa ja johtuu luultavasti nopeudesta
-	//for (size_t i = 0; i < characters.size(); i++)
-	//{
-	//	
-	//	
-	//	//tähän löytyy luultavasti parempikin tapa
-	//	if (characters[i]->turnCompleted == false)
-	//	{
-	//		characters[i]->isActive = false;
-	//		activeCharacter = characters[i];
-	//		activeCharacter->isActive = true;
-	//	}
-	//		
-
-	//	//if (characters[i]->speed < activeCharacter->speed && characters[i]->turnCompleted == false)
-	//	//{
-	//	//	activeCharacter = characters[i];
-	//	//	
-	//	//}
-	//		
-	//}
-
-	//activeCharacter->isActive = true;
-	for (size_t i = 0; i < characters.size(); i++)
-	{
-		if (characters[i]->isActive == true)
-			std::cout << "Active Character: " << characters[i]->characterName << std::endl;
-	}
-
-	
-
-	calculationGameIsOn = false;
-	
-}
 
 
 //Calculation stuff
@@ -1799,17 +1839,17 @@ int MainGameState::randomNumber(NumberType ntype, int level)
 
 	if (ntype == NumberType::BOTH)
 	{
-		rMin = -5 * level;
-		rMax = 5 * level;
+		rMin = -level;
+		rMax = level;
 	}
 	else if (ntype == NumberType::POSITIVE)
 	{
 		rMin = 0;
-		rMax = 10 * level;
+		rMax = level;
 	}
 	else if (ntype == NumberType::NEGATIVE)
 	{
-		rMin = -10 * level;
+		rMin = -level;
 		rMax = 0;
 	}
 
@@ -1820,7 +1860,7 @@ int MainGameState::randomNumber(NumberType ntype, int level)
 
 	return rNumber;
 }
-
+//
 int MainGameState::getCorrectAnswer(CalculationType type, int number, int number2)
 {
 	if (type == CalculationType::PLUS)
@@ -1848,7 +1888,7 @@ int MainGameState::getCorrectAnswer(CalculationType type, int number, int number
 		return correctAnswer;
 	}
 }
-
+//
 bool MainGameState::checkTheAnswer(int playerAnswer, int correctAnswer)
 {
 	if (playerAnswer == correctAnswer)
@@ -1858,7 +1898,7 @@ bool MainGameState::checkTheAnswer(int playerAnswer, int correctAnswer)
 
 	return false;
 }
-
+//
 std::string MainGameState::getCalculationString(CalculationType type, int number, int number2)
 {
 	std::string stringNumber = convertToString(number);

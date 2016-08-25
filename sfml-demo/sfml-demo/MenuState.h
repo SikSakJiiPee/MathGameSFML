@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+//#include <SFML/Audio.hpp>
 
 #include "GameState.h"
 
@@ -33,6 +34,12 @@ private:
 	sf::Text textMenuStart;
 	sf::Text textMenuOptions;
 	sf::Text textMenuQuit;
+
+	//sf::Music musicMenu;
+	//sf::SoundBuffer bufferMenuMove;
+	//sf::SoundBuffer bufferMenuSelect;
+
+
 
 };
 

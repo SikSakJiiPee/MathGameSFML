@@ -14,7 +14,7 @@ MenuState::MenuState(Game* game)
 	
 	menuSelection = MenuSelection::START;
 
-	//Tekstin alustus
+	//Font and Text
 	if (!font.loadFromFile("Font/arial.ttf"))
 	{
 		std::cout << "Loading a font failed!" << std::endl;
@@ -36,6 +36,18 @@ MenuState::MenuState(Game* game)
 	textMenuQuit.setOrigin(textMenuQuit.getGlobalBounds().width / 2, textMenuQuit.getGlobalBounds().height);
 	textMenuQuit.setPosition(game->window.getSize().x / 2, (game->window.getSize().y / 4) * 3);
 	textMenuQuit.setString("Quit");
+
+	////Audio
+	//if (!musicMenu.openFromFile("Audio/Music/hungerland.wav"))
+	//	std::cout << "Opening a music failed!" << std::endl;
+
+	//musicMenu.play();
+
+	//if (!bufferMenuMove.loadFromFile("Audio/SFX/menu_move.wav"));
+	//	std::cout << "Loading an audio failed!" << std::endl;
+
+	//if (!bufferMenuMove.loadFromFile("Audio/SFX/menu_select.wav"));
+	//	std::cout << "Loading an audio failed!" << std::endl;
 
 	std::cout << "MenuState init" << std::endl;
 }

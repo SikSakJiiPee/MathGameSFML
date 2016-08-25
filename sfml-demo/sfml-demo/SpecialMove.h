@@ -8,6 +8,6 @@ public:
 	SpecialMove();
 	~SpecialMove();
 
-	std::string name;
+	std::string speciaMoveName;
 	int spCost;
 };

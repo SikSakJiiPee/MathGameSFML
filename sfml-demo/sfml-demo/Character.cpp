@@ -55,3 +55,78 @@ bool Character::checkIfAlive()
 
 	return true;
 }
+
+void Character::useItem(Item item, Character* character)
+{
+	if (item.effectType == EffectType::HPUP)
+	{
+		character->healthPoints += item.healthPoints;
+	}
+
+	if (item.effectType == EffectType::SPUP)
+	{
+		character->specialPoints += item.specialPoints;
+	}
+
+	if (item.effectType == EffectType::DAMAGE)
+	{
+		character->healthPoints -= item.damage;
+	}
+
+	if (item.effectType == EffectType::REVIVE)
+	{
+		if (character->checkIfAlive() == false)
+			character->healthPoints = (character->maxHp / 100) * item.revivePercent;
+		else
+			character->healthPoints += (character->maxHp / 100) * item.revivePercent;
+	}
+
+	item.amount--;
+
+	return;
+}
+
+
+
+
+//specialMoves vector management
+//size_t Character::getSpecialMoveCount()
+//{
+//
+//}
+//SpecialMove* Character::getSpecialMoveByName(std::string name)
+//{
+//	//size_t count(0);
+//
+//	//for (size_t i = 0; i < specialMoves.size(); i++)
+//	//{
+//	//	if (specialMoves[i].speciaMoveName == name)
+//	//	{
+//	//		return specialMoves[i];
+//
+//	//		count++;
+//	//	}
+//	//}
+//
+//	//return nullptr;
+//}
+//
+////items vector management
+////size_t Character::getItemCount()
+////{
+////
+////}
+//Item* Character::getItemByName(int index)
+//{
+//
+//}
+//
+////equipments vector management
+////size_t Character::getEquipmentCount()
+////{
+////
+////}
+//Equipment* Character::getEquipmentByName(int index)
+//{
+//
+//}

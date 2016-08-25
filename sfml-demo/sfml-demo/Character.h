@@ -58,6 +58,17 @@ public:
 
 	static std::string getStringCharacterInfo(Character character);
 	bool checkIfAlive();
+	void useItem(Item item, Character* character);
+
+	//specialMoves vector management
+	//size_t getSpecialMoveCount();
+	//SpecialMove* getSpecialMoveByName(std::string name);
+	//items vector management
+	//size_t getItemCount();
+	//Item* getItemByName(int index);
+	//equipments vector management
+	//size_t getEquipmentCount();
+	//Equipment* getEquipmentByName(int index);
 
 private:
 

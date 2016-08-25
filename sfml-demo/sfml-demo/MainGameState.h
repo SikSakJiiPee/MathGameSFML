@@ -82,6 +82,10 @@ private:
 	void inputSelectPlayer();
 	///handles the input during enemy selection
 	void inputSelectEnemy();
+	//handles the input during special selection
+	void inputSelectSpecial();
+	//handles the input during item selection
+	void inputSelectItem();
 	///handles the input after winning a battle 
 	void inputBattleWin();
 	///handles the input after losing a battle 
@@ -172,18 +176,19 @@ private:
 	//Text
 	//sf::Font font;
 	sf::Text textTitleCalc;
+	sf::Text textTimeLeft;
 	sf::Text textAttacker;
 	sf::Text textDefender;
 	sf::Text textCalculation;
 	sf::Text textCalculation2;
 	sf::Text textCalculation3;
 	sf::Text textPlayerAnswer;
-	sf::Text textCorrectAnswer;
+	sf::Text textCorrectAnswer; //tarvitseeko?
 	sf::Text textPoints;
 	sf::Text textMistakes;
 	sf::Text textCurrentCombo;
 	sf::Text textBestCombo;
-	sf::Text textTimeLeft;
+	
 	
 	//other
 	bool calculationGameIsOn = false;
