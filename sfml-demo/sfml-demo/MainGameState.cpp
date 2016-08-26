@@ -375,6 +375,11 @@ void MainGameState::handleInput()
 		}
 		//--------------
 
+		//during select enemy
+		if (selectItem)
+		{
+			inputSelectItem();
+		}
 
 
 		//during calculation
@@ -1326,6 +1331,7 @@ void MainGameState::inputSelectPlayer()
 			}
 			if (evnt.key.code == sf::Keyboard::Return)
 			{
+				targetCharacter = getPlayerCharacter(selectedPlayer);
 				if (selection == Selection::SPECIAL)
 				{
 					std::cout << "Player target for a special selected" << std::endl;
@@ -1333,6 +1339,9 @@ void MainGameState::inputSelectPlayer()
 				if (selection == Selection::ITEM)
 				{
 					std::cout << "Player target for an item selected" << std::endl;
+					activeCharacter->useItem(activeCharacter->items[selectedItem], targetCharacter);
+					initCalculation();
+					uninitCalculation();
 				}
 			}
 		}
@@ -1404,7 +1413,62 @@ void MainGameState::inputSelectSpecial()
 
 void MainGameState::inputSelectItem()
 {
+	sf::Event evnt;
 
+	while (this->game->window.pollEvent(evnt))
+	{
+		//closing the window
+		if (evnt.type == sf::Event::Closed)
+		{
+			game->window.close();
+		}
+
+		//keyboard
+		if (evnt.type == sf::Event::KeyPressed)
+		{
+			for (size_t i = 0; i < activeCharacter->items.size(); i++)
+			{
+				activeCharacter->items[i].isSelected = false;
+			}
+
+			if (evnt.key.code == sf::Keyboard::Down)
+			{
+				selectedItem++;
+
+				if (selectedItem >= activeCharacter->items.size() - 1)
+					selectedItem = activeCharacter->items.size() - 1;
+			}
+			if (evnt.key.code == sf::Keyboard::Up)
+			{
+				selectedItem--;
+
+				if (selectedItem <= 0)
+					selectedItem = 0;
+			}
+
+			activeCharacter->items[selectedItem].isSelected = true;
+		
+			if (evnt.key.code == sf::Keyboard::Escape)
+			{
+				for (size_t i = 0; i < activeCharacter->items.size(); i++)
+				{
+					activeCharacter->items[i].isSelected = false;
+				}
+				selectItem = false;
+				selectedItem = 0;
+				selection = Selection::ATTACK;
+			}
+			if (evnt.key.code == sf::Keyboard::Return)
+			{
+				if (activeCharacter->items[selectedItem].target == Target::PLAYER)
+				{
+					if (getPlayerCharacter(0) != false)
+						getPlayerCharacter(0)->isSelected = true;
+					selectPlayer = true;
+				}
+			}
+		}
+	}
 }
 
 
@@ -1485,6 +1549,8 @@ void MainGameState::initCalculation() //tarvitsee jonkun tiedon taistelijoista
 	selectCharacter = false;
 	selectPlayer = false;
 	selectEnemy = false;
+	selectSpecial = false;
+	selectItem = false;
 	calculationGameIsOn = true;
 	clock.restart();
 }

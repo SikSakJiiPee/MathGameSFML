@@ -24,7 +24,7 @@ public:
 	int specialPoints;
 	int damage;
 	int revivePercent;
-	//erilliset arvot voisi tiivistaa esim. power attribuutiksi
+	//erilliset arvot voisi tiivist‰‰ esim. power attribuutiksi
 
 	bool isSelected = false;
 

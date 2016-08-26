@@ -10,4 +10,6 @@ public:
 
 	std::string speciaMoveName;
 	int spCost;
+
+	bool isSelected = false;
 };

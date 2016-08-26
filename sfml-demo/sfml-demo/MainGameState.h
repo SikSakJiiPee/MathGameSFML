@@ -57,7 +57,8 @@ private:
 
 	int selectedPlayer = 0;
 	int selectedEnemy = 0;
-	
+	int selectedSpecial = 0;
+	int selectedItem = 0;
 
 	//character vector management
 	size_t getPlayerCharacterCount();
@@ -140,6 +141,7 @@ private:
 	bool selectCharacter = false;
 	bool selectPlayer = false;
 	bool selectEnemy = false;
+	bool selectSpecial = false;
 	bool selectItem = false;
 	bool escapeCalculation = false;
 	bool calculationIsOn = false;
