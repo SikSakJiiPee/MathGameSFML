@@ -13,29 +13,36 @@
 #include <time.h>
 #include <random>
 
-
+//enum classes
+//MAINPHASE
+///An enum class for action selection.
 enum class Selection { NONE, ATTACK, SPECIAL, ITEM, ESCAPE};
-enum class Turn {PLAYER, ENEMY};
+///An enum class for player and enemy turn.
+enum class Turn { PLAYER, ENEMY };
+//ei ehkä tarvita
 enum class Phase {MAIN, COMBAT, COMBATEND};
 
+//COMBATPHASE
+///An enum class for calculation types
 enum class CalculationType { PLUS, MINUS, MULTIPLY, DIVIDE }; //Pitäisikö nimet olla Addition, Subtraction, Multiplication ja Division
+///An enum class for number types
 enum class NumberType { BOTH, POSITIVE, NEGATIVE };
+
 
 class MainGameState : public GameState
 {
 public:
+	///A constructor, gets a Game pointer.
 	MainGameState(Game* game);
+	///A desctructor.
 	~MainGameState();
 	
-	//state stuff
-	//void init();
-	//void cleanup();
 
-	//void pause();
-	//void resume();
-
+	///A method for handling the input of the game state
 	void handleInput();
+	///A method for updating the game state
 	void update(const float dt);
+	///A method for drawing the game state
 	void draw(const float dt);
 
 
@@ -50,8 +57,10 @@ public:
 
 private:
 	//state management
+	///Pops the current state and returns to previous state. 
 	void backToMenu();
 
+	//tarvitaanko?
 	void combatAttack();
 	void combatDefend();
 
@@ -79,17 +88,17 @@ private:
 
 	//INPUT
 	//void inputSelectCharacter();
-	///handles the input during player selection
+	///Handles the input during player selection
 	void inputSelectPlayer();
-	///handles the input during enemy selection
+	///Handles the input during enemy selection
 	void inputSelectEnemy();
-	//handles the input during special selection
+	///Handles the input during special selection
 	void inputSelectSpecial();
-	//handles the input during item selection
+	///Handles the input during item selection
 	void inputSelectItem();
-	///handles the input after winning a battle 
+	///Handles the input after winning a battle 
 	void inputBattleWin();
-	///handles the input after losing a battle 
+	///Handles the input after losing a battle 
 	void inputBattleLose();
 
 	//MAINPHASE
@@ -148,9 +157,11 @@ private:
 
 	//Turns
 	Turn turn;
+	///Keeps track how many turns has passed on the current round.
 	int turnsPassed = 0;
 
 	//Enemy Turn
+	///Chooses a player targer for an enemy character.
 	void enemyChoosesTarget();
 
 	//-----------
@@ -249,71 +260,4 @@ private:
 
 
 
-//#pragma once
-//
-//#include <SFML/Graphics.hpp>
-//#include "GameState.h"
-//
-//#include "Calculation.h"
-//
-//class MainGameState : public GameState
-//{
-//public:
-//	//state stuff
-//	void init();
-//	void cleanup();
-//
-//	void pause();
-//	void resume();
-//
-//	void handleInput(Game* game);
-//	void update(Game* game);
-//	void draw(Game* game);
-//
-//	static MainGameState* instance()
-//	{
-//		return &mainGameState;
-//	}
-//
-//	//other stuff
-//	//static const int calculationLevel = 1;
-//
-//protected:
-//	MainGameState() {}
-//
-//private:
-//	static MainGameState mainGameState;
-//
-//	//other
-//	sf::Font font;
-//	sf::Text textTitleMainGame;
-//	sf::Text textGame;
-//	sf::Text textGame2;
-//	sf::Text textGame3;
-//	sf::Text textPlayerAnswer;
-//	sf::Text textCorrectAnswer;
-//	sf::Text textPoints;
-//	sf::Text textMistakes;
-//	sf::Text textTime;
-//	sf::Text text;
-//
-//	sf::Clock clock;
-//	sf::Time timeElapsed;
-//	float timeLeft;
-//
-//
-//	//int correctAnswer;
-//	//int playerAnswer = -255; //tsekkaa null, koska vastaus voi olla myös nolla, joten se ei voi olla alustus.
-//	//bool answerIsCorrect = false;
-//	//bool playerAnswerNegative;
-//
-//	//int points = 0;
-//	//int mistakes = 0;
-//
-//	
-//
-//	//Calculation calculation(CalculationType ctype, NumberType ntype, int level, float time);
-//	//int calculationGame(Calculation calculation);
-//	//bool calculationGameIsOn = false;
-//};
-//
+

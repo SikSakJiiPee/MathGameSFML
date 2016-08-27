@@ -1,11 +1,14 @@
 #pragma once
 
-#include <iostream>
+#include "Game.h"
+
 
 class SpecialMove
 {
 public:
+	///A constructor.
 	SpecialMove();
+	///A destructor.
 	~SpecialMove();
 
 	std::string speciaMoveName;

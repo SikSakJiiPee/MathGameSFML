@@ -2,6 +2,7 @@
 
 #include "Game.h"
 
+
 Character::Character(bool isplayer, std::string name, std::string path, int lvl, int exp, 
 	int hp, int maxhp, int sp, int maxsp,
 	int atk, int def, int spd/*, int atkl, int defl*/, sf::Vector2f pos)
@@ -33,6 +34,7 @@ Character::Character(bool isplayer, std::string name, std::string path, int lvl,
 Character::~Character()
 {}
 
+
 std::string Character::getStringCharacterInfo(Character character)
 {
 	std::string name = character.characterName;
@@ -60,7 +62,10 @@ void Character::useItem(Item item, Character* character)
 {
 	if (item.effectType == EffectType::HPUP)
 	{
-		character->healthPoints += item.healthPoints;
+		if (character->checkIfAlive())
+			character->healthPoints += item.healthPoints;
+		else 
+			character->healthPoints += 0;
 	}
 
 	if (item.effectType == EffectType::SPUP)

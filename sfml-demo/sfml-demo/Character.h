@@ -9,13 +9,17 @@
 
 #include <SFML/Graphics.hpp>
 
+
 class Character
 {
 public:
+	///A default constructor.
 	Character();
+	///A constructor with character name, path and stats.
 	Character(bool isplayer, std::string name, std::string path, int lvl, int exp, 
 		int hp, int maxhp, int sp, int maxsp, 
 		int atk, int def, int spd/*, int atkl, int defl*/, sf::Vector2f pos);
+	///A destructor.
 	~Character();
 
 
@@ -55,9 +59,11 @@ public:
 	std::vector<Equipment> equipments;
 	//Status status;
 	
-
+	///Gets a characters and returns info for it as a string.
 	static std::string getStringCharacterInfo(Character character);
+	///Returns true if characters is alive.
 	bool checkIfAlive();
+	///Gets a item to use and target characters for using.
 	void useItem(Item item, Character* character);
 
 	//specialMoves vector management

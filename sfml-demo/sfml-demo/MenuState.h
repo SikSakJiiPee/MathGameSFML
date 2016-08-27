@@ -5,27 +5,29 @@
 
 #include "GameState.h"
 
+
 enum class MenuSelection {START, OPTIONS, QUIT};
+
 
 class MenuState : public GameState
 {
 public:
+	///A constructor, gets a Game pointer.
 	MenuState(Game* game);
+	~MenuState();
 
-	//state stuff
-	//void init();
-	//void cleanup();
-
-	//void pause();
-	//void resume();
-
+	///A method for handling the input of the game state
 	void handleInput();
+	///A method for updating the game state
 	void update(const float dt);
+	///A method for drawing the game state
 	void draw(const float dt);
 
 
 private:
+	///Starting the game by pushing the MainGameState to the stack.
 	void startGame();
+	//ei tarvita en‰‰?
 	void backToIntro();
 
 	MenuSelection menuSelection;
@@ -46,39 +48,3 @@ private:
 
 
 
-//#pragma once
-//
-//#include <SFML/Graphics.hpp>
-//#include "GameState.h"
-//
-//class MenuState : public GameState
-//{
-//public:
-//	//state stuff
-//	void init();
-//	void cleanup();
-//
-//	void pause();
-//	void resume();
-//
-//	void handleInput(Game* game);
-//	void update(Game* game);
-//	void draw(Game* game);
-//
-//	static MenuState* instance()
-//	{
-//		return &menuState;
-//	}
-//
-//protected:
-//	MenuState() {}
-//
-//private:
-//	//state stuff
-//	static MenuState menuState; //t‰ss‰ on joku h‰ikk‰ (sama muissa stateissa)
-//
-//	//other
-//	sf::Font font;
-//	sf::Text text;
-//	sf::Text text2;
-//};

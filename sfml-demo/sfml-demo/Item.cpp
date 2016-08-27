@@ -1,7 +1,6 @@
 #include "Item.h"
 
 
-
 Item::Item(std::string name, Target targ, EffectType etype,
 	int amo, int hp, int sp, int dmg, int rpercent)
 {
@@ -17,7 +16,6 @@ Item::Item(std::string name, Target targ, EffectType etype,
 
 Item::~Item()
 {}
-
 
 std::string Item::getStringItemInfo(Item item)
 {

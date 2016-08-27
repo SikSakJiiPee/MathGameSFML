@@ -4,23 +4,25 @@
 
 #include "GameState.h"
 
+
 class IntroState : public GameState
 {
 public:
+	///A constructor, gets a Game pointer.
 	IntroState(Game* game);
-	
-	//void init(); //voidaan tehdä konstruktorissa
-	//void cleanup();
+	~IntroState();
 
-	//void pause();
-	//void resume();
 
+	///A method for handling the input of the game state
 	void handleInput();
+	///A method for updating the game state
 	void update(const float dt);
+	///A method for drawing the game state
 	void draw(const float dt);
 
 
 private:
+	///Goes to menu by changing the state to the MenuState.
 	void goToMenu();
 	
 
@@ -39,41 +41,4 @@ private:
 
 
 
-//#pragma once
-//
-//#include <SFML/Graphics.hpp>
-//#include <SFML/Graphics/Texture.hpp>
-//#include "GameState.h"
-//
-//class IntroState : public GameState
-//{
-//public:
-//	void init();
-//	void cleanup();
-//
-//	void pause();
-//	void resume();
-//
-//	void handleInput(Game* game);
-//	void update(Game* game);
-//	void draw(Game* game);
-//	
-//	static IntroState* instance()
-//	{
-//		return &introState;
-//	}
-//
-//protected:
-//	IntroState() {}
-//
-//private:
-//	static IntroState introState;
-//
-//	sf::Font font;
-//	sf::Text textTitleIntro;
-//
-//	//sf::Texture* texturebgTitle; //kaatuu tähän, katso linkkerit läpi tai vaihda sfml:n uuteen versioon.
-//
-//	//sf::Sprite spritebgTitle;
-//};
 
