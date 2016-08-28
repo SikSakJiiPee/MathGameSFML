@@ -64,11 +64,6 @@ private:
 	void combatAttack();
 	void combatDefend();
 
-	int selectedPlayer = 0;
-	int selectedEnemy = 0;
-	int selectedSpecial = 0;
-	int selectedItem = 0;
-
 	//character vector management
 	size_t getPlayerCharacterCount();
 	size_t getEnemyCharacterCount();
@@ -147,6 +142,10 @@ private:
 	//Selection
 	Selection selection;
 	//SelectionCharacter selectionCharacter;
+	int selectedPlayer = 0;
+	int selectedEnemy = 0;
+	int selectedSpecial = 0;
+	int selectedItem = 0;
 	bool selectCharacter = false;
 	bool selectPlayer = false;
 	bool selectEnemy = false;
@@ -154,6 +153,7 @@ private:
 	bool selectItem = false;
 	bool escapeCalculation = false;
 	bool calculationIsOn = false;
+
 
 	//Turns
 	Turn turn;
@@ -170,14 +170,17 @@ private:
 
 
 	//COMBATPHASE
+	///Initializes calculation.
 	void initCalculation();
+	///Uninitializes calculation.
 	void uninitCalculation();
 
 	//INPUT
+	///Handles the input during calculation.
 	void inputCalculation();
 
 	//Methods
-	///Return random number
+	///Returns random number
 	static int randomNumber(NumberType ntype, int level);
 	///Returns correct answer
 	static int getCorrectAnswer(CalculationType type, int number, int number2);

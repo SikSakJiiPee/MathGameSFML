@@ -63,7 +63,12 @@ void Character::useItem(Item item, Character* character)
 	if (item.effectType == EffectType::HPUP)
 	{
 		if (character->checkIfAlive())
+		{
 			character->healthPoints += item.healthPoints;
+			if (character->healthPoints > character->maxHp)
+				character->healthPoints = character->maxHp;
+		}
+			
 		else 
 			character->healthPoints += 0;
 	}
@@ -71,6 +76,8 @@ void Character::useItem(Item item, Character* character)
 	if (item.effectType == EffectType::SPUP)
 	{
 		character->specialPoints += item.specialPoints;
+		if (character->specialPoints > character->maxSp)
+			character->specialPoints = character->maxSp;
 	}
 
 	if (item.effectType == EffectType::DAMAGE)
@@ -86,7 +93,7 @@ void Character::useItem(Item item, Character* character)
 			character->healthPoints += (character->maxHp / 100) * item.revivePercent;
 	}
 
-	item.amount--;
+	//item.amount--;
 
 	return;
 }

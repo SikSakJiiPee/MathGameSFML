@@ -392,6 +392,7 @@ void MainGameState::handleInput()
 							if (selection == Selection::ITEM)
 							{
 								selectItem = true;
+								activeCharacter->items[0].isSelected = true;
 								std::cout << "Item selected" << std::endl;
 							}
 							if (selection == Selection::ESCAPE)
@@ -943,6 +944,14 @@ void MainGameState::draw(const float dt)
 		textInfoItem2.setString(item2->getStringItemInfo(*item2));
 		textInfoItem2.setPosition((game->window.getSize().x / 4) * 2, (game->window.getSize().y / 18) * 17);
 
+		if (activeCharacter->items[0].isSelected == true)
+			textInfoItem.setColor(sf::Color::Blue);
+		else
+			textInfoItem.setColor(sf::Color::Black);
+		if (activeCharacter->items[1].isSelected == true)
+			textInfoItem2.setColor(sf::Color::Blue);
+		else
+			textInfoItem2.setColor(sf::Color::Black);
 
 
 		////DRAW
@@ -1253,7 +1262,7 @@ void MainGameState::inputSelectPlayer()
 				}
 				selectPlayer = false;
 				selectedPlayer = 0;
-				selection = Selection::ATTACK;
+				//selection = Selection::ATTACK;
 			}
 			if (evnt.key.code == sf::Keyboard::Return)
 			{
@@ -1266,6 +1275,7 @@ void MainGameState::inputSelectPlayer()
 				{
 					std::cout << "Player target for an item selected" << std::endl;
 					activeCharacter->useItem(activeCharacter->items[selectedItem], targetCharacter);
+					activeCharacter->items[selectedItem].amount--;
 					initCalculation();
 					uninitCalculation();
 				}
@@ -1386,12 +1396,18 @@ void MainGameState::inputSelectItem()
 			}
 			if (evnt.key.code == sf::Keyboard::Return)
 			{
-				if (activeCharacter->items[selectedItem].target == Target::PLAYER)
+				if (activeCharacter->items[selectedItem].amount > 0)
 				{
-					if (getPlayerCharacter(0) != false)
-						getPlayerCharacter(0)->isSelected = true;
-					selectPlayer = true;
+					if (activeCharacter->items[selectedItem].target == Target::PLAYER)
+					{
+						if (getPlayerCharacter(0) != false)
+							getPlayerCharacter(0)->isSelected = true;
+
+						selectPlayer = true;
+					}
 				}
+				else
+					std::cout << "No items left" << std::endl;
 			}
 		}
 	}
@@ -1501,6 +1517,8 @@ void MainGameState::uninitCalculation()
 
 	selectedEnemy = 0;
 	selectedPlayer = 0;
+	std::cout << "Items left: " << activeCharacter->items[selectedItem].amount << std::endl;
+	selectedItem = 0;
 	selection = Selection::ATTACK;
 	escapeCalculation = false;
 
