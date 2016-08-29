@@ -939,9 +939,9 @@ void MainGameState::draw(const float dt)
 
 		//item
 		//korjaa tavaroiden määrän "ei väheneminen" infossa
-		textInfoItem.setString(item->getStringItemInfo(*item));
+		textInfoItem.setString(activeCharacter->items[0].getStringItemInfo(activeCharacter->items[0]));
 		textInfoItem.setPosition((game->window.getSize().x / 4) * 2, (game->window.getSize().y / 18) * 16);
-		textInfoItem2.setString(item2->getStringItemInfo(*item2));
+		textInfoItem2.setString(activeCharacter->items[1].getStringItemInfo(activeCharacter->items[1]));
 		textInfoItem2.setPosition((game->window.getSize().x / 4) * 2, (game->window.getSize().y / 18) * 17);
 
 		if (activeCharacter->items[0].isSelected == true)

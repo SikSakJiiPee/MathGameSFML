@@ -98,7 +98,13 @@ void Character::useItem(Item item, Character* character)
 	return;
 }
 
+void Character::useSpecialMove(SpecialMove specialMove)
+{
+	if (specialMove.specialMoveName == "Team Heal")
+	{
 
+	}
+}
 
 
 //specialMoves vector management
