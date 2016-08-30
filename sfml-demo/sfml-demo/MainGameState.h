@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 
 #include "GameState.h"
 
@@ -109,6 +110,7 @@ private:
 	sf::Text textGameSpecial;
 	sf::Text textGameItem;
 	sf::Text textGameEscape;
+	sf::Text textActiveCharacter;
 	sf::Text textInfoPlayer;
 	sf::Text textInfoPlayer2;
 	sf::Text textInfoPlayer3;
@@ -125,7 +127,11 @@ private:
 	sf::Texture texturebgMainGame;
 	sf::Sprite spritebgMainGame;
 
-	
+	//Audio
+	sf::SoundBuffer bufferMenuMove;
+	sf::Sound soundMenuMove;
+	sf::SoundBuffer bufferMenuSelect;
+	sf::Sound soundMenuSelect;
 
 
 	//SpecialMoves
@@ -190,7 +196,6 @@ private:
 	static std::string getCalculationString(CalculationType type, int number, int number2);
 	
 	//Text
-	//sf::Font font;
 	sf::Text textTitleCalc;
 	sf::Text textTimeLeft;
 	sf::Text textAttacker;
@@ -205,6 +210,16 @@ private:
 	sf::Text textCurrentCombo;
 	sf::Text textBestCombo;
 	
+	//Audio
+	//music
+	sf::SoundBuffer bufferMusicBattle;
+	sf::Sound soundMusicBattle;
+	bool isMusicBattlePlaying = false;
+	//sfx
+	sf::SoundBuffer bufferCalculationCorrect;
+	sf::Sound soundCalculationCorrect;
+	sf::SoundBuffer bufferCalculationWrong;
+	sf::Sound soundCalculationWrong;
 	
 	//other
 	bool calculationGameIsOn = false;

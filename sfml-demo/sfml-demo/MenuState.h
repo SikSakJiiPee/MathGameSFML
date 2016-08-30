@@ -1,7 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-//#include <SFML/Audio.hpp>
+#include <SFML/Audio.hpp>
 
 #include "GameState.h"
 
@@ -32,15 +32,24 @@ private:
 
 	MenuSelection menuSelection;
 
+	//Font and Text
 	sf::Font font;
 	sf::Text textMenuStart;
 	sf::Text textMenuOptions;
 	sf::Text textMenuQuit;
 
-	//sf::Music musicMenu;
-	//sf::SoundBuffer bufferMenuMove;
-	//sf::SoundBuffer bufferMenuSelect;
+	//Audio
+	//musiikki p‰‰st‰‰ staattisen r‰s‰hdyksen loopatessaan t‰ll‰
+	sf::Music musicMenu;
 
+	sf::SoundBuffer bufferMusicMenu;
+	sf::Sound soundMusicMenu;
+	sf::SoundBuffer bufferMenuMove;
+	sf::Sound soundMenuMove;
+	sf::SoundBuffer bufferMenuSelect;
+	sf::Sound soundMenuSelect;
+
+	bool musicIsPlaying = false;
 
 
 };

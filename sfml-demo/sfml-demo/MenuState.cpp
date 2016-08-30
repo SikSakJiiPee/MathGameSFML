@@ -35,16 +35,22 @@ MenuState::MenuState(Game* game)
 	textMenuQuit.setString("Quit");
 
 	////Audio
+	//music
 	//if (!musicMenu.openFromFile("Audio/Music/hungerland.wav"))
 	//	std::cout << "Opening a music failed!" << std::endl;
 
-	//musicMenu.play();
+	if (!bufferMusicMenu.loadFromFile("Audio/Music/hungerland.wav"))
+		std::cout << "Loading an audio failed!" << std::endl;
+	soundMusicMenu.setBuffer(bufferMusicMenu);
 
-	//if (!bufferMenuMove.loadFromFile("Audio/SFX/menu_move.wav"));
-	//	std::cout << "Loading an audio failed!" << std::endl;
+	//sfx
+	if (!bufferMenuMove.loadFromFile("Audio/SFX/menu_move.wav"))
+		std::cout << "Loading an audio failed!" << std::endl;
+	soundMenuMove.setBuffer(bufferMenuMove);
 
-	//if (!bufferMenuMove.loadFromFile("Audio/SFX/menu_select.wav"));
-	//	std::cout << "Loading an audio failed!" << std::endl;
+	if (!bufferMenuSelect.loadFromFile("Audio/SFX/menu_select.wav"))
+		std::cout << "Loading an audio failed!" << std::endl;
+	soundMenuSelect.setBuffer(bufferMenuSelect);
 
 	std::cout << "MenuState init" << std::endl;
 }
@@ -91,6 +97,7 @@ void MenuState::handleInput()
 			}
 			case sf::Keyboard::Return:
 			{
+				soundMenuSelect.play();
 				if (menuSelection == MenuSelection::START)
 				{
 					this->startGame();
@@ -107,6 +114,7 @@ void MenuState::handleInput()
 			}
 			case sf::Keyboard::Down:
 			{
+				soundMenuMove.play();
 				if (menuSelection == MenuSelection::OPTIONS)
 					menuSelection = MenuSelection::QUIT;
 				if (menuSelection == MenuSelection::START)
@@ -115,6 +123,7 @@ void MenuState::handleInput()
 			}
 			case sf::Keyboard::Up:
 			{
+				soundMenuMove.play();
 				if (menuSelection == MenuSelection::OPTIONS)
 					menuSelection = MenuSelection::START;
 				if (menuSelection == MenuSelection::QUIT)
@@ -134,13 +143,16 @@ void MenuState::handleInput()
 
 void MenuState::update(const float dt)
 {
-
+	if (!musicIsPlaying)
+	{
+		soundMusicMenu.play();
+		soundMusicMenu.setLoop(true);
+		musicIsPlaying = true;
+	}
 }
 
 void MenuState::draw(const float dt)
 {
-	//game->window.clear(sf::Color::Black);
-
 	if (menuSelection == MenuSelection::START)
 		textMenuStart.setColor(sf::Color::Red);
 	else
@@ -156,17 +168,16 @@ void MenuState::draw(const float dt)
 	else
 		textMenuQuit.setColor(sf::Color::White);
 
-
 	game->window.draw(textMenuStart);
 	game->window.draw(textMenuOptions);
 	game->window.draw(textMenuQuit);
-
-	//game->window.display();
 }
 
 
 void MenuState::startGame()
 {
+	musicIsPlaying = false;
+	soundMusicMenu.stop();
 	this->game->pushState(new MainGameState(this->game));
 
 	return;

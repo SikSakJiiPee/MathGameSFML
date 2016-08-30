@@ -89,20 +89,14 @@ void IntroState::update(const float dt)
 
 void IntroState::draw(const float dt)
 {
-	//game->window.clear(sf::Color::Black);
-
+	//tarvitaanko enää?
 	textTitleIntro.setString("MathGame");
 	textTitleIntro.setOrigin(textTitleIntro.getGlobalBounds().width / 2, textTitleIntro.getGlobalBounds().height);
 	textTitleIntro.setPosition(game->window.getSize().x / 2, game->window.getSize().y / 2);
 
-
 	game->window.draw(spritebgTitle);
 
-
 	//game->window.draw(textTitleIntro);
-
-
-	//game->window.display();
 
 	return;
 }

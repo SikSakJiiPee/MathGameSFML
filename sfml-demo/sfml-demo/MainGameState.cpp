@@ -120,6 +120,10 @@ MainGameState::MainGameState(Game* game)
 	textGameEscape.setColor(sf::Color::Black);
 	textGameEscape.setString("Escape");
 
+	textActiveCharacter.setFont(font);
+	textActiveCharacter.setCharacterSize(24);
+	textActiveCharacter.setColor(sf::Color::Black);
+
 	textInfoPlayer.setFont(font);
 	textInfoPlayer.setColor(sf::Color::Black);
 	
@@ -165,9 +169,24 @@ MainGameState::MainGameState(Game* game)
 
 	//clock.restart();
 
-	textTime.setFont(font);
-	textTime.setCharacterSize(30);
-	textTime.setColor(sf::Color::Black);
+	//textTime.setFont(font);
+	//textTime.setCharacterSize(30);
+	//textTime.setColor(sf::Color::Black);
+
+	//Audio
+	//music
+	if (!bufferMusicBattle.loadFromFile("Audio/Music/matikkajytky.wav"))
+		std::cout << "Loading an audio failed!" << std::endl;
+	soundMusicBattle.setBuffer(bufferMusicBattle);
+
+	//sfx
+	if (!bufferMenuMove.loadFromFile("Audio/SFX/menu_move.wav"))
+		std::cout << "Loading an audio failed!" << std::endl;
+	soundMenuMove.setBuffer(bufferMenuMove);
+
+	if (!bufferMenuSelect.loadFromFile("Audio/SFX/menu_select.wav"))
+		std::cout << "Loading an audio failed!" << std::endl;
+	soundMenuSelect.setBuffer(bufferMenuSelect);
 
 	//-----------
 
@@ -175,6 +194,7 @@ MainGameState::MainGameState(Game* game)
 
 
 	//COMBATPHASE
+	//Text
 	textTitleCalc.setFont(font);
 	textTitleCalc.setCharacterSize(24);
 	textTitleCalc.setColor(sf::Color::Black);
@@ -226,7 +246,15 @@ MainGameState::MainGameState(Game* game)
 	textBestCombo.setCharacterSize(24);
 	textBestCombo.setColor(sf::Color::Black);
 	
+	//Audio
+	//sfx
+	if (!bufferCalculationCorrect.loadFromFile("Audio/SFX/calculation_correct.wav"))
+		std::cout << "Loading an audio failed!" << std::endl;
+	soundCalculationCorrect.setBuffer(bufferCalculationCorrect);
 
+	if (!bufferCalculationWrong.loadFromFile("Audio/SFX/calculation_wrong.wav"))
+		std::cout << "Loading an audio failed!" << std::endl;
+	soundCalculationWrong.setBuffer(bufferCalculationWrong);
 
 	//-------------
 
@@ -369,6 +397,8 @@ void MainGameState::handleInput()
 						//Go to CalculationState
 						if (evnt.key.code == sf::Keyboard::Return)
 						{
+							soundMenuSelect.play();
+
 							if (selection == Selection::ATTACK)
 							{
 								selectEnemy = true;
@@ -411,6 +441,8 @@ void MainGameState::handleInput()
 						//selection (action)
 						if (evnt.key.code == sf::Keyboard::Right)
 						{
+							soundMenuMove.play();
+
 							if (selection == Selection::ATTACK)
 							{
 								selection = Selection::SPECIAL;
@@ -422,6 +454,8 @@ void MainGameState::handleInput()
 						}
 						if (evnt.key.code == sf::Keyboard::Left)
 						{
+							soundMenuMove.play();
+
 							if (selection == Selection::SPECIAL)
 							{
 								selection = Selection::ATTACK;
@@ -433,6 +467,8 @@ void MainGameState::handleInput()
 						}
 						if (evnt.key.code == sf::Keyboard::Down)
 						{
+							soundMenuMove.play();
+
 							if (selection == Selection::ATTACK)
 							{
 								selection = Selection::ITEM;
@@ -444,6 +480,8 @@ void MainGameState::handleInput()
 						}
 						if (evnt.key.code == sf::Keyboard::Up)
 						{
+							soundMenuMove.play();
+
 							if (selection == Selection::ITEM)
 							{
 								selection = Selection::ATTACK;
@@ -512,6 +550,12 @@ void MainGameState::handleInput()
 //UPDATE
 void MainGameState::update(const float dt)
 {
+	if (isMusicBattlePlaying == false)
+	{
+		soundMusicBattle.play();
+		soundMusicBattle.setLoop(true);
+		isMusicBattlePlaying = true;
+	}
 	//if (turn == Turn::PLAYER)
 	//{
 
@@ -671,11 +715,15 @@ void MainGameState::update(const float dt)
 			{
 				if (answerIsCorrect)
 				{
+					soundCalculationCorrect.play();
+
 					//escapeCalculation = false;
 					backToMenu();
 				}
 				else if (!answerIsCorrect)
 				{
+					soundCalculationWrong.play();
+
 					uninitCalculation();
 				}
 			}
@@ -683,6 +731,8 @@ void MainGameState::update(const float dt)
 			//Normal (Attack and Defend)
 			if (answerIsCorrect)
 			{
+				soundCalculationCorrect.play();
+
 				std::cout << "Oikea vastaus 1 on: " << correctAnswer << "	oikein!" << std::endl;
 				points++;
 				currentCombo++;
@@ -699,6 +749,8 @@ void MainGameState::update(const float dt)
 			}
 			else if (!answerIsCorrect)
 			{
+				soundCalculationWrong.play();
+
 				std::cout << "Oikea vastaus 1 on: " << correctAnswer << "	kurahti..." << std::endl;
 				mistakes++;
 				currentCombo = 0;
@@ -909,8 +961,11 @@ void MainGameState::draw(const float dt)
 		textInfoEnemy2.setPosition(game->window.getSize().x / 2, (game->window.getSize().y / 18));
 		textInfoEnemy3.setPosition(game->window.getSize().x / 2, (game->window.getSize().y / 18) * 2);
 
+		
 
 		//selection
+		textActiveCharacter.setString(activeCharacter->characterName);
+
 		if (selection == Selection::ATTACK)
 			textGameAttack.setColor(sf::Color::White);
 		else
@@ -931,6 +986,7 @@ void MainGameState::draw(const float dt)
 		else
 			textGameEscape.setColor(sf::Color::Black);
 
+		textActiveCharacter.setPosition(0, (game->window.getSize().y / 18) * 15);
 		textGameAttack.setPosition(0, (game->window.getSize().y / 18) * 16);
 		textGameItem.setPosition(0, (game->window.getSize().y / 18) * 17);
 		textGameSpecial.setPosition(game->window.getSize().x / 4, (game->window.getSize().y / 18) * 16);
@@ -968,6 +1024,7 @@ void MainGameState::draw(const float dt)
 		game->window.draw(textInfoEnemy3);
 		
 		//selection
+		game->window.draw(textActiveCharacter);
 		game->window.draw(textGameAttack);
 		game->window.draw(textGameItem);
 		game->window.draw(textGameSpecial);
@@ -1004,7 +1061,8 @@ void MainGameState::draw(const float dt)
 		textTimeLeft.setPosition(game->window.getSize().x / 2, 0);
 
 		textAttacker.setString(activeCharacter->characterName);
-		textDefender.setString(targetCharacter->characterName);
+		if (!escapeCalculation)
+			textDefender.setString(targetCharacter->characterName);
 		if (turn == Turn::PLAYER)
 		{
 			textAttacker.setPosition(0, (game->window.getSize().y / 18));
@@ -1065,6 +1123,8 @@ void MainGameState::draw(const float dt)
 	//during battle lose
 	if (noPlayerAlive())
 	{
+		soundMusicBattle.stop();
+
 		game->window.clear(sf::Color::Black);
 		game->window.draw(textBattleLose);
 	}
@@ -1075,6 +1135,9 @@ void MainGameState::draw(const float dt)
 	//during battle win
 	if (noEnemyAlive())
 	{
+		soundMusicBattle.stop();
+
+
 		game->window.clear(sf::Color::Black);
 		game->window.draw(textBattleWin);
 	}
@@ -1087,6 +1150,8 @@ void MainGameState::draw(const float dt)
 //state management
 void MainGameState::backToMenu()
 {
+	soundMusicBattle.stop();
+
 	this->game->popState();
 
 	return;
@@ -1236,6 +1301,8 @@ void MainGameState::inputSelectPlayer()
 
 			if (evnt.key.code == sf::Keyboard::Down)
 			{
+				soundMenuMove.play();
+
 				selectedPlayer++;
 
 				if (selectedPlayer >= getPlayerCharacterCount() - 1)
@@ -1243,6 +1310,8 @@ void MainGameState::inputSelectPlayer()
 			}
 			if (evnt.key.code == sf::Keyboard::Up)
 			{
+				soundMenuMove.play();
+
 				selectedPlayer--;
 
 				if (selectedPlayer <= 0)
@@ -1266,6 +1335,8 @@ void MainGameState::inputSelectPlayer()
 			}
 			if (evnt.key.code == sf::Keyboard::Return)
 			{
+				soundMenuSelect.play();
+
 				targetCharacter = getPlayerCharacter(selectedPlayer);
 				if (selection == Selection::SPECIAL)
 				{
@@ -1306,6 +1377,8 @@ void MainGameState::inputSelectEnemy()
 
 			if (evnt.key.code == sf::Keyboard::Down)
 			{
+				soundMenuMove.play();
+
 				selectedEnemy++;
 
 				if (selectedEnemy >= getEnemyCharacterCount() - 1)
@@ -1313,6 +1386,8 @@ void MainGameState::inputSelectEnemy()
 			}
 			if (evnt.key.code == sf::Keyboard::Up)
 			{
+				soundMenuMove.play();
+
 				selectedEnemy--;
 
 				if (selectedEnemy <= 0)
@@ -1335,6 +1410,8 @@ void MainGameState::inputSelectEnemy()
 			}
 			if (evnt.key.code == sf::Keyboard::Return)
 			{
+				soundMenuSelect.play();
+
 				targetCharacter = getEnemyCharacter(selectedEnemy);
 				initCalculation();
 			}
@@ -1369,6 +1446,8 @@ void MainGameState::inputSelectItem()
 
 			if (evnt.key.code == sf::Keyboard::Down)
 			{
+				soundMenuMove.play();
+
 				selectedItem++;
 
 				if (selectedItem >= activeCharacter->items.size() - 1)
@@ -1376,6 +1455,8 @@ void MainGameState::inputSelectItem()
 			}
 			if (evnt.key.code == sf::Keyboard::Up)
 			{
+				soundMenuMove.play();
+
 				selectedItem--;
 
 				if (selectedItem <= 0)
@@ -1396,6 +1477,8 @@ void MainGameState::inputSelectItem()
 			}
 			if (evnt.key.code == sf::Keyboard::Return)
 			{
+				soundMenuSelect.play();
+
 				if (activeCharacter->items[selectedItem].amount > 0)
 				{
 					if (activeCharacter->items[selectedItem].target == Target::PLAYER)
