@@ -13,35 +13,12 @@ MainGameState::MainGameState(Game* game)
 	selection = Selection::ATTACK;
 
 	//Character
-	characters.push_back(new Character(true, "Player1", "Texture/Sprite/player1.png", 1, 0, 100, 100, 10, 10, 5, 5, 1, sf::Vector2f((game->window.getSize().x / 8) * 3, (game->window.getSize().y / 3))));
+	characters.push_back(new Character(true, "Player1", "Texture/Sprite/player1.png", 1, 0, 100, 100, 10, 10, 5, 5, 7, sf::Vector2f((game->window.getSize().x / 8) * 3, (game->window.getSize().y / 3))));
 	characters.push_back(new Character(true, "Player2", "Texture/Sprite/player2.png", 1, 0, 100, 100, 10, 10, 7, 5, 4, sf::Vector2f((game->window.getSize().x / 8) * 2, ((game->window.getSize().y / 3) + (game->window.getSize().y / 9)))));
 	characters.push_back(new Character(true, "Player3", "Texture/Sprite/player3.png", 1, 0, 100, 100, 10, 10, 10, 5, 3, sf::Vector2f((game->window.getSize().x / 8) * 1, ((game->window.getSize().y / 3) + (game->window.getSize().y / 9) * 2))));
 	characters.push_back(new Character(false, "Enemy1", "Texture/Sprite/enemy1.png", 1, 0, 100, 100, 10, 10, 7, 5, 5, sf::Vector2f((game->window.getSize().x / 8) * 5, (game->window.getSize().y / 3))));
-	characters.push_back(new Character(false, "Enemy2", "Texture/Sprite/enemy2.png", 1, 0, 100, 100, 10, 10, 7, 15, 2, sf::Vector2f((game->window.getSize().x / 8) * 6, ((game->window.getSize().y / 3) + (game->window.getSize().y / 9)))));
+	characters.push_back(new Character(false, "Enemy2", "Texture/Sprite/enemy2.png", 1, 0, 100, 100, 10, 10, 7, 15, 6, sf::Vector2f((game->window.getSize().x / 8) * 6, ((game->window.getSize().y / 3) + (game->window.getSize().y / 9)))));
 	characters.push_back(new Character(false, "Enemy3", "Texture/Sprite/enemy3.png", 1, 0, 100, 100, 10, 10, 7, 30, 1, sf::Vector2f((game->window.getSize().x / 8) * 7, ((game->window.getSize().y / 3) + (game->window.getSize().y / 9) * 2))));
-	
-	////Search the fastest character and make it active
-	//for (size_t i = 0; i < characters.size(); i++)
-	//{
-	//	activeCharacter = characters[0];
-	//
-	//	if (characters[i]->speed > activeCharacter->speed)
-	//		activeCharacter = characters[i];
-	//}
-	
-	activeCharacter = characters[0];
-	activeCharacter->isActive = true;
-	std::cout << "Active Character: " << activeCharacter->characterName << std::endl;
-
-	if (activeCharacter->isPlayerCharacter)
-	{
-		turn = Turn::PLAYER;
-	}		
-	else
-	{
-		turn = Turn::ENEMY;
-	}
-		
 	
 
 	//
@@ -88,6 +65,32 @@ MainGameState::MainGameState(Game* game)
 			characters[i]->speed += characters[i]->equipments[j].speed;
 		}
 	}
+	
+
+	//
+	//First Turn
+	//Search the fastest character and make it active
+	activeCharacter = characters[0];
+	for (size_t i = 0; i < characters.size(); i++)
+	{
+		if (characters[i]->speed > activeCharacter->speed)
+			activeCharacter = characters[i];
+	}
+
+	//activeCharacter = characters[0];
+	activeCharacter->isActive = true;
+	std::cout << "Active Character: " << activeCharacter->characterName << std::endl;
+
+	if (activeCharacter->isPlayerCharacter)
+	{
+		turn = Turn::PLAYER;
+	}
+	else
+	{
+		turn = Turn::ENEMY;
+	}
+	//-----
+
 
 	//
 	//Font and Text
@@ -1269,6 +1272,7 @@ void MainGameState::getFirstAliveCharacter()
 			return;
 		}
 
+
 		count++;
 	}
 	return;
@@ -1335,15 +1339,19 @@ void MainGameState::inputSelectPlayer()
 			}
 			if (evnt.key.code == sf::Keyboard::Return)
 			{
-				soundMenuSelect.play();
+				//soundMenuSelect.play();
 
 				targetCharacter = getPlayerCharacter(selectedPlayer);
-				if (selection == Selection::SPECIAL)
+				if (selection == Selection::SPECIAL && targetCharacter->checkIfAlive())
 				{
+					soundMenuSelect.play();
+
 					std::cout << "Player target for a special selected" << std::endl;
 				}
-				if (selection == Selection::ITEM)
+				if (selection == Selection::ITEM && targetCharacter->checkIfAlive())
 				{
+					soundMenuSelect.play();
+
 					std::cout << "Player target for an item selected" << std::endl;
 					activeCharacter->useItem(activeCharacter->items[selectedItem], targetCharacter);
 					activeCharacter->items[selectedItem].amount--;
@@ -1408,7 +1416,7 @@ void MainGameState::inputSelectEnemy()
 				selectedEnemy = 0;
 				selection = Selection::ATTACK;
 			}
-			if (evnt.key.code == sf::Keyboard::Return)
+			if (evnt.key.code == sf::Keyboard::Return && getEnemyCharacter(selectedEnemy)->checkIfAlive())
 			{
 				soundMenuSelect.play();
 
@@ -1636,19 +1644,9 @@ void MainGameState::uninitCalculation()
 		}
 	}
 		
-	activeCharacter = characters[0 + turnsPassed];
+	//activeCharacter = characters[0 + turnsPassed];
 	//if (activeCharacter->checkIfAlive() == false)
 	//	getFirstAliveCharacter();
-	activeCharacter->isActive = true;
-
-	if (activeCharacter->isPlayerCharacter)
-	{
-		turn = Turn::PLAYER;
-	}
-	else
-	{
-		turn = Turn::ENEMY;
-	}
 
 	//mieti joku tapa jatkaa vuoroja nopeusjärjestyksessä
 	////tämä bugaa ja johtuu luultavasti nopeudesta
@@ -1672,6 +1670,56 @@ void MainGameState::uninitCalculation()
 	//	//}
 	//		
 	//}
+
+
+	//järjestys bugaa jos hahmoja on kuollut, 
+	//antaa kuolleen hahmon vuoron joko vectorin hitaimmalle tai viimeiselle?
+	getFirstAliveCharacter();
+	activeCharacter->isActive = true;
+	std::cout << "First Alive: ";
+	for (size_t i = 0; i < characters.size(); i++)
+	{
+		if (characters[i]->isActive == true)
+			std::cout << characters[i]->characterName << std::endl;
+	}
+
+	for (size_t i = 0; i < characters.size(); i++)
+	{
+		characters[i]->isActive = false;
+	}
+
+
+	for (size_t i = 0; i < characters.size(); i++)
+	{
+		if (characters[i]->speed < activeCharacter->speed)
+		{
+			activeCharacter = characters[i];
+		}
+	}
+	for (size_t i = 0; i < characters.size(); i++)
+	{
+		if (characters[i]->speed > activeCharacter->speed 
+			&& characters[i]->turnCompleted == false
+			&& characters[i]->checkIfAlive())
+		{
+			activeCharacter = characters[i];
+		}
+	}
+
+
+
+
+	activeCharacter->isActive = true;
+
+	if (activeCharacter->isPlayerCharacter)
+	{
+		turn = Turn::PLAYER;
+	}
+	else
+	{
+		turn = Turn::ENEMY;
+	}
+
 
 	//activeCharacter->isActive = true;
 	for (size_t i = 0; i < characters.size(); i++)
