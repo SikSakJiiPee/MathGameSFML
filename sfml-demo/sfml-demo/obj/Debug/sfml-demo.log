@@ -1,7 +1,7 @@
-﻿Build started 31.8.2016 20.46.25.
+﻿Build started 1.9.2016 14.30.46.
      1>Project "C:\Users\Jussi\Desktop\MathGameSFML\sfml-demo\sfml-demo\sfml-demo.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"C:\Users\Jussi\Desktop\MathGameSFML\sfml-demo\sfml-demo\include\\" /I"C:\Users\Jussi\Desktop\MathGameSFML\sfml-demo\..\SFML-2.3.2\include" /ZI /nologo /W4 /WX- /Od /Oy- /D SFML_STATIC /D WIN32 /D _DEBUG /D _WINDOWS /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"C:\Users\Jussi\Desktop\MathGameSFML\sfml-demo\sfml-demo\obj\Debug\\" /Fd"C:\Users\Jussi\Desktop\MathGameSFML\sfml-demo\sfml-demo\obj\Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt MainGameState.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"C:\Users\Jussi\Desktop\MathGameSFML\sfml-demo\sfml-demo\include\\" /I"C:\Users\Jussi\Desktop\MathGameSFML\sfml-demo\..\SFML-2.3.2\include" /ZI /nologo /W4 /WX- /Od /Oy- /D SFML_STATIC /D WIN32 /D _DEBUG /D _WINDOWS /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"C:\Users\Jussi\Desktop\MathGameSFML\sfml-demo\sfml-demo\obj\Debug\\" /Fd"C:\Users\Jussi\Desktop\MathGameSFML\sfml-demo\sfml-demo\obj\Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt CalculationState.cpp MainGameState.cpp
          MainGameState.cpp
      1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(16): warning C4244: 'argument' : conversion from 'unsigned int' to 'float', possible loss of data
      1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(17): warning C4244: 'argument' : conversion from 'unsigned int' to 'float', possible loss of data
@@ -9,41 +9,44 @@
      1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(19): warning C4244: 'argument' : conversion from 'unsigned int' to 'float', possible loss of data
      1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(20): warning C4244: 'argument' : conversion from 'unsigned int' to 'float', possible loss of data
      1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(21): warning C4244: 'argument' : conversion from 'unsigned int' to 'float', possible loss of data
-     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(554): warning C4100: 'dt' : unreferenced formal parameter
-     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(961): warning C4244: 'argument' : conversion from 'unsigned int' to 'float', possible loss of data
-     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(962): warning C4244: 'argument' : conversion from 'unsigned int' to 'float', possible loss of data
-     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(963): warning C4244: 'argument' : conversion from 'unsigned int' to 'float', possible loss of data
-     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(964): warning C4244: 'argument' : conversion from 'unsigned int' to 'float', possible loss of data
-     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(965): warning C4244: 'argument' : conversion from 'unsigned int' to 'float', possible loss of data
-     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(992): warning C4244: 'argument' : conversion from 'unsigned int' to 'float', possible loss of data
-     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(993): warning C4244: 'argument' : conversion from 'unsigned int' to 'float', possible loss of data
-     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(994): warning C4244: 'argument' : conversion from 'unsigned int' to 'float', possible loss of data
-     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(995): warning C4244: 'argument' : conversion from 'unsigned int' to 'float', possible loss of data
-     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(996): warning C4244: 'argument' : conversion from 'unsigned int' to 'float', possible loss of data
-     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(1002): warning C4244: 'argument' : conversion from 'unsigned int' to 'float', possible loss of data
-     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(1004): warning C4244: 'argument' : conversion from 'unsigned int' to 'float', possible loss of data
-     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(1064): warning C4244: 'argument' : conversion from 'unsigned int' to 'float', possible loss of data
-     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(1071): warning C4244: 'argument' : conversion from 'unsigned int' to 'float', possible loss of data
-     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(1072): warning C4244: 'argument' : conversion from 'unsigned int' to 'float', possible loss of data
-     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(1076): warning C4244: 'argument' : conversion from 'unsigned int' to 'float', possible loss of data
-     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(1077): warning C4244: 'argument' : conversion from 'unsigned int' to 'float', possible loss of data
-     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(1082): warning C4244: 'argument' : conversion from 'unsigned int' to 'float', possible loss of data
-     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(1092): warning C4244: 'argument' : conversion from 'unsigned int' to 'float', possible loss of data
+     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(576): warning C4100: 'dt' : unreferenced formal parameter
+     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(985): warning C4244: 'argument' : conversion from 'unsigned int' to 'float', possible loss of data
+     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(986): warning C4244: 'argument' : conversion from 'unsigned int' to 'float', possible loss of data
+     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(987): warning C4244: 'argument' : conversion from 'unsigned int' to 'float', possible loss of data
+     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(988): warning C4244: 'argument' : conversion from 'unsigned int' to 'float', possible loss of data
+     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(989): warning C4244: 'argument' : conversion from 'unsigned int' to 'float', possible loss of data
+     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(1016): warning C4244: 'argument' : conversion from 'unsigned int' to 'float', possible loss of data
+     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(1017): warning C4244: 'argument' : conversion from 'unsigned int' to 'float', possible loss of data
+     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(1018): warning C4244: 'argument' : conversion from 'unsigned int' to 'float', possible loss of data
+     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(1019): warning C4244: 'argument' : conversion from 'unsigned int' to 'float', possible loss of data
+     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(1020): warning C4244: 'argument' : conversion from 'unsigned int' to 'float', possible loss of data
+     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(1026): warning C4244: 'argument' : conversion from 'unsigned int' to 'float', possible loss of data
+     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(1028): warning C4244: 'argument' : conversion from 'unsigned int' to 'float', possible loss of data
+     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(1088): warning C4244: 'argument' : conversion from 'unsigned int' to 'float', possible loss of data
+     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(1095): warning C4244: 'argument' : conversion from 'unsigned int' to 'float', possible loss of data
+     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(1096): warning C4244: 'argument' : conversion from 'unsigned int' to 'float', possible loss of data
      1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(1100): warning C4244: 'argument' : conversion from 'unsigned int' to 'float', possible loss of data
      1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(1101): warning C4244: 'argument' : conversion from 'unsigned int' to 'float', possible loss of data
-     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(1102): warning C4244: 'argument' : conversion from 'unsigned int' to 'float', possible loss of data
-     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(1103): warning C4244: 'argument' : conversion from 'unsigned int' to 'float', possible loss of data
-     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(848): warning C4100: 'dt' : unreferenced formal parameter
-     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(1199): warning C4389: '==' : signed/unsigned mismatch
-     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(1216): warning C4389: '==' : signed/unsigned mismatch
-     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(1312): warning C4018: '>=' : signed/unsigned mismatch
-     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(1392): warning C4018: '>=' : signed/unsigned mismatch
-     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(1461): warning C4018: '>=' : signed/unsigned mismatch
-     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(1638): warning C4389: '==' : signed/unsigned mismatch
-     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(1999): warning C4701: potentially uninitialized local variable 'rMin' used
-     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(1999): warning C4701: potentially uninitialized local variable 'rMax' used
-     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(2031): warning C4715: 'MainGameState::getCorrectAnswer' : not all control paths return a value
-     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(2079): warning C4715: 'MainGameState::getCalculationString' : not all control paths return a value
+     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(1106): warning C4244: 'argument' : conversion from 'unsigned int' to 'float', possible loss of data
+     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(1116): warning C4244: 'argument' : conversion from 'unsigned int' to 'float', possible loss of data
+     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(1124): warning C4244: 'argument' : conversion from 'unsigned int' to 'float', possible loss of data
+     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(1125): warning C4244: 'argument' : conversion from 'unsigned int' to 'float', possible loss of data
+     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(1126): warning C4244: 'argument' : conversion from 'unsigned int' to 'float', possible loss of data
+     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(1127): warning C4244: 'argument' : conversion from 'unsigned int' to 'float', possible loss of data
+     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(872): warning C4100: 'dt' : unreferenced formal parameter
+     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(1223): warning C4389: '==' : signed/unsigned mismatch
+     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(1240): warning C4389: '==' : signed/unsigned mismatch
+     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(1336): warning C4018: '>=' : signed/unsigned mismatch
+     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(1416): warning C4018: '>=' : signed/unsigned mismatch
+     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(1485): warning C4018: '>=' : signed/unsigned mismatch
+     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(1676): warning C4389: '==' : signed/unsigned mismatch
+         Generating Code...
+     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(1993): warning C4701: potentially uninitialized local variable 'rMin' used
+     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(1993): warning C4701: potentially uninitialized local variable 'rMax' used
+     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(2025): warning C4715: 'MainGameState::getCorrectAnswer' : not all control paths return a value
+     1>c:\users\jussi\desktop\mathgamesfml\sfml-demo\sfml-demo\maingamestate.cpp(2073): warning C4715: 'MainGameState::getCalculationString' : not all control paths return a value
+         Skipping... (no relevant changes detected)
+         CalculationState.cpp
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Jussi\Desktop\MathGameSFML\sfml-demo\Debug\sfml-demo.exe" /INCREMENTAL /NOLOGO /LIBPATH:"C:\Users\Jussi\Desktop\MathGameSFML\sfml-demo\..\SFML-2.3.2\lib\\" "sfml-graphics-s-d.lib" "sfml-window-s-d.lib" "sfml-system-s-d.lib" "sfml-audio-s-d.lib" opengl32.lib freetype.lib jpeg.lib winmm.lib gdi32.lib openal32.lib flac.lib vorbis.lib vorbisenc.lib vorbisfile.lib ogg.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Jussi\Desktop\MathGameSFML\sfml-demo\Debug\sfml-demo.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /ENTRY:"mainCRTStartup" /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Jussi\Desktop\MathGameSFML\sfml-demo\Debug\sfml-demo.lib" /MACHINE:X86 "C:\Users\Jussi\Desktop\MathGameSFML\sfml-demo\sfml-demo\obj\Debug\Calculation.obj"
          "C:\Users\Jussi\Desktop\MathGameSFML\sfml-demo\sfml-demo\obj\Debug\CalculationState.obj"
@@ -62,4 +65,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:00.84
+Time Elapsed 00:00:00.76

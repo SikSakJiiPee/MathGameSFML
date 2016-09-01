@@ -14,11 +14,11 @@ MainGameState::MainGameState(Game* game)
 
 	//Character
 	characters.push_back(new Character(true, "Player1", "Texture/Sprite/player1.png", 1, 0, 100, 100, 10, 10, 5, 5, 7, sf::Vector2f((game->window.getSize().x / 8) * 3, (game->window.getSize().y / 3))));
-	characters.push_back(new Character(true, "Player2", "Texture/Sprite/player2.png", 1, 0, 100, 100, 10, 10, 7, 5, 4, sf::Vector2f((game->window.getSize().x / 8) * 2, ((game->window.getSize().y / 3) + (game->window.getSize().y / 9)))));
-	characters.push_back(new Character(true, "Player3", "Texture/Sprite/player3.png", 1, 0, 100, 100, 10, 10, 10, 5, 3, sf::Vector2f((game->window.getSize().x / 8) * 1, ((game->window.getSize().y / 3) + (game->window.getSize().y / 9) * 2))));
-	characters.push_back(new Character(false, "Enemy1", "Texture/Sprite/enemy1.png", 1, 0, 100, 100, 10, 10, 7, 5, 5, sf::Vector2f((game->window.getSize().x / 8) * 5, (game->window.getSize().y / 3))));
-	characters.push_back(new Character(false, "Enemy2", "Texture/Sprite/enemy2.png", 1, 0, 100, 100, 10, 10, 7, 15, 6, sf::Vector2f((game->window.getSize().x / 8) * 6, ((game->window.getSize().y / 3) + (game->window.getSize().y / 9)))));
-	characters.push_back(new Character(false, "Enemy3", "Texture/Sprite/enemy3.png", 1, 0, 100, 100, 10, 10, 7, 30, 1, sf::Vector2f((game->window.getSize().x / 8) * 7, ((game->window.getSize().y / 3) + (game->window.getSize().y / 9) * 2))));
+	characters.push_back(new Character(true, "Player2", "Texture/Sprite/player2.png", 1, 0, 100, 100, 10, 10, 7, 5, 3, sf::Vector2f((game->window.getSize().x / 8) * 2, ((game->window.getSize().y / 3) + (game->window.getSize().y / 9)))));
+	characters.push_back(new Character(true, "Player3", "Texture/Sprite/player3.png", 1, 0, 100, 100, 10, 10, 10, 5, 5, sf::Vector2f((game->window.getSize().x / 8) * 1, ((game->window.getSize().y / 3) + (game->window.getSize().y / 9) * 2))));
+	characters.push_back(new Character(false, "Enemy1", "Texture/Sprite/enemy1.png", 1, 0, 100, 100, 10, 10, 7, 5, 6, sf::Vector2f((game->window.getSize().x / 8) * 5, (game->window.getSize().y / 3))));
+	characters.push_back(new Character(false, "Enemy2", "Texture/Sprite/enemy2.png", 1, 0, 100, 100, 10, 10, 7, 15, 2, sf::Vector2f((game->window.getSize().x / 8) * 6, ((game->window.getSize().y / 3) + (game->window.getSize().y / 9)))));
+	characters.push_back(new Character(false, "Enemy3", "Texture/Sprite/enemy3.png", 1, 0, 100, 100, 10, 10, 7, 30, 4, sf::Vector2f((game->window.getSize().x / 8) * 7, ((game->window.getSize().y / 3) + (game->window.getSize().y / 9) * 2))));
 	
 
 	//
@@ -41,17 +41,39 @@ MainGameState::MainGameState(Game* game)
 	//
 	//Equipment
 	//armor
-	eqArmor = new Equipment("Basic Armor", EquipmentType::ARMOR, 20, 5, 50, 0, 5, 0, 0, 0);
-	//eqArmor2 = new Equipment("Basic Armor", EquipmentType::ARMOR, 20, 1, 50, 0, 10, 0, 0, 0);
+	eqArmor = new Equipment("Basic Armor", EquipmentType::ARMOR, CalculationType::PLUS, 20, 5, 50, 0, 5, 0, 0, 0);
+	eqArmor2 = new Equipment("Basic Armor", EquipmentType::ARMOR, CalculationType::MINUS, 20, 5, 50, 0, 5, 0, 0, 0);
+	eqArmor3 = new Equipment("Basic Armor", EquipmentType::ARMOR, CalculationType::MULTIPLY, 20, 5, 50, 0, 5, 0, 0, 0);
+	
 	//weapon
-	eqWeapon = new Equipment("Basic Weapon", EquipmentType::WEAPON, 15, 5, 50, 7, 0, 0, 0, 0);
+	eqWeapon = new Equipment("Basic Weapon", EquipmentType::WEAPON, CalculationType::PLUS, 15, 5, 50, 7, 0, 0, 0, 0);
+	eqWeapon2 = new Equipment("Basic Weapon", EquipmentType::WEAPON, CalculationType::MINUS, 15, 5, 50, 7, 0, 0, 0, 0);
+	eqWeapon3 = new Equipment("Basic Weapon", EquipmentType::WEAPON, CalculationType::MULTIPLY, 15, 5, 50, 7, 0, 0, 0, 0);
 
 	//pushing equipments to every character
-	for (size_t i = 0; i < characters.size(); i++)
-	{
-		characters[i]->equipments.push_back(*eqArmor);
-		characters[i]->equipments.push_back(*eqWeapon);
-	}
+	//for (size_t i = 0; i < characters.size(); i++)
+	//{
+	//	characters[i]->equipments.push_back(*eqArmor);
+	//	characters[i]->equipments.push_back(*eqWeapon);
+	//}
+
+	characters[0]->equipments.push_back(*eqArmor);
+	characters[0]->equipments.push_back(*eqWeapon);
+
+	characters[1]->equipments.push_back(*eqArmor2);
+	characters[1]->equipments.push_back(*eqWeapon2);
+
+	characters[2]->equipments.push_back(*eqArmor3);
+	characters[2]->equipments.push_back(*eqWeapon3);
+
+	characters[3]->equipments.push_back(*eqArmor);
+	characters[3]->equipments.push_back(*eqWeapon);
+
+	characters[4]->equipments.push_back(*eqArmor2);
+	characters[4]->equipments.push_back(*eqWeapon2);
+
+	characters[5]->equipments.push_back(*eqArmor3);
+	characters[5]->equipments.push_back(*eqWeapon3);
 
 	//applying stats from the equipments
 	for (size_t i = 0; i < characters.size(); i++)
@@ -559,10 +581,12 @@ void MainGameState::update(const float dt)
 		soundMusicBattle.setLoop(true);
 		isMusicBattlePlaying = true;
 	}
+
 	//if (turn == Turn::PLAYER)
 	//{
-
+	//
 	//}
+
 
 	//during main phase
 	if (!calculationGameIsOn)
@@ -624,7 +648,9 @@ void MainGameState::update(const float dt)
 		}
 			
 		//MUISTA ALUSTAA KAIKKI!
-		CalculationType calculationType = CalculationType::PLUS;
+		//korjaa calculationType menemään puolustaessa puolustajan mukaan, ei aktiivisen hahmon
+		//aseta calculationType puolustaessa armorin mukaan
+		CalculationType calculationType = activeCharacter->equipments[0].calculationType;
 		NumberType numberType = NumberType::POSITIVE;
 		int calculationLevel = 5;
 		
@@ -1613,6 +1639,7 @@ void MainGameState::uninitCalculation()
 	selection = Selection::ATTACK;
 	escapeCalculation = false;
 
+	//Set every character unselected
 	for (size_t i = 0; i < characters.size(); i++)
 	{
 		characters[i]->isSelected = false;
@@ -1634,8 +1661,21 @@ void MainGameState::uninitCalculation()
 		characters[i]->isActive = false;
 	}
 
+	//Update the count of dead characters
+	int count(0);
+	for (size_t i = 0; i < characters.size(); i++)
+	{
+		
+		if (characters[i]->checkIfAlive() == false)
+			count++;
+		deadCharacters = count;
+	}
+	count = 0;
+	std::cout << "Dead characters: " << deadCharacters << std::endl;
+
+	//Update number of passed turns of this round
 	turnsPassed++;
-	if (turnsPassed == getPlayerCharacterCount() + getEnemyCharacterCount())
+	if (turnsPassed == getPlayerCharacterCount() + getEnemyCharacterCount() - deadCharacters)
 	{
 		turnsPassed = 0;
 		for (size_t i = 0; i < characters.size(); i++)
@@ -1643,52 +1683,10 @@ void MainGameState::uninitCalculation()
 			characters[i]->turnCompleted = false;
 		}
 	}
-		
-	//activeCharacter = characters[0 + turnsPassed];
-	//if (activeCharacter->checkIfAlive() == false)
-	//	getFirstAliveCharacter();
-
-	//mieti joku tapa jatkaa vuoroja nopeusjärjestyksessä
-	////tämä bugaa ja johtuu luultavasti nopeudesta
-	//for (size_t i = 0; i < characters.size(); i++)
-	//{
-	//	
-	//	
-	//	//tähän löytyy luultavasti parempikin tapa
-	//	if (characters[i]->turnCompleted == false)
-	//	{
-	//		characters[i]->isActive = false;
-	//		activeCharacter = characters[i];
-	//		activeCharacter->isActive = true;
-	//	}
-	//		
-
-	//	//if (characters[i]->speed < activeCharacter->speed && characters[i]->turnCompleted == false)
-	//	//{
-	//	//	activeCharacter = characters[i];
-	//	//	
-	//	//}
-	//		
-	//}
+	
 
 
-	//järjestys bugaa jos hahmoja on kuollut, 
-	//antaa kuolleen hahmon vuoron joko vectorin hitaimmalle tai viimeiselle?
-	getFirstAliveCharacter();
-	activeCharacter->isActive = true;
-	std::cout << "First Alive: ";
-	for (size_t i = 0; i < characters.size(); i++)
-	{
-		if (characters[i]->isActive == true)
-			std::cout << characters[i]->characterName << std::endl;
-	}
-
-	for (size_t i = 0; i < characters.size(); i++)
-	{
-		characters[i]->isActive = false;
-	}
-
-
+	//Sets the fastest character which have not made its turn active
 	for (size_t i = 0; i < characters.size(); i++)
 	{
 		if (characters[i]->speed < activeCharacter->speed)
@@ -1705,9 +1703,6 @@ void MainGameState::uninitCalculation()
 			activeCharacter = characters[i];
 		}
 	}
-
-
-
 
 	activeCharacter->isActive = true;
 
@@ -1771,7 +1766,7 @@ void MainGameState::inputCalculation()
 				{
 					playerAnswer *= -1;
 				}
-				std::cout << "sinun vastaus: " << playerAnswer << std::endl;
+				std::cout << "Your answer: " << playerAnswer << std::endl;
 				//std::cout << "oikea vastaus1: " << correctAnswer << std::endl;
 				//std::cout << "oikea vastaus2: " << correctAnswer2 << std::endl;
 				//std::cout << "oikea vastaus3: " << correctAnswer3 << std::endl;

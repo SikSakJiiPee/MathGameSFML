@@ -25,7 +25,7 @@ enum class Phase {MAIN, COMBAT, COMBATEND};
 
 //COMBATPHASE
 ///An enum class for calculation types
-enum class CalculationType { PLUS, MINUS, MULTIPLY, DIVIDE }; //Pitäisikö nimet olla Addition, Subtraction, Multiplication ja Division
+//enum class CalculationType { PLUS, MINUS, MULTIPLY, DIVIDE }; //Pitäisikö nimet olla Addition, Subtraction, Multiplication ja Division
 ///An enum class for number types
 enum class NumberType { BOTH, POSITIVE, NEGATIVE };
 
@@ -143,7 +143,11 @@ private:
 
 	//Equipment
 	Equipment* eqArmor;
+	Equipment* eqArmor2;
+	Equipment* eqArmor3;
 	Equipment* eqWeapon;
+	Equipment* eqWeapon2;
+	Equipment* eqWeapon3;
 
 	//Selection
 	Selection selection;
@@ -165,6 +169,7 @@ private:
 	Turn turn;
 	///Keeps track how many turns has passed on the current round.
 	int turnsPassed = 0;
+	int deadCharacters = 0;
 
 	//Enemy Turn
 	///Chooses a player targer for an enemy character.
