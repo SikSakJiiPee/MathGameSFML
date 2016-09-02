@@ -98,12 +98,18 @@ void Character::useItem(Item item, Character* character)
 	return;
 }
 
-void Character::useSpecialMove(SpecialMove specialMove)
+void Character::useSpecialMove(SpecialMove specialMove, Character* character)
 {
-	if (specialMove.specialMoveName == "Team Heal")
+	if (specialMove.specialMoveName == "Super Punch")
 	{
-
+		character->healthPoints -= 25;
 	}
+	if (specialMove.specialMoveName == "Hyper Punch")
+	{
+		character->healthPoints -= 65;
+	}
+
+	return;
 }
 
 

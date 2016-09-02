@@ -66,7 +66,7 @@ public:
 	///Gets a item to use and target characters for using.
 	void useItem(Item item, Character* character);
 	///Gets a special move to use.
-	void useSpecialMove(SpecialMove specialMove);
+	void useSpecialMove(SpecialMove specialMove, Character* character);
 
 	//specialMoves vector management
 	//size_t getSpecialMoveCount();

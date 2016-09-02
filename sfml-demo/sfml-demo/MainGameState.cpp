@@ -23,8 +23,14 @@ MainGameState::MainGameState(Game* game)
 
 	//
 	//SpecialMoves
+	specialSuperPunch = new SpecialMove("Super Punch", TargetSpecial::ENEMY, 3);
+	specialHyperPunch = new SpecialMove("Hyper Punch", TargetSpecial::ENEMY, 7);
+	for (size_t i = 0; i < characters.size(); i++)
+	{
+		characters[i]->specialMoves.push_back(*specialSuperPunch);
+		characters[i]->specialMoves.push_back(*specialHyperPunch);
+	}
 
-	
 	//
 	//Item
 	item = new Item("Potion", Target::PLAYER, EffectType::HPUP, 2, 50, 0, 0, 0);
@@ -149,6 +155,7 @@ MainGameState::MainGameState(Game* game)
 	textActiveCharacter.setCharacterSize(24);
 	textActiveCharacter.setColor(sf::Color::Black);
 
+	//character
 	textInfoPlayer.setFont(font);
 	textInfoPlayer.setColor(sf::Color::Black);
 	
@@ -167,6 +174,15 @@ MainGameState::MainGameState(Game* game)
 	textInfoEnemy3.setFont(font);
 	textInfoEnemy3.setColor(sf::Color::Black);
 
+	//special
+	textInfoSpecial.setFont(font);
+	textInfoSpecial.setCharacterSize(24);
+	textInfoSpecial.setColor(sf::Color::Black);
+
+	textInfoSpecial2.setFont(font);
+	textInfoSpecial2.setCharacterSize(24);
+	textInfoSpecial2.setColor(sf::Color::Black);
+
 	//item
 	textInfoItem.setFont(font);
 	textInfoItem.setCharacterSize(24);
@@ -176,6 +192,7 @@ MainGameState::MainGameState(Game* game)
 	textInfoItem2.setCharacterSize(24);
 	textInfoItem2.setColor(sf::Color::Black);
 
+	//tarvitaanko en‰‰?
 	textTime.setFont(font);
 	textTime.setCharacterSize(30);
 	textTime.setColor(sf::Color::Black);
@@ -318,6 +335,9 @@ MainGameState::~MainGameState()
 		delete characters[i];
 	}
 
+	delete specialSuperPunch;
+	delete specialHyperPunch;
+
 	//selvit‰ tarvitseeko jonkun paremman systeemin itemien poistoon
 	delete item;
 
@@ -351,7 +371,13 @@ void MainGameState::handleInput()
 		}
 		//--------------
 
-		//during select enemy
+		//during select special
+		if (selectSpecial)
+		{
+			inputSelectSpecial();
+		}
+
+		//during select item
 		if (selectItem)
 		{
 			inputSelectItem();
@@ -429,19 +455,11 @@ void MainGameState::handleInput()
 								selectEnemy = true;
 								if (getEnemyCharacter(0) != false)
 									getEnemyCharacter(0)->isSelected = true;
-								selection = Selection::NONE;
-								if (evnt.key.code == sf::Keyboard::Escape)
-								{
-
-								}
 							}
 							if (selection == Selection::SPECIAL)
 							{
-								selectPlayer = true;
-								if (getPlayerCharacter(0) != false)
-									getPlayerCharacter(0)->isSelected = true;
-								selection = Selection::NONE;
-
+								selectSpecial = true;
+								activeCharacter->specialMoves[0].isSelected = true;
 								std::cout << "Special selected" << std::endl;
 							}
 							if (selection == Selection::ITEM)
@@ -575,12 +593,12 @@ void MainGameState::handleInput()
 //UPDATE
 void MainGameState::update(const float dt)
 {
-	if (isMusicBattlePlaying == false)
-	{
-		soundMusicBattle.play();
-		soundMusicBattle.setLoop(true);
-		isMusicBattlePlaying = true;
-	}
+	//if (isMusicBattlePlaying == false)
+	//{
+	//	soundMusicBattle.play();
+	//	soundMusicBattle.setLoop(true);
+	//	isMusicBattlePlaying = true;
+	//}
 
 	//if (turn == Turn::PLAYER)
 	//{
@@ -1022,8 +1040,22 @@ void MainGameState::draw(const float dt)
 		textGameEscape.setPosition(game->window.getSize().x / 4, (game->window.getSize().y / 18) * 17);
 
 
+		//special
+		textInfoSpecial.setString(activeCharacter->specialMoves[0].getStringSpecialMoveInfo(activeCharacter->specialMoves[0]));
+		textInfoSpecial.setPosition((game->window.getSize().x / 4) * 2, (game->window.getSize().y / 18) * 16);
+		textInfoSpecial2.setString(activeCharacter->specialMoves[1].getStringSpecialMoveInfo(activeCharacter->specialMoves[1]));
+		textInfoSpecial2.setPosition((game->window.getSize().x / 4) * 2, (game->window.getSize().y / 18) * 17);
+
+		if (activeCharacter->specialMoves[0].isSelected == true)
+			textInfoSpecial.setColor(sf::Color::Blue);
+		else
+			textInfoSpecial.setColor(sf::Color::Black);
+		if (activeCharacter->specialMoves[1].isSelected == true)
+			textInfoSpecial.setColor(sf::Color::Blue);
+		else
+			textInfoSpecial.setColor(sf::Color::Black);
+
 		//item
-		//korjaa tavaroiden m‰‰r‰n "ei v‰heneminen" infossa
 		textInfoItem.setString(activeCharacter->items[0].getStringItemInfo(activeCharacter->items[0]));
 		textInfoItem.setPosition((game->window.getSize().x / 4) * 2, (game->window.getSize().y / 18) * 16);
 		textInfoItem2.setString(activeCharacter->items[1].getStringItemInfo(activeCharacter->items[1]));
@@ -1058,6 +1090,13 @@ void MainGameState::draw(const float dt)
 		game->window.draw(textGameItem);
 		game->window.draw(textGameSpecial);
 		game->window.draw(textGameEscape);
+
+		//special
+		if (selectSpecial)
+		{
+			game->window.draw(textInfoSpecial);
+			game->window.draw(textInfoSpecial2);
+		}
 
 		//item
 		if (selectItem)
@@ -1440,14 +1479,39 @@ void MainGameState::inputSelectEnemy()
 				}
 				selectEnemy = false;
 				selectedEnemy = 0;
-				selection = Selection::ATTACK;
+				//selection = Selection::ATTACK;
 			}
-			if (evnt.key.code == sf::Keyboard::Return && getEnemyCharacter(selectedEnemy)->checkIfAlive())
+			if (evnt.key.code == sf::Keyboard::Return /*&& getEnemyCharacter(selectedEnemy)->checkIfAlive()*/)
 			{
-				soundMenuSelect.play();
-
 				targetCharacter = getEnemyCharacter(selectedEnemy);
-				initCalculation();
+
+				if (selection == Selection::ATTACK && targetCharacter->checkIfAlive())
+				{
+					soundMenuSelect.play();
+
+					initCalculation();
+				}
+				if (selection == Selection::SPECIAL && targetCharacter->checkIfAlive())
+				{
+					soundMenuSelect.play();
+
+					activeCharacter->useSpecialMove(activeCharacter->specialMoves[selectedSpecial], targetCharacter);
+					activeCharacter->specialPoints -= activeCharacter->specialMoves[selectedSpecial].spCost;
+					initCalculation();
+					uninitCalculation();
+
+					std::cout << "Player target for a special selected" << std::endl;
+				}
+				if (selection == Selection::ITEM && targetCharacter->checkIfAlive())
+				{
+					soundMenuSelect.play();
+
+					std::cout << "Player target for an item selected" << std::endl;
+					activeCharacter->useItem(activeCharacter->items[selectedItem], targetCharacter);
+					activeCharacter->items[selectedItem].amount--;
+					initCalculation();
+					uninitCalculation();
+				}
 			}
 		}
 	}
@@ -1455,7 +1519,82 @@ void MainGameState::inputSelectEnemy()
 
 void MainGameState::inputSelectSpecial()
 {
+	//valintaa bugaa jotenkin ja v‰‰r‰n tekstin valittuna
+	sf::Event evnt;
 
+	while (this->game->window.pollEvent(evnt))
+	{
+		//closing the window
+		if (evnt.type == sf::Event::Closed)
+		{
+			game->window.close();
+		}
+
+		//keyboard
+		if (evnt.type == sf::Event::KeyPressed)
+		{
+			for (size_t i = 0; i < activeCharacter->specialMoves.size(); i++)
+			{
+				activeCharacter->specialMoves[i].isSelected = false;
+			}
+
+			if (evnt.key.code == sf::Keyboard::Down)
+			{
+				soundMenuMove.play();
+
+				selectedSpecial++;
+
+				if (selectedSpecial >= activeCharacter->specialMoves.size() - 1)
+					selectedSpecial = activeCharacter->specialMoves.size() - 1;
+			}
+			if (evnt.key.code == sf::Keyboard::Up)
+			{
+				soundMenuMove.play();
+
+				selectedSpecial--;
+
+				if (selectedSpecial <= 0)
+					selectedSpecial = 0;
+			}
+
+			activeCharacter->specialMoves[selectedSpecial].isSelected = true;
+
+			if (evnt.key.code == sf::Keyboard::Escape)
+			{
+				for (size_t i = 0; i < activeCharacter->specialMoves.size(); i++)
+				{
+					activeCharacter->specialMoves[i].isSelected = false;
+				}
+				selectSpecial = false;
+				selectedSpecial = 0;
+				selection = Selection::ATTACK;
+			}
+			if (evnt.key.code == sf::Keyboard::Return)
+			{
+				soundMenuSelect.play();
+
+				if (activeCharacter->specialPoints >= activeCharacter->specialMoves[selectedSpecial].spCost)
+				{
+					if (activeCharacter->specialMoves[selectedSpecial].targetSpecial == TargetSpecial::PLAYER)
+					{
+						if (getPlayerCharacter(0) != false)
+							getPlayerCharacter(0)->isSelected = true;
+
+						selectPlayer = true;
+					}
+					if (activeCharacter->specialMoves[selectedSpecial].targetSpecial == TargetSpecial::ENEMY)
+					{
+						if (getEnemyCharacter(0) != false)
+							getEnemyCharacter(0)->isSelected = true;
+
+						selectEnemy = true;
+					}
+				}
+				else
+					std::cout << "No SP left" << std::endl;
+			}
+		}
+	}
 }
 
 void MainGameState::inputSelectItem()
@@ -1639,11 +1778,14 @@ void MainGameState::uninitCalculation()
 	selection = Selection::ATTACK;
 	escapeCalculation = false;
 
+
 	//Set every character unselected
 	for (size_t i = 0; i < characters.size(); i++)
 	{
 		characters[i]->isSelected = false;
 	}
+
+
 
 	//Changes to characters after completing the turn
 	//Check which characters have completed turn
@@ -1661,11 +1803,13 @@ void MainGameState::uninitCalculation()
 		characters[i]->isActive = false;
 	}
 
+	//bugaa edelleen, hitain hahmo saattaa j‰‰d‰ joka vuoroksi aktiiviseksi
+	//viimeisten hahmojen vuorot saattavat skippaantua (yhden hahmon kuoltua?)
+	//vuoro vaikuttaa j‰‰v‰n viimeiselle hahmolle jos joku kuolee sen vuorolla.
 	//Update the count of dead characters
 	int count(0);
 	for (size_t i = 0; i < characters.size(); i++)
 	{
-		
 		if (characters[i]->checkIfAlive() == false)
 			count++;
 		deadCharacters = count;
@@ -1682,10 +1826,25 @@ void MainGameState::uninitCalculation()
 		{
 			characters[i]->turnCompleted = false;
 		}
+
+		//kuolleiden hahmojen p‰ivitys t‰ss‰ antaa viimeiselle hahmolle
+		//jonkun kuollessa uuden vuoron,
+		//mutta nyt viimeisen hahmon vuoro ei j‰‰ aktiiviseksi
+		//Update the count of dead characters
+		//int count(0);
+		//for (size_t i = 0; i < characters.size(); i++)
+		//{
+		//	if (characters[i]->checkIfAlive() == false)
+		//		count++;
+		//	deadCharacters = count;
+		//}
+		//count = 0;
+		//std::cout << "Dead characters: " << deadCharacters << std::endl;
 	}
 	
 
 
+	
 	//Sets the fastest character which have not made its turn active
 	for (size_t i = 0; i < characters.size(); i++)
 	{

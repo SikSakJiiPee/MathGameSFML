@@ -117,6 +117,8 @@ private:
 	sf::Text textInfoEnemy;
 	sf::Text textInfoEnemy2;
 	sf::Text textInfoEnemy3;
+	sf::Text textInfoSpecial;
+	sf::Text textInfoSpecial2;
 	sf::Text textInfoItem;
 	sf::Text textInfoItem2;
 	sf::Text textTime;
@@ -135,7 +137,8 @@ private:
 
 
 	//SpecialMoves
-
+	SpecialMove* specialSuperPunch;
+	SpecialMove* specialHyperPunch;
 
 	//Item
 	Item* item;
