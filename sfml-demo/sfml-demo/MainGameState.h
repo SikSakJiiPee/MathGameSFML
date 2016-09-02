@@ -24,8 +24,6 @@ enum class Turn { PLAYER, ENEMY };
 enum class Phase {MAIN, COMBAT, COMBATEND};
 
 //COMBATPHASE
-///An enum class for calculation types
-//enum class CalculationType { PLUS, MINUS, MULTIPLY, DIVIDE }; //Pitäisikö nimet olla Addition, Subtraction, Multiplication ja Division
 ///An enum class for number types
 enum class NumberType { BOTH, POSITIVE, NEGATIVE };
 
@@ -48,8 +46,6 @@ public:
 
 
 
-	//other stuff
-	//static const int calculationLevel = 1;
 	
 	//Character
 	std::vector<Character*> characters;
@@ -111,6 +107,7 @@ private:
 	sf::Text textGameItem;
 	sf::Text textGameEscape;
 	sf::Text textActiveCharacter;
+	sf::Text textGameDefend;
 	sf::Text textInfoPlayer;
 	sf::Text textInfoPlayer2;
 	sf::Text textInfoPlayer3;
@@ -154,7 +151,6 @@ private:
 
 	//Selection
 	Selection selection;
-	//SelectionCharacter selectionCharacter;
 	int selectedPlayer = 0;
 	int selectedEnemy = 0;
 	int selectedSpecial = 0;

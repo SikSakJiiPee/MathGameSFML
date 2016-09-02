@@ -16,8 +16,8 @@ MainGameState::MainGameState(Game* game)
 	characters.push_back(new Character(true, "Player1", "Texture/Sprite/player1.png", 1, 0, 100, 100, 10, 10, 5, 5, 7, sf::Vector2f((game->window.getSize().x / 8) * 3, (game->window.getSize().y / 3))));
 	characters.push_back(new Character(true, "Player2", "Texture/Sprite/player2.png", 1, 0, 100, 100, 10, 10, 7, 5, 3, sf::Vector2f((game->window.getSize().x / 8) * 2, ((game->window.getSize().y / 3) + (game->window.getSize().y / 9)))));
 	characters.push_back(new Character(true, "Player3", "Texture/Sprite/player3.png", 1, 0, 100, 100, 10, 10, 10, 5, 5, sf::Vector2f((game->window.getSize().x / 8) * 1, ((game->window.getSize().y / 3) + (game->window.getSize().y / 9) * 2))));
-	characters.push_back(new Character(false, "Enemy1", "Texture/Sprite/enemy1.png", 1, 0, 100, 100, 10, 10, 7, 5, 6, sf::Vector2f((game->window.getSize().x / 8) * 5, (game->window.getSize().y / 3))));
-	characters.push_back(new Character(false, "Enemy2", "Texture/Sprite/enemy2.png", 1, 0, 100, 100, 10, 10, 7, 15, 2, sf::Vector2f((game->window.getSize().x / 8) * 6, ((game->window.getSize().y / 3) + (game->window.getSize().y / 9)))));
+	characters.push_back(new Character(false, "Enemy1", "Texture/Sprite/enemy1.png", 1, 0, 100, 100, 10, 10, 7, 5, 2, sf::Vector2f((game->window.getSize().x / 8) * 5, (game->window.getSize().y / 3))));
+	characters.push_back(new Character(false, "Enemy2", "Texture/Sprite/enemy2.png", 1, 0, 100, 100, 10, 10, 7, 15, 6, sf::Vector2f((game->window.getSize().x / 8) * 6, ((game->window.getSize().y / 3) + (game->window.getSize().y / 9)))));
 	characters.push_back(new Character(false, "Enemy3", "Texture/Sprite/enemy3.png", 1, 0, 100, 100, 10, 10, 7, 30, 4, sf::Vector2f((game->window.getSize().x / 8) * 7, ((game->window.getSize().y / 3) + (game->window.getSize().y / 9) * 2))));
 	
 
@@ -154,6 +154,11 @@ MainGameState::MainGameState(Game* game)
 	textActiveCharacter.setFont(font);
 	textActiveCharacter.setCharacterSize(24);
 	textActiveCharacter.setColor(sf::Color::Black);
+
+	textGameDefend.setFont(font);
+	textGameDefend.setCharacterSize(24);
+	textGameDefend.setColor(sf::Color::White);
+	textGameDefend.setString("Defend");
 
 	//character
 	textInfoPlayer.setFont(font);
@@ -575,6 +580,8 @@ void MainGameState::handleInput()
 			{
 				if (evnt.key.code == sf::Keyboard::Return)
 				{
+					soundMenuSelect.play();
+					
 					enemyChoosesTarget();
 					initCalculation();
 				}
@@ -622,14 +629,19 @@ void MainGameState::update(const float dt)
 	{
 		//timer
 		timeElapsed = clock.getElapsedTime();
-		timeLeft = 15 - timeElapsed.asSeconds();
-		//std::cout << timeElapsed.asSeconds() << " " << timeLeft << std::endl;
+		if (activeCharacter->isPlayerCharacter)
+			timeLeft = activeCharacter->equipments[1].calculationTime - timeElapsed.asSeconds();
+		if (!activeCharacter->isPlayerCharacter)
+			timeLeft = targetCharacter->equipments[0].calculationTime - timeElapsed.asSeconds();
 		std::string strTimeLeft = convertToString(timeLeft);
 		textTimeLeft.setString("Time: " + strTimeLeft);
 		
+		//tee joku systeemi piippaus‰‰nelle ajan l‰hestyess‰ loppua
+		if (timeLeft == 5)
+			soundMenuSelect.play();
+
 		if (timeLeft <= 0)
 		{
-
 			if (targetCharacter != false || activeCharacter != false)
 			{
 				if (turn == Turn::PLAYER)
@@ -664,11 +676,15 @@ void MainGameState::update(const float dt)
 				
 			uninitCalculation();
 		}
+		//---
+
 			
-		//MUISTA ALUSTAA KAIKKI!
-		//korjaa calculationType menem‰‰n puolustaessa puolustajan mukaan, ei aktiivisen hahmon
-		//aseta calculationType puolustaessa armorin mukaan
-		CalculationType calculationType = activeCharacter->equipments[0].calculationType;
+		//--
+		if (activeCharacter->isPlayerCharacter)
+			calculationType = activeCharacter->equipments[1].calculationType;
+		else
+			calculationType = targetCharacter->equipments[0].calculationType;
+		
 		NumberType numberType = NumberType::POSITIVE;
 		int calculationLevel = 5;
 		
@@ -1035,6 +1051,7 @@ void MainGameState::draw(const float dt)
 
 		textActiveCharacter.setPosition(0, (game->window.getSize().y / 18) * 15);
 		textGameAttack.setPosition(0, (game->window.getSize().y / 18) * 16);
+		textGameDefend.setPosition(0, (game->window.getSize().y / 18) * 16);
 		textGameItem.setPosition(0, (game->window.getSize().y / 18) * 17);
 		textGameSpecial.setPosition(game->window.getSize().x / 4, (game->window.getSize().y / 18) * 16);
 		textGameEscape.setPosition(game->window.getSize().x / 4, (game->window.getSize().y / 18) * 17);
@@ -1086,10 +1103,18 @@ void MainGameState::draw(const float dt)
 		
 		//selection
 		game->window.draw(textActiveCharacter);
-		game->window.draw(textGameAttack);
-		game->window.draw(textGameItem);
-		game->window.draw(textGameSpecial);
-		game->window.draw(textGameEscape);
+		if (turn == Turn::PLAYER)
+		{
+			game->window.draw(textGameAttack);
+			game->window.draw(textGameItem);
+			game->window.draw(textGameSpecial);
+			game->window.draw(textGameEscape);
+		}
+		if (turn == Turn::ENEMY)
+		{
+			game->window.draw(textGameDefend);
+		}
+
 
 		//special
 		if (selectSpecial)
@@ -1777,6 +1802,13 @@ void MainGameState::uninitCalculation()
 	selectedItem = 0;
 	selection = Selection::ATTACK;
 	escapeCalculation = false;
+
+	//Prevent HP going to negative
+	for (size_t i = 0; i < characters.size(); i++)
+	{
+		if (characters[i]->healthPoints <= 0)
+			characters[i]->healthPoints = 0;
+	}
 
 
 	//Set every character unselected
