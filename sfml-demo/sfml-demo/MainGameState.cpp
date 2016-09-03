@@ -222,7 +222,11 @@ MainGameState::MainGameState(Game* game)
 
 	//Audio
 	//music
-	if (!bufferMusicBattle.loadFromFile("Audio/Music/matikkajytky.wav"))
+	//if (!bufferMusicBattle.loadFromFile("Audio/Music/matikkajytky.wav"))
+	//	std::cout << "Loading an audio failed!" << std::endl;
+	//soundMusicBattle.setBuffer(bufferMusicBattle);
+
+	if (!bufferMusicBattle.loadFromFile("Audio/Music/langer.wav"))
 		std::cout << "Loading an audio failed!" << std::endl;
 	soundMusicBattle.setBuffer(bufferMusicBattle);
 
@@ -600,12 +604,12 @@ void MainGameState::handleInput()
 //UPDATE
 void MainGameState::update(const float dt)
 {
-	//if (isMusicBattlePlaying == false)
-	//{
-	//	soundMusicBattle.play();
-	//	soundMusicBattle.setLoop(true);
-	//	isMusicBattlePlaying = true;
-	//}
+	if (isMusicBattlePlaying == false)
+	{
+		soundMusicBattle.play();
+		soundMusicBattle.setLoop(true);
+		isMusicBattlePlaying = true;
+	}
 
 	//if (turn == Turn::PLAYER)
 	//{

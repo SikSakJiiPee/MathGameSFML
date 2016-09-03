@@ -22,11 +22,17 @@ MenuState::MenuState(Game* game)
 	textMenuStart.setPosition(game->window.getSize().x / 2, game->window.getSize().y / 4);
 	textMenuStart.setString("Start");
 
-	textMenuOptions.setFont(font);
-	textMenuOptions.setCharacterSize(30);
-	textMenuOptions.setOrigin(textMenuOptions.getGlobalBounds().width / 2, textMenuOptions.getGlobalBounds().height);
-	textMenuOptions.setPosition(game->window.getSize().x / 2, (game->window.getSize().y / 4) * 2);
-	textMenuOptions.setString("Options");
+	//textMenuOptions.setFont(font);
+	//textMenuOptions.setCharacterSize(30);
+	//textMenuOptions.setOrigin(textMenuOptions.getGlobalBounds().width / 2, textMenuOptions.getGlobalBounds().height);
+	//textMenuOptions.setPosition(game->window.getSize().x / 2, (game->window.getSize().y / 4) * 2);
+	//textMenuOptions.setString("Options");
+
+	textMenuControls.setFont(font);
+	textMenuControls.setCharacterSize(30);
+	textMenuControls.setOrigin(textMenuOptions.getGlobalBounds().width / 2, textMenuOptions.getGlobalBounds().height);
+	textMenuControls.setPosition(game->window.getSize().x / 2, (game->window.getSize().y / 4) * 2);
+	textMenuControls.setString("Controls");
 
 	textMenuQuit.setFont(font);
 	textMenuQuit.setCharacterSize(30);
@@ -102,9 +108,13 @@ void MenuState::handleInput()
 				{
 					this->startGame();
 				}
-				if (menuSelection == MenuSelection::OPTIONS)
+				//if (menuSelection == MenuSelection::OPTIONS)
+				//{
+				//	std::cout << "Options selected" << std::endl;
+				//}
+				if (menuSelection == MenuSelection::CONTROLS)
 				{
-					std::cout << "Options selected" << std::endl;
+					std::cout << "Controls selected" << std::endl;
 				}
 				if (menuSelection == MenuSelection::QUIT)
 				{
@@ -115,19 +125,19 @@ void MenuState::handleInput()
 			case sf::Keyboard::Down:
 			{
 				soundMenuMove.play();
-				if (menuSelection == MenuSelection::OPTIONS)
+				if (menuSelection == MenuSelection::CONTROLS)
 					menuSelection = MenuSelection::QUIT;
 				if (menuSelection == MenuSelection::START)
-					menuSelection = MenuSelection::OPTIONS;
+					menuSelection = MenuSelection::CONTROLS;
 				break;
 			}
 			case sf::Keyboard::Up:
 			{
 				soundMenuMove.play();
-				if (menuSelection == MenuSelection::OPTIONS)
+				if (menuSelection == MenuSelection::CONTROLS)
 					menuSelection = MenuSelection::START;
 				if (menuSelection == MenuSelection::QUIT)
-					menuSelection = MenuSelection::OPTIONS;
+					menuSelection = MenuSelection::CONTROLS;
 				break;
 			}
 			default:
@@ -158,10 +168,15 @@ void MenuState::draw(const float dt)
 	else
 		textMenuStart.setColor(sf::Color::White);
 
-	if (menuSelection == MenuSelection::OPTIONS)
-		textMenuOptions.setColor(sf::Color::Red);
+	//if (menuSelection == MenuSelection::OPTIONS)
+	//	textMenuOptions.setColor(sf::Color::Red);
+	//else
+	//	textMenuOptions.setColor(sf::Color::White);
+
+	if (menuSelection == MenuSelection::CONTROLS)
+		textMenuControls.setColor(sf::Color::Red);
 	else
-		textMenuOptions.setColor(sf::Color::White);
+		textMenuControls.setColor(sf::Color::White);
 
 	if (menuSelection == MenuSelection::QUIT)
 		textMenuQuit.setColor(sf::Color::Red);
@@ -169,7 +184,8 @@ void MenuState::draw(const float dt)
 		textMenuQuit.setColor(sf::Color::White);
 
 	game->window.draw(textMenuStart);
-	game->window.draw(textMenuOptions);
+	//game->window.draw(textMenuOptions);
+	game->window.draw(textMenuControls);
 	game->window.draw(textMenuQuit);
 }
 

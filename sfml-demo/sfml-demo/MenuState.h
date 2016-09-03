@@ -6,7 +6,7 @@
 #include "GameState.h"
 
 
-enum class MenuSelection {START, OPTIONS, QUIT};
+enum class MenuSelection {START, OPTIONS, CONTROLS, QUIT};
 
 
 class MenuState : public GameState
@@ -36,6 +36,7 @@ private:
 	sf::Font font;
 	sf::Text textMenuStart;
 	sf::Text textMenuOptions;
+	sf::Text textMenuControls;
 	sf::Text textMenuQuit;
 
 	//Audio
