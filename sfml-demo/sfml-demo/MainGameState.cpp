@@ -14,11 +14,11 @@ MainGameState::MainGameState(Game* game)
 
 	//Character
 	characters.push_back(new Character(true, "Player1", "Texture/Sprite/player1.png", 1, 0, 100, 100, 10, 10, 5, 5, 7, sf::Vector2f((game->window.getSize().x / 8) * 3, (game->window.getSize().y / 3))));
-	characters.push_back(new Character(true, "Player2", "Texture/Sprite/player2.png", 1, 0, 100, 100, 10, 10, 7, 5, 3, sf::Vector2f((game->window.getSize().x / 8) * 2, ((game->window.getSize().y / 3) + (game->window.getSize().y / 9)))));
-	characters.push_back(new Character(true, "Player3", "Texture/Sprite/player3.png", 1, 0, 100, 100, 10, 10, 10, 5, 5, sf::Vector2f((game->window.getSize().x / 8) * 1, ((game->window.getSize().y / 3) + (game->window.getSize().y / 9) * 2))));
-	characters.push_back(new Character(false, "Enemy1", "Texture/Sprite/enemy1.png", 1, 0, 100, 100, 10, 10, 7, 5, 2, sf::Vector2f((game->window.getSize().x / 8) * 5, (game->window.getSize().y / 3))));
-	characters.push_back(new Character(false, "Enemy2", "Texture/Sprite/enemy2.png", 1, 0, 100, 100, 10, 10, 7, 15, 6, sf::Vector2f((game->window.getSize().x / 8) * 6, ((game->window.getSize().y / 3) + (game->window.getSize().y / 9)))));
-	characters.push_back(new Character(false, "Enemy3", "Texture/Sprite/enemy3.png", 1, 0, 100, 100, 10, 10, 7, 30, 4, sf::Vector2f((game->window.getSize().x / 8) * 7, ((game->window.getSize().y / 3) + (game->window.getSize().y / 9) * 2))));
+	characters.push_back(new Character(true, "Player2", "Texture/Sprite/player2.png", 1, 0, 100, 100, 10, 10, 5, 5, 3, sf::Vector2f((game->window.getSize().x / 8) * 2, ((game->window.getSize().y / 3) + (game->window.getSize().y / 9)))));
+	characters.push_back(new Character(true, "Player3", "Texture/Sprite/player3.png", 1, 0, 100, 100, 10, 10, 5, 5, 5, sf::Vector2f((game->window.getSize().x / 8) * 1, ((game->window.getSize().y / 3) + (game->window.getSize().y / 9) * 2))));
+	characters.push_back(new Character(false, "Enemy1", "Texture/Sprite/enemy1.png", 1, 0, 100, 100, 10, 10, 5, 10, 2, sf::Vector2f((game->window.getSize().x / 8) * 5, (game->window.getSize().y / 3))));
+	characters.push_back(new Character(false, "Enemy2", "Texture/Sprite/enemy2.png", 1, 0, 100, 100, 10, 10, 5, 10, 6, sf::Vector2f((game->window.getSize().x / 8) * 6, ((game->window.getSize().y / 3) + (game->window.getSize().y / 9)))));
+	characters.push_back(new Character(false, "Enemy3", "Texture/Sprite/enemy3.png", 1, 0, 100, 100, 10, 10, 5, 10, 4, sf::Vector2f((game->window.getSize().x / 8) * 7, ((game->window.getSize().y / 3) + (game->window.getSize().y / 9) * 2))));
 	
 
 	//
@@ -162,21 +162,28 @@ MainGameState::MainGameState(Game* game)
 
 	//character
 	textInfoPlayer.setFont(font);
+	textInfoPlayer.setCharacterSize(20);
 	textInfoPlayer.setColor(sf::Color::Black);
 	
 	textInfoPlayer2.setFont(font);
+	textInfoPlayer2.setCharacterSize(20);
 	textInfoPlayer2.setColor(sf::Color::Black);
 
 	textInfoPlayer3.setFont(font);
+	textInfoPlayer3.setCharacterSize(20);
 	textInfoPlayer3.setColor(sf::Color::Black);
 
+
 	textInfoEnemy.setFont(font);
+	textInfoEnemy.setCharacterSize(20);
 	textInfoEnemy.setColor(sf::Color::Black);
 
 	textInfoEnemy2.setFont(font);
+	textInfoEnemy2.setCharacterSize(20);
 	textInfoEnemy2.setColor(sf::Color::Black);
 
 	textInfoEnemy3.setFont(font);
+	textInfoEnemy3.setCharacterSize(20);
 	textInfoEnemy3.setColor(sf::Color::Black);
 
 	//special
@@ -222,13 +229,13 @@ MainGameState::MainGameState(Game* game)
 
 	//Audio
 	//music
-	//if (!bufferMusicBattle.loadFromFile("Audio/Music/matikkajytky.wav"))
-	//	std::cout << "Loading an audio failed!" << std::endl;
-	//soundMusicBattle.setBuffer(bufferMusicBattle);
-
-	if (!bufferMusicBattle.loadFromFile("Audio/Music/langer.wav"))
+	if (!bufferMusicBattle.loadFromFile("Audio/Music/matikkajytky.wav"))
 		std::cout << "Loading an audio failed!" << std::endl;
 	soundMusicBattle.setBuffer(bufferMusicBattle);
+
+	//if (!bufferMusicBattle.loadFromFile("Audio/Music/langer.wav"))
+	//	std::cout << "Loading an audio failed!" << std::endl;
+	//soundMusicBattle.setBuffer(bufferMusicBattle);
 
 	//sfx
 	if (!bufferMenuMove.loadFromFile("Audio/SFX/menu_move.wav"))
@@ -312,11 +319,16 @@ MainGameState::MainGameState(Game* game)
 
 
 	//WIN BATTLE
+	//Text
 	textBattleWin.setFont(font);
 	textBattleWin.setCharacterSize(30);
 	textBattleWin.setColor(sf::Color::White);
 	textBattleWin.setString("YOU WON");
 
+	//Audio
+	if (!bufferMusicWin.loadFromFile("Audio/SFX/calculation_correct.wav"))
+		std::cout << "Loading an audio failed!" << std::endl;
+	soundMusicWin.setBuffer(bufferMusicWin);
 
 	//-------------
 
@@ -329,8 +341,10 @@ MainGameState::MainGameState(Game* game)
 	textBattleLose.setColor(sf::Color::White);
 	textBattleLose.setString("GAME OVER");
 
-
-
+	//Audio
+	if (!bufferMusicBattleLose.loadFromFile("Audio/Music/gameover_intro.wav"))
+		std::cout << "Loading an audio failed!" << std::endl;
+	soundMusicBattleLose.setBuffer(bufferMusicBattleLose);
 
 	//-------------
 
@@ -604,6 +618,7 @@ void MainGameState::handleInput()
 //UPDATE
 void MainGameState::update(const float dt)
 {
+	//Music
 	if (isMusicBattlePlaying == false)
 	{
 		soundMusicBattle.play();
@@ -611,10 +626,7 @@ void MainGameState::update(const float dt)
 		isMusicBattlePlaying = true;
 	}
 
-	//if (turn == Turn::PLAYER)
-	//{
-	//
-	//}
+
 
 
 	//during main phase
@@ -800,17 +812,12 @@ void MainGameState::update(const float dt)
 			{
 				soundCalculationCorrect.play();
 
-				std::cout << "Oikea vastaus 1 on: " << correctAnswer << "	oikein!" << std::endl;
+				std::cout << "Correct answer is: " << correctAnswer << "	Correct!" << std::endl;
 				points++;
 				currentCombo++;
 				if (bestCombo < currentCombo)
 					bestCombo = currentCombo;
 				
-				if (points == 5 || points == 10 || points == 15 || points == 20 || points == 25)
-				{
-					calculationLevel++;
-					std::cout << "taso nousi" << std::endl;
-				}
 				//playerAnswer = -255;
 				isCalculationVisible = false;
 			}
@@ -818,12 +825,12 @@ void MainGameState::update(const float dt)
 			{
 				soundCalculationWrong.play();
 
-				std::cout << "Oikea vastaus 1 on: " << correctAnswer << "	kurahti..." << std::endl;
+				std::cout << "Correct answer is: " << correctAnswer << "	Miss..." << std::endl;
 				mistakes++;
 				currentCombo = 0;
 			}
 		
-			std::cout << "Pisteet: " << points << ". Virheet: " << mistakes << "." << std::endl;
+			std::cout << "Points: " << points << ". Misses: " << mistakes << "." << std::endl;
 		
 			//estä moneen laskuun vastaaminen kerralla
 			//esim. siirtämällä seuraavaa linea iffeihin
@@ -885,13 +892,6 @@ void MainGameState::update(const float dt)
 
 
 
-	//during battle lose
-	if (noPlayerAlive())
-	{
-		//std::cout << "Game Over!" << std::endl;
-	}
-	//--------------
-
 
 
 	//during battle win
@@ -901,6 +901,21 @@ void MainGameState::update(const float dt)
 	}
 	//--------------
 
+
+
+
+
+	//during battle lose
+	if (noPlayerAlive())
+	{
+		if (isMusicBattleLosePlaying == false)
+		{
+			soundMusicBattleLose.play();
+			//soundMusicBattleLose.setLoop(true);
+			isMusicBattleLosePlaying = true;
+		}
+	}
+	//--------------
 }
 //-----
 
@@ -946,60 +961,36 @@ void MainGameState::draw(const float dt)
 	
 
 		if (getPlayerCharacter(0) != false)
-			if (getPlayerCharacter(0)->isActive == true)
-				textInfoPlayer.setCharacterSize(21);
-			else
-				textInfoPlayer.setCharacterSize(20);
 			if (getPlayerCharacter(0)->isSelected == true)
 				textInfoPlayer.setColor(sf::Color::Blue);
 			else
 				textInfoPlayer.setColor(sf::Color::Black);
 		//
 		if (getPlayerCharacter(1) != false)
-			if (getPlayerCharacter(1)->isActive == true)
-				textInfoPlayer2.setCharacterSize(21);
-			else
-				textInfoPlayer2.setCharacterSize(20);
 			if (getPlayerCharacter(1)->isSelected == true)
 				textInfoPlayer2.setColor(sf::Color::Blue);
 			else
 				textInfoPlayer2.setColor(sf::Color::Black);
 		//
 		if (getPlayerCharacter(2) != false)
-			if (getPlayerCharacter(2)->isActive == true)
-				textInfoPlayer3.setCharacterSize(21);
-			else
-				textInfoPlayer3.setCharacterSize(20);
 			if (getPlayerCharacter(2)->isSelected == true)
 				textInfoPlayer3.setColor(sf::Color::Blue);
 			else
 				textInfoPlayer3.setColor(sf::Color::Black);
 		//
 		if (getEnemyCharacter(0) != false)
-			if (getEnemyCharacter(0)->isActive == true)
-				textInfoEnemy.setCharacterSize(21);
-			else
-				textInfoEnemy.setCharacterSize(20);
 			if (getEnemyCharacter(0)->isSelected == true)
 				textInfoEnemy.setColor(sf::Color::Red);
 			else
 				textInfoEnemy.setColor(sf::Color::Black);
 		//
 		if (getEnemyCharacter(1) != false)
-			if (getEnemyCharacter(1)->isActive == true)
-				textInfoEnemy2.setCharacterSize(21);
-			else
-				textInfoEnemy2.setCharacterSize(20);
 			if (getEnemyCharacter(1)->isSelected == true)
 				textInfoEnemy2.setColor(sf::Color::Red);
 			else
 				textInfoEnemy2.setColor(sf::Color::Black);
 		//
 		if (getEnemyCharacter(2) != false)
-			if (getEnemyCharacter(2)->isActive == true)
-				textInfoEnemy3.setCharacterSize(21);
-			else
-				textInfoEnemy3.setCharacterSize(20);
 			if (getEnemyCharacter(2)->isSelected == true)
 				textInfoEnemy3.setColor(sf::Color::Red);
 			else
@@ -1031,7 +1022,7 @@ void MainGameState::draw(const float dt)
 		
 
 		//selection
-		textActiveCharacter.setString(activeCharacter->characterName);
+		textActiveCharacter.setString("Active: " + activeCharacter->characterName);
 
 		if (selection == Selection::ATTACK)
 			textGameAttack.setColor(sf::Color::White);
@@ -1248,6 +1239,7 @@ void MainGameState::draw(const float dt)
 void MainGameState::backToMenu()
 {
 	soundMusicBattle.stop();
+	soundMusicBattleLose.stop();
 
 	this->game->popState();
 
@@ -1994,6 +1986,12 @@ void MainGameState::inputCalculation()
 				//	answerIsCorrect3 = false;
 				//	//playerAnswer = -255;
 				//}
+				playerAnswer = -255;
+				playerAnswerNegative = false;
+			}
+			//Reset the answer
+			if (evnt.key.code == sf::Keyboard::BackSpace)
+			{
 				playerAnswer = -255;
 				playerAnswerNegative = false;
 			}

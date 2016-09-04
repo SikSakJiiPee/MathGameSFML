@@ -27,8 +27,8 @@ public:
 private:
 	///Starting the game by pushing the MainGameState to the stack.
 	void startGame();
-	//ei tarvita en‰‰?
-	void backToIntro();
+	///Go to Controls by the ControlsState to the stack.
+	void goToControls();
 
 	MenuSelection menuSelection;
 

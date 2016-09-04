@@ -1,8 +1,8 @@
 #include "MenuState.h"
+#include "ControlsState.h"
 #include "MainGameState.h"
 
 #include "Game.h"
-#include "GameState.h"
 
 
 MenuState::MenuState(Game* game)
@@ -114,7 +114,7 @@ void MenuState::handleInput()
 				//}
 				if (menuSelection == MenuSelection::CONTROLS)
 				{
-					std::cout << "Controls selected" << std::endl;
+					this->goToControls();
 				}
 				if (menuSelection == MenuSelection::QUIT)
 				{
@@ -199,9 +199,11 @@ void MenuState::startGame()
 	return;
 }
 
-void MenuState::backToIntro()
+void MenuState::goToControls()
 {
-	this->game->popState();
+	musicIsPlaying = false;
+	soundMusicMenu.stop();
+	this->game->pushState(new ControlsState(this->game));
 
 	return;
 }

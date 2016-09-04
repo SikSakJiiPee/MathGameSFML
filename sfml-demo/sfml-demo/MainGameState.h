@@ -6,11 +6,8 @@
 #include "GameState.h"
 
 #include "Character.h"
-#include "Calculation.h"
-#include "CalculationState.h"
 
-#include <cstdio> //ei v‰ltt‰m‰tt‰ tarvita en‰‰ (rand)
-#include <cstdlib> //ei v‰ltt‰m‰tt‰ tarvita en‰‰ (srand)
+
 #include <time.h>
 #include <random>
 
@@ -265,6 +262,8 @@ private:
 	//WIN BATTLE
 	sf::Text textBattleWin;
 
+	sf::SoundBuffer bufferMusicWin;
+	sf::Sound soundMusicWin;
 
 
 	//-------------
@@ -275,6 +274,9 @@ private:
 	//LOSE BATTLE
 	sf::Text textBattleLose;
 	
+	sf::SoundBuffer bufferMusicBattleLose;
+	sf::Sound soundMusicBattleLose;
+	bool isMusicBattleLosePlaying = false;
 
 };
 
