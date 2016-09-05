@@ -259,12 +259,23 @@ private:
 
 
 
+
+	//COMBAT END
+	sf::Text textEndDamagePlayer;
+	sf::Text textEndDamageEnemy;
+
+
+	//-------------
+
+
+
+
 	//WIN BATTLE
 	sf::Text textBattleWin;
 
-	sf::SoundBuffer bufferMusicWin;
-	sf::Sound soundMusicWin;
-
+	sf::SoundBuffer bufferMusicBattleWin;
+	sf::Sound soundMusicBattleWin;
+	bool isMusicBattleWinPlaying = false;
 
 	//-------------
 

@@ -326,9 +326,9 @@ MainGameState::MainGameState(Game* game)
 	textBattleWin.setString("YOU WON");
 
 	//Audio
-	if (!bufferMusicWin.loadFromFile("Audio/SFX/calculation_correct.wav"))
+	if (!bufferMusicBattleWin.loadFromFile("Audio/Music/victory_screen.wav"))
 		std::cout << "Loading an audio failed!" << std::endl;
-	soundMusicWin.setBuffer(bufferMusicWin);
+	soundMusicBattleWin.setBuffer(bufferMusicBattleWin);
 
 	//-------------
 
@@ -618,7 +618,7 @@ void MainGameState::handleInput()
 //UPDATE
 void MainGameState::update(const float dt)
 {
-	//Music
+	////Music
 	if (isMusicBattlePlaying == false)
 	{
 		soundMusicBattle.play();
@@ -894,10 +894,27 @@ void MainGameState::update(const float dt)
 
 
 
+	//COMBAT END
+
+
+
+
+
+
+	//-------------
+
+
+
+
 	//during battle win
 	if (noEnemyAlive())
 	{
-		//std::cout << "You Won!" << std::endl;
+		if (isMusicBattleWinPlaying == false)
+		{
+			soundMusicBattleWin.play();
+			soundMusicBattleWin.setLoop(true);
+			isMusicBattleWinPlaying = true;
+		}
 	}
 	//--------------
 
@@ -1052,7 +1069,7 @@ void MainGameState::draw(const float dt)
 		textGameEscape.setPosition(game->window.getSize().x / 4, (game->window.getSize().y / 18) * 17);
 
 
-		//special
+		//special 
 		textInfoSpecial.setString(activeCharacter->specialMoves[0].getStringSpecialMoveInfo(activeCharacter->specialMoves[0]));
 		textInfoSpecial.setPosition((game->window.getSize().x / 4) * 2, (game->window.getSize().y / 18) * 16);
 		textInfoSpecial2.setString(activeCharacter->specialMoves[1].getStringSpecialMoveInfo(activeCharacter->specialMoves[1]));
@@ -1063,9 +1080,9 @@ void MainGameState::draw(const float dt)
 		else
 			textInfoSpecial.setColor(sf::Color::Black);
 		if (activeCharacter->specialMoves[1].isSelected == true)
-			textInfoSpecial.setColor(sf::Color::Blue);
+			textInfoSpecial2.setColor(sf::Color::Blue);
 		else
-			textInfoSpecial.setColor(sf::Color::Black);
+			textInfoSpecial2.setColor(sf::Color::Black);
 
 		//item
 		textInfoItem.setString(activeCharacter->items[0].getStringItemInfo(activeCharacter->items[0]));
@@ -1239,6 +1256,7 @@ void MainGameState::draw(const float dt)
 void MainGameState::backToMenu()
 {
 	soundMusicBattle.stop();
+	soundMusicBattleWin.stop();
 	soundMusicBattleLose.stop();
 
 	this->game->popState();
@@ -1540,7 +1558,7 @@ void MainGameState::inputSelectEnemy()
 
 void MainGameState::inputSelectSpecial()
 {
-	//valintaa bugaa jotenkin ja v‰‰r‰n tekstin valittuna
+	//valintaa bugaa jotenkin ja v‰‰r‰n tekstin valittuna 
 	sf::Event evnt;
 
 	while (this->game->window.pollEvent(evnt))
@@ -1825,29 +1843,39 @@ void MainGameState::uninitCalculation()
 			std::cout << characters[i]->characterName << std::endl;
 	}
 	
+	//hankkiudu eroon isActive boolista
 	//Make every character inactive
 	for (size_t i = 0; i < characters.size(); i++)
 	{
 		characters[i]->isActive = false;
 	}
+	//activeCharacter = 0;
 
 	//bugaa edelleen, hitain hahmo saattaa j‰‰d‰ joka vuoroksi aktiiviseksi
 	//viimeisten hahmojen vuorot saattavat skippaantua (yhden hahmon kuoltua?)
 	//vuoro vaikuttaa j‰‰v‰n viimeiselle hahmolle jos joku kuolee sen vuorolla.
 	//Update the count of dead characters
-	int count(0);
+	//int count(0);
+	//for (size_t i = 0; i < characters.size(); i++)
+	//{
+	//	if (characters[i]->checkIfAlive() == false)
+	//		count++;
+	//	deadCharacters = count;
+	//}
+	//count = 0;
+	//std::cout << "Dead characters: " << deadCharacters << std::endl;
+
+	deadCharacters = 0;
 	for (size_t i = 0; i < characters.size(); i++)
 	{
 		if (characters[i]->checkIfAlive() == false)
-			count++;
-		deadCharacters = count;
+			deadCharacters++;
 	}
-	count = 0;
 	std::cout << "Dead characters: " << deadCharacters << std::endl;
 
 	//Update number of passed turns of this round
 	turnsPassed++;
-	if (turnsPassed == getPlayerCharacterCount() + getEnemyCharacterCount() - deadCharacters)
+	if (turnsPassed == characters.size() - deadCharacters)
 	{
 		turnsPassed = 0;
 		for (size_t i = 0; i < characters.size(); i++)
