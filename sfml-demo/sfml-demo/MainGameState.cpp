@@ -204,11 +204,6 @@ MainGameState::MainGameState(Game* game)
 	textInfoItem2.setCharacterSize(24);
 	textInfoItem2.setColor(sf::Color::Black);
 
-	//tarvitaanko enää?
-	textTime.setFont(font);
-	textTime.setCharacterSize(30);
-	textTime.setColor(sf::Color::Black);
-
 	text.setFont(font);
 	text.setCharacterSize(30);
 	text.setColor(sf::Color::White);
@@ -284,10 +279,6 @@ MainGameState::MainGameState(Game* game)
 	textPlayerAnswer.setCharacterSize(24);
 	textPlayerAnswer.setColor(sf::Color::Black);
 	
-	textCorrectAnswer.setFont(font); //tarvitseeko?
-	textCorrectAnswer.setCharacterSize(24);
-	textCorrectAnswer.setColor(sf::Color::Black);
-	
 	textPoints.setFont(font);
 	textPoints.setCharacterSize(24);
 	textPoints.setColor(sf::Color::Black);
@@ -315,6 +306,26 @@ MainGameState::MainGameState(Game* game)
 	soundCalculationWrong.setBuffer(bufferCalculationWrong);
 
 	//-------------
+
+
+
+
+	//COMBAT END PHASE
+	textEndDamageDealt.setFont(font);
+	textEndDamageDealt.setCharacterSize(24);
+	textEndDamageDealt.setColor(sf::Color::Black);
+
+	textEndDamageReflected.setFont(font);
+	textEndDamageReflected.setCharacterSize(24);
+	textEndDamageReflected.setColor(sf::Color::Black);
+
+	textEndDamageTotal.setFont(font);
+	textEndDamageTotal.setCharacterSize(24);
+	textEndDamageTotal.setColor(sf::Color::Black);
+
+	//------------
+
+
 
 
 
@@ -408,10 +419,16 @@ void MainGameState::handleInput()
 
 
 		//during calculation
-		if (calculationGameIsOn)
+		if (phase == Phase::COMBAT)
 		{
 			inputCalculation();
 		}
+		//--------------
+
+
+
+
+
 		//--------------
 
 
@@ -435,7 +452,7 @@ void MainGameState::handleInput()
 
 		while (this->game->window.pollEvent(evnt))
 		{
-			if (!calculationGameIsOn)
+			if (phase == Phase::MAIN)
 			{
 				//closing the window
 				if (evnt.type == sf::Event::Closed)
@@ -560,6 +577,13 @@ void MainGameState::handleInput()
 					}
 				}
 			}
+			//during combat end
+			if (phase == Phase::COMBATEND)
+			{
+				if (evnt.key.code == sf::Keyboard::Return)
+					uninitCalculation();
+			}
+
 		}
 	}
 	//-----
@@ -568,7 +592,7 @@ void MainGameState::handleInput()
 	if (turn == Turn::ENEMY)
 	{
 		//during calculation
-		if (calculationGameIsOn)
+		if (phase == Phase::COMBAT)
 		{
 			inputCalculation();
 		}
@@ -619,18 +643,18 @@ void MainGameState::handleInput()
 void MainGameState::update(const float dt)
 {
 	////Music
-	if (isMusicBattlePlaying == false)
-	{
-		soundMusicBattle.play();
-		soundMusicBattle.setLoop(true);
-		isMusicBattlePlaying = true;
-	}
+	//if (isMusicBattlePlaying == false)
+	//{
+	//	soundMusicBattle.play();
+	//	soundMusicBattle.setLoop(true);
+	//	isMusicBattlePlaying = true;
+	//}
 
 
 
 
 	//during main phase
-	if (!calculationGameIsOn)
+	if (phase == Phase::MAIN)
 	{
 	
 
@@ -641,7 +665,7 @@ void MainGameState::update(const float dt)
 
 
 	//during calculation
-	if (calculationGameIsOn)
+	if (phase == Phase::COMBAT)
 	{
 		//timer
 		timeElapsed = clock.getElapsedTime();
@@ -653,52 +677,24 @@ void MainGameState::update(const float dt)
 		textTimeLeft.setString("Time: " + strTimeLeft);
 		
 		//tee joku systeemi piippausäänelle ajan lähestyessä loppua
-		if (timeLeft == 5)
-			soundMenuSelect.play();
+		//if (timeLeft <= 5)
+		//	alarmPlayTime = true;
 
-		if (timeLeft <= 0)
-		{
-			if (targetCharacter != false || activeCharacter != false)
-			{
-				if (turn == Turn::PLAYER)
-					damageDealt = (points * activeCharacter->attack);
-				if (turn == Turn::ENEMY)
-					damageDealt = ((randomNumber(NumberType::POSITIVE, 10)) * activeCharacter->attack);
-				
-				if (turn == Turn::PLAYER)
-				{
-					damageReflected = (((randomNumber(NumberType::POSITIVE, 10)) * targetCharacter->defence) / 2);
-				}
-				if (turn == Turn::ENEMY)
-				{
-					damageReflected = ((points * targetCharacter->defence) / 2);
-				}
+		//if (alarmPlayTime)
+		//{
+		//	soundMusicBattleWin.play();
+		//	soundMenuSelect.setLoop(true);
+		//}
 
-				damageTotal = damageDealt - damageReflected;
-				if (damageDealt < damageReflected)
-					damageTotal = 0;
 
-				std::cout << targetCharacter->defence << std::endl;
-				std::cout << "damageDealt: " << damageDealt << "  damageReflected: " << damageReflected << std::endl;
-				std::cout << "damageTotal: " << damageTotal << std::endl;
-
-				targetCharacter->healthPoints -= damageTotal;
-
-				if (targetCharacter->healthPoints > targetCharacter->maxHp)
-					targetCharacter->healthPoints = targetCharacter->maxHp;
-				if (targetCharacter->healthPoints < 0)
-					targetCharacter->healthPoints = 0;
-			}
-				
-			uninitCalculation();
-		}
 		//---
 
 			
-		//--
-		if (activeCharacter->isPlayerCharacter)
+		//---
+		//set calculation stuff
+		if (turn == Turn::PLAYER)
 			calculationType = activeCharacter->equipments[1].calculationType;
-		else
+		else if (turn == Turn::ENEMY)
 			calculationType = targetCharacter->equipments[0].calculationType;
 		
 		NumberType numberType = NumberType::POSITIVE;
@@ -887,6 +883,46 @@ void MainGameState::update(const float dt)
 		//	answerIsChecked3 = false;
 		//}
 			
+
+		//end of calculation
+		if (timeLeft <= 0)
+		{
+			if (targetCharacter != false || activeCharacter != false)
+			{
+				if (turn == Turn::PLAYER)
+					damageDealt = (points * activeCharacter->attack);
+				if (turn == Turn::ENEMY)
+					damageDealt = ((randomNumber(NumberType::POSITIVE, 10)) * activeCharacter->attack);
+
+				if (turn == Turn::PLAYER)
+				{
+					damageReflected = (((randomNumber(NumberType::POSITIVE, 10)) * targetCharacter->defence) / 2);
+				}
+				if (turn == Turn::ENEMY)
+				{
+					damageReflected = ((points * targetCharacter->defence) / 2);
+				}
+
+				damageTotal = damageDealt - damageReflected;
+				if (damageDealt < damageReflected)
+					damageTotal = 0;
+
+				std::cout << targetCharacter->defence << std::endl;
+				std::cout << "damageDealt: " << damageDealt << "  damageReflected: " << damageReflected << std::endl;
+				std::cout << "damageTotal: " << damageTotal << std::endl;
+
+				targetCharacter->healthPoints -= damageTotal;
+
+				if (targetCharacter->healthPoints > targetCharacter->maxHp)
+					targetCharacter->healthPoints = targetCharacter->maxHp;
+				if (targetCharacter->healthPoints < 0)
+					targetCharacter->healthPoints = 0;
+			}
+
+			phase = Phase::COMBATEND;
+			//uninitCalculation();
+		}
+
 	}
 	//--------------
 
@@ -895,7 +931,10 @@ void MainGameState::update(const float dt)
 
 
 	//COMBAT END
+	if (phase == Phase::COMBATEND)
+	{
 
+	}
 
 
 
@@ -959,7 +998,7 @@ void MainGameState::draw(const float dt)
 	
 
 	//during main phase
-	if (!calculationGameIsOn)
+	if (phase == Phase::MAIN)
 	{
 		////UPDATE
 		//Text
@@ -1103,7 +1142,6 @@ void MainGameState::draw(const float dt)
 		////DRAW
 		//Text
 		//game->window.draw(textTitleMainGame);
-		//game->window.draw(textTime);
 
 		//info
 		game->window.draw(textInfoPlayer);
@@ -1147,7 +1185,7 @@ void MainGameState::draw(const float dt)
 
 
 	//during calculation
-	if (calculationGameIsOn)
+	if (phase == Phase::COMBAT)
 	{
 		if (turn == Turn::PLAYER)
 			textTitleCalc.setString("Attack");
@@ -1208,19 +1246,51 @@ void MainGameState::draw(const float dt)
 
 		//DRAW
 		game->window.draw(textTitleCalc);
+		game->window.draw(textTimeLeft);
+		game->window.draw(textAttacker);
+		game->window.draw(textDefender);
+
 		game->window.draw(textCalculation);
 		//game->window.draw(textCalculation2);
 		//game->window.draw(textCalculation3);
 		game->window.draw(textPlayerAnswer);
-		game->window.draw(textAttacker);
-		game->window.draw(textDefender);
+
 		game->window.draw(textPoints);
 		game->window.draw(textMistakes);
 		game->window.draw(textCurrentCombo);
 		game->window.draw(textBestCombo);
 		
-		game->window.draw(textTimeLeft);
+		
 	}
+	//------------------
+
+
+
+	//during combat end
+	if (phase == Phase::COMBATEND)
+	{
+		//UPDATE
+		textTimeLeft.setString("Combat End");
+		textTimeLeft.setColor(sf::Color::Black);
+
+		textEndDamageDealt.setString("Damage dealt: " + convertToString(damageDealt));
+		textEndDamageReflected.setString("Damage reflected: " + convertToString(damageReflected));
+		textEndDamageTotal.setString("Damage total: " + convertToString(damageTotal));
+		textEndDamageDealt.setPosition(0, (game->window.getSize().y / 18) * 15);
+		textEndDamageReflected.setPosition(0, (game->window.getSize().y / 18) * 16);
+		textEndDamageTotal.setPosition(0, (game->window.getSize().y / 18) * 17);
+
+		//DRAW
+		game->window.draw(textTitleCalc);
+		game->window.draw(textTimeLeft);
+		game->window.draw(textAttacker);
+		game->window.draw(textDefender);
+
+		game->window.draw(textEndDamageDealt);
+		game->window.draw(textEndDamageReflected);
+		game->window.draw(textEndDamageTotal);
+	}
+
 	//------------------
 
 
@@ -1361,26 +1431,6 @@ bool MainGameState::noEnemyAlive()
 
 	return false;
 }
-
-
-////ei ajatus kulje enää, jatka myöhemmin
-void MainGameState::getFirstAliveCharacter()
-{
-	size_t count(0);
-	
-	for (size_t i = 0; i < characters.size(); i++)
-	{
-		if (characters[i]->checkIfAlive())
-		{
-			activeCharacter = characters[count];
-			return;
-		}
-
-
-		count++;
-	}
-	return;
-}
 //-----
 
 
@@ -1520,7 +1570,7 @@ void MainGameState::inputSelectEnemy()
 				selectedEnemy = 0;
 				//selection = Selection::ATTACK;
 			}
-			if (evnt.key.code == sf::Keyboard::Return /*&& getEnemyCharacter(selectedEnemy)->checkIfAlive()*/)
+			if (evnt.key.code == sf::Keyboard::Return)
 			{
 				targetCharacter = getEnemyCharacter(selectedEnemy);
 
@@ -1558,7 +1608,6 @@ void MainGameState::inputSelectEnemy()
 
 void MainGameState::inputSelectSpecial()
 {
-	//valintaa bugaa jotenkin ja väärän tekstin valittuna 
 	sf::Event evnt;
 
 	while (this->game->window.pollEvent(evnt))
@@ -1781,7 +1830,7 @@ void MainGameState::enemyChoosesTarget()
 
 //COMBATPHASE
 //INIT AND UNINIT
-void MainGameState::initCalculation() //tarvitsee jonkun tiedon taistelijoista
+void MainGameState::initCalculation()
 {
 	selectCharacter = false;
 	selectPlayer = false;
@@ -1789,11 +1838,12 @@ void MainGameState::initCalculation() //tarvitsee jonkun tiedon taistelijoista
 	selectSpecial = false;
 	selectItem = false;
 	calculationGameIsOn = true;
+	phase = Phase::COMBAT;
 	clock.restart();
 }
 void MainGameState::uninitCalculation()
 {
-	//reset calculation stuff
+	//reset calculation stuff 
 	playerAnswer = -255;
 	playerAnswerNegative = false;
 	points = 0;
@@ -1941,6 +1991,7 @@ void MainGameState::uninitCalculation()
 	
 
 	calculationGameIsOn = false;
+	phase = Phase::MAIN;
 	
 }
 //-----

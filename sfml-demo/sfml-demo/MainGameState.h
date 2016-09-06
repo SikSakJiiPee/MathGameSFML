@@ -73,7 +73,6 @@ private:
 	///Returns true if any no enemy character is alive
 	bool noEnemyAlive();
 
-	void getFirstAliveCharacter();
 
 	//INPUT
 	//void inputSelectCharacter();
@@ -90,12 +89,15 @@ private:
 	///Handles the input after losing a battle 
 	void inputBattleLose();
 
-	//MAINPHASE
-	//Time
+	//TIME
 	sf::Clock clock;
 	sf::Time timeElapsed;
-	float timeLeft;
 
+	//Phases
+	Phase phase = Phase::MAIN;
+
+
+	//MAINPHASE
 	//Font and Text
 	sf::Font font;
 	sf::Text textTitleMainGame;
@@ -115,7 +117,6 @@ private:
 	sf::Text textInfoSpecial2;
 	sf::Text textInfoItem;
 	sf::Text textInfoItem2;
-	sf::Text textTime;
 	sf::Text text;
 
 	//Texture and Sprite
@@ -196,6 +197,13 @@ private:
 	///Returns calculation as a string
 	static std::string getCalculationString(CalculationType type, int number, int number2);
 	
+
+
+	//Time
+	float timeLeft;
+	bool alarmPlayTime = false;
+	float timeAlarm;
+
 	//Text
 	sf::Text textTitleCalc;
 	sf::Text textTimeLeft;
@@ -205,7 +213,6 @@ private:
 	sf::Text textCalculation2;
 	sf::Text textCalculation3;
 	sf::Text textPlayerAnswer;
-	sf::Text textCorrectAnswer; //tarvitseeko?
 	sf::Text textPoints;
 	sf::Text textMistakes;
 	sf::Text textCurrentCombo;
@@ -223,7 +230,7 @@ private:
 	sf::Sound soundCalculationWrong;
 	
 	//other
-	bool calculationGameIsOn = false;
+	bool calculationGameIsOn = false; //tarvitaanko?
 	bool isCalculationVisible = false;
 	bool isCalculationVisible2 = false;
 	bool isCalculationVisible3 = false;
@@ -260,9 +267,10 @@ private:
 
 
 
-	//COMBAT END
-	sf::Text textEndDamagePlayer;
-	sf::Text textEndDamageEnemy;
+	//COMBAT END PHASE
+	sf::Text textEndDamageDealt;
+	sf::Text textEndDamageReflected;
+	sf::Text textEndDamageTotal;
 
 
 	//-------------
