@@ -1,12 +1,14 @@
 #pragma once
 
+//Includes
+//own classes
 #include "SpecialMove.h"
 #include "Item.h"
 #include "Equipment.h"
-
+//other
 #include <iostream>
 #include <vector>
-
+//SFML
 #include <SFML/Graphics.hpp>
 
 

@@ -1,8 +1,11 @@
 #pragma once
 
+//Includes
+//StateManager
 #include "Game.h"
 
-//enum classes
+
+//Enum classes
 ///An enum class for possible targets.
 enum class Target{ ALL, ANYONE, PLAYER, ENEMY};
 ///An enum class for effect type.

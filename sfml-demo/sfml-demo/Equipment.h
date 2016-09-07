@@ -1,9 +1,10 @@
 #pragma once
 
-#include "Game.h" //jos tarvitsee convertToString()
-//#include <iostream>
+//Includes
+//StateManager
+#include "Game.h"
 
-//enum classes
+//Enum classes
 ///An enum class for equipment type.
 enum class EquipmentType { WEAPON, ARMOR };
 ///An enum class for calculation types

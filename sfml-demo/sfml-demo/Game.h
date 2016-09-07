@@ -1,16 +1,19 @@
 #pragma once
 
+//Includes
+//other
 #include <stack>
 #include <vector>
 #include <iostream>
 #include <string>
 #include <sstream>
 #include <iomanip>
-
+//SFML
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
 
 
+//Templates
 ///Template for converting data to string. Floats are converted with decimal precision of two.
 template <typename T>
 std::string convertToString(T unconverted)

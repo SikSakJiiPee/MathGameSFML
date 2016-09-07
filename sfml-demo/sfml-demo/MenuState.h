@@ -1,11 +1,14 @@
 #pragma once
 
+//Includes
+//SFML
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
-
+//StateManager
 #include "GameState.h"
 
-
+//Enum classes
+///An enum class for different selections in the menu
 enum class MenuSelection {START, OPTIONS, CONTROLS, QUIT};
 
 

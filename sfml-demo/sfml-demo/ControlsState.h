@@ -1,8 +1,10 @@
 #pragma once
 
+//Includes
+//SFML
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
-
+//StateManager
 #include "GameState.h"
 
 

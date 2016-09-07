@@ -1,7 +1,9 @@
 #pragma once
 
+//Includes
+//SFML
 #include <SFML/Graphics.hpp>
-
+//StateManager
 #include "GameState.h"
 
 

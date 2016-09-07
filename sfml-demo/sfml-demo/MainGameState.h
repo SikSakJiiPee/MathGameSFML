@@ -1,17 +1,19 @@
 #pragma once
 
+//Includes
+//SFML
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
-
+//StateManager
 #include "GameState.h"
-
+//own classes
 #include "Character.h"
-
-
+//other
 #include <time.h>
 #include <random>
 
-//enum classes
+
+//Enum classes
 //MAINPHASE
 ///An enum class for action selection.
 enum class Selection { NONE, ATTACK, SPECIAL, ITEM, ESCAPE};
@@ -54,12 +56,10 @@ private:
 	///Pops the current state and returns to previous state. 
 	void backToMenu();
 
-	//tarvitaanko?
-	void combatAttack();
-	void combatDefend();
-
 	//character vector management
+	///Returns amount of player characters
 	size_t getPlayerCharacterCount();
+	///Returns amount of enemy characters
 	size_t getEnemyCharacterCount();
 
 	//doxygen
@@ -93,7 +93,7 @@ private:
 	sf::Clock clock;
 	sf::Time timeElapsed;
 
-	//Phases
+	//Phase
 	Phase phase = Phase::MAIN;
 
 
