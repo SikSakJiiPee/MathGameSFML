@@ -20,6 +20,7 @@ public:
 	///A destructor.
 	~Equipment();
 
+	//Attributes
 	std::string equipmentName;
 	EquipmentType equipmentType;
 	CalculationType calculationType;

@@ -25,28 +25,28 @@ std::string convertToString(T unconverted)
 	return srtConverted;
 }
 
-
+//forward declaration of the GameState class
 class GameState;
 
 class Game
 {
 public: 
-	///A constructor
+	///A constructor.
 	Game();
-	///A Destructor
+	///A Destructor.
 	~Game();
 
-	///Stack for handling the game states
+	///Stack for handling the game states.
 	std::stack<GameState*> states;
 
+	///A Game window.
 	sf::RenderWindow window;
-	//sf::Event evnt;
 
-	///Pushes a new game state to the stack
+	///Pushes a new game state to the stack.
 	void pushState(GameState* state);
-	///Removes the current game state from the top of the stack
+	///Removes the current game state from the top of the stack.
 	void popState();
-	///Removes the current game state and changes a state to a new game state
+	///Removes the current game state and changes a state to a new game state.
 	void changeState(GameState* state);
 	///Returns a game state from the top of the stack. Returns nullptr if stack is empty.
 	GameState* peekState();
@@ -56,10 +56,6 @@ public:
 
 
 private:
-	////selvitä tarvitaanko kaikkia
-	//const char* titleName;
-	//int windowWidth;
-	//int windowHeight;
 	bool running;
 	bool fullscreen;
 

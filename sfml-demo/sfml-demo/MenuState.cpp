@@ -40,11 +40,7 @@ MenuState::MenuState(Game* game)
 	textMenuQuit.setPosition(game->window.getSize().x / 2, (game->window.getSize().y / 4) * 3);
 	textMenuQuit.setString("Quit");
 
-	////Audio
-	//music
-	//if (!musicMenu.openFromFile("Audio/Music/hungerland.wav"))
-	//	std::cout << "Opening a music failed!" << std::endl;
-
+	//Audio
 	if (!bufferMusicMenu.loadFromFile("Audio/Music/hungerland.wav"))
 		std::cout << "Loading an audio failed!" << std::endl;
 	soundMusicMenu.setBuffer(bufferMusicMenu);

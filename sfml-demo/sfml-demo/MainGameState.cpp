@@ -9,6 +9,7 @@ MainGameState::MainGameState(Game* game)
 {
 	this->game = game;
 
+	//setting selection to attack
 	selection = Selection::ATTACK;
 
 	//Character
@@ -24,6 +25,7 @@ MainGameState::MainGameState(Game* game)
 	//SpecialMoves
 	specialSuperPunch = new SpecialMove("Super Punch", TargetSpecial::ENEMY, 3);
 	specialHyperPunch = new SpecialMove("Hyper Punch", TargetSpecial::ENEMY, 7);
+	//pushing special moves to characters
 	for (size_t i = 0; i < characters.size(); i++)
 	{
 		characters[i]->specialMoves.push_back(*specialSuperPunch);
@@ -34,9 +36,7 @@ MainGameState::MainGameState(Game* game)
 	//Item
 	item = new Item("Potion", Target::PLAYER, EffectType::HPUP, 2, 50, 0, 0, 0);
 	item2 = new Item("Potion2", Target::PLAYER, EffectType::HPUP, 2, 75, 0, 0, 0);
-	//if (getPlayerCharacter(0) != nullptr)
-	//	getPlayerCharacter(0)->items.push_back(*item);
-	//pushing items to every character
+	//pushing items to characters
 	for (size_t i = 0; i < characters.size(); i++)
 	{
 		characters[i]->items.push_back(*item);
@@ -49,19 +49,11 @@ MainGameState::MainGameState(Game* game)
 	eqArmor = new Equipment("Basic Armor", EquipmentType::ARMOR, CalculationType::PLUS, 20, 5, 50, 0, 5, 0, 0, 0);
 	eqArmor2 = new Equipment("Basic Armor", EquipmentType::ARMOR, CalculationType::MINUS, 20, 5, 50, 0, 5, 0, 0, 0);
 	eqArmor3 = new Equipment("Basic Armor", EquipmentType::ARMOR, CalculationType::MULTIPLY, 20, 5, 50, 0, 5, 0, 0, 0);
-	
 	//weapon
 	eqWeapon = new Equipment("Basic Weapon", EquipmentType::WEAPON, CalculationType::PLUS, 15, 5, 50, 7, 0, 0, 0, 0);
 	eqWeapon2 = new Equipment("Basic Weapon", EquipmentType::WEAPON, CalculationType::MINUS, 15, 5, 50, 7, 0, 0, 0, 0);
 	eqWeapon3 = new Equipment("Basic Weapon", EquipmentType::WEAPON, CalculationType::MULTIPLY, 15, 5, 50, 7, 0, 0, 0, 0);
-
-	//pushing equipments to every character
-	//for (size_t i = 0; i < characters.size(); i++)
-	//{
-	//	characters[i]->equipments.push_back(*eqArmor);
-	//	characters[i]->equipments.push_back(*eqWeapon);
-	//}
-
+	//pushing equipments to characters
 	characters[0]->equipments.push_back(*eqArmor);
 	characters[0]->equipments.push_back(*eqWeapon);
 
@@ -129,7 +121,7 @@ MainGameState::MainGameState(Game* game)
 	textTitleMainGame.setCharacterSize(30);
 	textTitleMainGame.setColor(sf::Color::Black);
 
-	//valintaa varten värin (ja koon?) alustuksen voi siirtää myöhemmin updateen.
+	//selection
 	textGameAttack.setFont(font);
 	textGameAttack.setCharacterSize(24);
 	textGameAttack.setColor(sf::Color::Black);
@@ -172,7 +164,6 @@ MainGameState::MainGameState(Game* game)
 	textInfoPlayer3.setCharacterSize(20);
 	textInfoPlayer3.setColor(sf::Color::Black);
 
-
 	textInfoEnemy.setFont(font);
 	textInfoEnemy.setCharacterSize(20);
 	textInfoEnemy.setColor(sf::Color::Black);
@@ -207,6 +198,7 @@ MainGameState::MainGameState(Game* game)
 	text.setCharacterSize(30);
 	text.setColor(sf::Color::White);
 
+
 	//texture and sprite
 	//background
 	if (!texturebgMainGame.loadFromFile("Texture/Background/bgTestBattle.png"))
@@ -215,11 +207,6 @@ MainGameState::MainGameState(Game* game)
 	}
 	spritebgMainGame.setTexture(texturebgMainGame);
 
-	//clock.restart();
-
-	//textTime.setFont(font);
-	//textTime.setCharacterSize(30);
-	//textTime.setColor(sf::Color::Black);
 
 	//Audio
 	//music
@@ -247,6 +234,7 @@ MainGameState::MainGameState(Game* game)
 
 	//COMBATPHASE
 	//Text
+	//combat info
 	textTitleCalc.setFont(font);
 	textTitleCalc.setCharacterSize(24);
 	textTitleCalc.setColor(sf::Color::Black);
@@ -262,6 +250,7 @@ MainGameState::MainGameState(Game* game)
 	textDefender.setCharacterSize(24);
 	textDefender.setColor(sf::Color::Black);
 
+	//calculation
 	textCalculation.setFont(font);
 	textCalculation.setCharacterSize(24);
 	textCalculation.setColor(sf::Color::Black);
@@ -278,6 +267,7 @@ MainGameState::MainGameState(Game* game)
 	textPlayerAnswer.setCharacterSize(24);
 	textPlayerAnswer.setColor(sf::Color::Black);
 	
+	//calculation info
 	textPoints.setFont(font);
 	textPoints.setCharacterSize(24);
 	textPoints.setColor(sf::Color::Black);
@@ -310,6 +300,7 @@ MainGameState::MainGameState(Game* game)
 
 
 	//COMBAT END PHASE
+	//combat end info
 	textEndDamageDealt.setFont(font);
 	textEndDamageDealt.setCharacterSize(24);
 	textEndDamageDealt.setColor(sf::Color::Black);
@@ -373,9 +364,14 @@ MainGameState::~MainGameState()
 
 	//selvitä tarvitseeko jonkun paremman systeemin itemien poistoon
 	delete item;
+	delete item2;
 
 	delete eqArmor;
+	delete eqArmor2;
+	delete eqArmor3;
 	delete eqWeapon;
+	delete eqWeapon2;
+	delete eqWeapon3;
 
 	//selvitä poistuuko kaikki itemit, equipit ja specialit poistettaessa characterit
 }
@@ -576,12 +572,12 @@ void MainGameState::handleInput()
 					}
 				}
 			}
-			//during combat end
-			if (phase == Phase::COMBATEND)
-			{
-				if (evnt.key.code == sf::Keyboard::Return)
-					uninitCalculation();
-			}
+			////during combat end
+			//if (phase == Phase::COMBATEND)
+			//{
+			//	if (evnt.key.code == sf::Keyboard::Return)
+			//		uninitCalculation();
+			//}
 
 		}
 	}
@@ -918,8 +914,8 @@ void MainGameState::update(const float dt)
 					targetCharacter->healthPoints = 0;
 			}
 
-			phase = Phase::COMBATEND;
-			//uninitCalculation();
+			//phase = Phase::COMBATEND;
+			uninitCalculation();
 		}
 
 	}

@@ -36,19 +36,22 @@ public:
 	~MainGameState();
 	
 
-	///A method for handling the input of the game state
+	///A method for handling the input of the game state.
 	void handleInput();
-	///A method for updating the game state
+	///A method for updating the game state.
 	void update(const float dt);
-	///A method for drawing the game state
+	///A method for drawing the game state.
 	void draw(const float dt);
 
 
 
 	
 	//Character
+	///A vector of characters in battle.
 	std::vector<Character*> characters;
+	///Character which is having a turn.
 	Character* activeCharacter;
+	///Character chosen as a target for an action.
 	Character* targetCharacter;
 
 private:
@@ -57,9 +60,9 @@ private:
 	void backToMenu();
 
 	//character vector management
-	///Returns amount of player characters
+	///Returns amount of player characters.
 	size_t getPlayerCharacterCount();
-	///Returns amount of enemy characters
+	///Returns amount of enemy characters.
 	size_t getEnemyCharacterCount();
 
 	//doxygen
@@ -68,25 +71,25 @@ private:
 	///Returns Enemy Character by its index. Returns nullptr if index is invalid.
 	Character* getEnemyCharacter(int index);
 
-	///Returns true if any no player character is alive
+	///Returns true if any no player character is alive.
 	bool noPlayerAlive();
-	///Returns true if any no enemy character is alive
+	///Returns true if any no enemy character is alive.
 	bool noEnemyAlive();
 
 
 	//INPUT
 	//void inputSelectCharacter();
-	///Handles the input during player selection
+	///Handles the input during player selection.
 	void inputSelectPlayer();
-	///Handles the input during enemy selection
+	///Handles the input during enemy selection.
 	void inputSelectEnemy();
-	///Handles the input during special selection
+	///Handles the input during special selection.
 	void inputSelectSpecial();
-	///Handles the input during item selection
+	///Handles the input during item selection.
 	void inputSelectItem();
-	///Handles the input after winning a battle 
+	///Handles the input after winning a battle.
 	void inputBattleWin();
-	///Handles the input after losing a battle 
+	///Handles the input after losing a battle.
 	void inputBattleLose();
 
 	//TIME
@@ -166,6 +169,7 @@ private:
 	Turn turn;
 	///Keeps track how many turns has passed on the current round.
 	int turnsPassed = 0;
+	///Keeps track of the number of dead characters.
 	int deadCharacters = 0;
 
 	//Enemy Turn
@@ -188,13 +192,13 @@ private:
 	void inputCalculation();
 
 	//Methods
-	///Returns random number
+	///Returns random number.
 	static int randomNumber(NumberType ntype, int level);
-	///Returns correct answer
+	///Returns correct answer.
 	static int getCorrectAnswer(CalculationType type, int number, int number2);
-	///Returns true if player's answer is the correct answer
+	///Returns true if player's answer is the correct answer.
 	static bool checkTheAnswer(int playerAnswer, int correctAnswer);
-	///Returns calculation as a string
+	///Returns calculation as a string.
 	static std::string getCalculationString(CalculationType type, int number, int number2);
 	
 

@@ -21,10 +21,11 @@ public:
 	///A destructor.
 	~Item();
 
+	//Methods
 	///Gets an item and return info for it as a string.
 	std::string getStringItemInfo(Item item);
 
-
+	//Attributes
 	std::string itemName;
 	Target target;
 	EffectType effectType;

@@ -43,9 +43,6 @@ private:
 	sf::Text textMenuQuit;
 
 	//Audio
-	//musiikki p‰‰st‰‰ staattisen r‰s‰hdyksen loopatessaan t‰ll‰
-	sf::Music musicMenu;
-
 	sf::SoundBuffer bufferMusicMenu;
 	sf::Sound soundMusicMenu;
 	sf::SoundBuffer bufferMenuMove;
