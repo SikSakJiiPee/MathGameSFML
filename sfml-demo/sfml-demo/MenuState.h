@@ -33,6 +33,7 @@ private:
 	///Go to Controls by the ControlsState to the stack.
 	void goToControls();
 
+	///For keeping track of selection in the menu.
 	MenuSelection menuSelection;
 
 	//Font and Text
