@@ -637,13 +637,13 @@ void MainGameState::handleInput()
 //UPDATE
 void MainGameState::update(const float dt)
 {
-	////Music
-	//if (isMusicBattlePlaying == false)
-	//{
-	//	soundMusicBattle.play();
-	//	soundMusicBattle.setLoop(true);
-	//	isMusicBattlePlaying = true;
-	//}
+	//Music
+	if (isMusicBattlePlaying == false)
+	{
+		soundMusicBattle.play();
+		soundMusicBattle.setLoop(true);
+		isMusicBattlePlaying = true;
+	}
 
 
 
@@ -902,7 +902,7 @@ void MainGameState::update(const float dt)
 				if (damageDealt < damageReflected)
 					damageTotal = 0;
 
-				std::cout << targetCharacter->defence << std::endl;
+				//std::cout << targetCharacter->defence << std::endl;
 				std::cout << "damageDealt: " << damageDealt << "  damageReflected: " << damageReflected << std::endl;
 				std::cout << "damageTotal: " << damageTotal << std::endl;
 
